@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+@theme {
+  --color-brand-blue: #00D1FF;
+  --color-brand-cyan: #00F0FF;
+  --color-deep-black: #050505;
+}
+
+body {
+  background-color: var(--color-deep-black);
+  color: white;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.delay-75 {
+  animation-delay: 75ms;
+}
+
+.delay-150 {
+  animation-delay: 150ms;
+}

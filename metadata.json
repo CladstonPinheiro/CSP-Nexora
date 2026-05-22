@@ -1,0 +1,8 @@
+{
+  "name": "CSP Nexora",
+  "description": "Automação Inteligente e Ecossistemas de IA para empresas que querem escalar.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
