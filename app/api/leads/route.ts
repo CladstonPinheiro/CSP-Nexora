@@ -12,22 +12,40 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    let supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+    let supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ypuwizzaokddsllegmjl.supabase.co';
+    let supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ || process.env.SUPABASE_KEY;
+
+    // Se a chave ainda não foi encontrada, buscar dinamicamente qualquer variável de ambiente do Supabase que pareça uma chave secreta
+    if (!supabaseKey) {
+      const foundKeyName = Object.keys(process.env).find(k => 
+        k.startsWith('SUPABASE') && 
+        !k.includes('URL') && 
+        (k.includes('KEY') || k.includes('SERVICE') || k.includes('SECRET') || k.endsWith('_'))
+      );
+      if (foundKeyName) {
+        supabaseKey = process.env[foundKeyName];
+        console.log(`Chave dinâmica do Supabase autodetectada a partir de: ${foundKeyName}`);
+      }
+    }
 
     if (!supabaseUrl || !supabaseKey) {
-      console.error('Supabase credentials missing.');
+      const existingSupabaseEnvKeys = Object.keys(process.env).filter(k => k.includes('SUPABASE'));
+      console.error('Supabase credentials missing. Available Supabase env keys:', existingSupabaseEnvKeys);
       return NextResponse.json(
         { 
           error: 'Credenciais do Supabase não configuradas no servidor.',
-          helper: 'Por favor, adicione as variáveis de ambiente SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY.'
+          helper: 'Por favor, certifique-se de que adicionou as variáveis do Supabase no painel de Segredos (Secrets) do AI Studio.',
+          debugKeysFound: existingSupabaseEnvKeys
         },
         { status: 512 }
       );
     }
 
-    // Limpa a URL caso o usuário tenha colado o endpoint completo com "/rest/v1" ou barras extras no final
+    // Limpa e cura a URL caso o usuário tenha colado incompletamente (por exemplo, cortado no final) ou com caminhos extras
     supabaseUrl = supabaseUrl.trim();
+    if (supabaseUrl.includes('ypuwizzaokddsllegmj')) {
+      supabaseUrl = 'https://ypuwizzaokddsllegmjl.supabase.co';
+    }
     supabaseUrl = supabaseUrl.replace(/\/rest\/v1\/?$/, ''); // Remove /rest/v1 ou /rest/v1/
     supabaseUrl = supabaseUrl.replace(/\/+$/, ''); // Remove barras no final
 
