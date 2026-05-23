@@ -63,16 +63,38 @@ const Diagnostic = () => {
     setIsLoading(true);
 
     try {
-      // Simulate real API request
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 512) {
+          throw new Error(
+            'As credenciais do Supabase não estão configuradas. Vá para a aba "Ambiente" do seu EasyPanel e adicione as variáveis SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY.'
+          );
+        } else if (result.code === '42P01' || (result.details && result.details.includes('relation "leads" does not exist'))) {
+          throw new Error(
+            'A tabela "leads" não existe no seu banco de dados Supabase. Crie uma tabela chamada "leads" com as colunas: nome (text), email (text), empresa (text) e telefone (text).'
+          );
+        } else {
+          throw new Error(result.error || 'Erro ao salvar no banco de dados.');
+        }
+      }
+
       if (typeof window !== 'undefined') {
         localStorage.setItem('cspnexora_diagnostic_submitted', 'true');
       }
       setIsSubmitted(true);
       setAlreadySubmitted(false); // Direct post triggers standard success screen
       setFormData({ nome: '', email: '', empresa: '', telefone: '' });
-    } catch (error) {
-      setErrorMessage('Ocorreu um erro ao enviar seus dados. Tente novamente.');
+    } catch (error: any) {
+      setErrorMessage(error.message || 'Ocorreu um erro ao enviar seus dados. Tente novamente.');
     } finally {
       setIsLoading(false);
     }
