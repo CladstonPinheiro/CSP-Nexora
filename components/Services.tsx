@@ -41,7 +41,7 @@ const services = [
     color: 'from-green-400 to-cyan-500'
   },
   {
-    id: 'chatbots-avancados', // Use chatbots-avancados or fallback map for AI customer service
+    id: 'ia-atendimento',
     title: 'IA para Atendimento',
     description: 'Redução drástica no tempo de resposta com precisão absoluta.',
     icon: <Shield className="w-8 h-8" />,
@@ -89,7 +89,7 @@ const Services = () => {
 
                 <a 
                   href={`/servicos#${service.id}`}
-                  className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity w-full cursor-pointer hover:text-cyan-400"
+                  className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/5 flex items-center justify-between max-lg:opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity w-full cursor-pointer hover:text-cyan-400"
                 >
                    <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-cyan-500">Saiba mais</span>
                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/5 flex items-center justify-center">

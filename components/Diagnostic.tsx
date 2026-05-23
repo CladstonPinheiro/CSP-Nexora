@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
@@ -15,6 +15,20 @@ const Diagnostic = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [alreadySubmitted, setAlreadySubmitted] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const lock = localStorage.getItem('cspnexora_diagnostic_submitted');
+      if (lock === 'true') {
+        const timer = setTimeout(() => {
+          setIsSubmitted(true);
+          setAlreadySubmitted(true);
+        }, 0);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,7 +65,11 @@ const Diagnostic = () => {
     try {
       // Simulate real API request
       await new Promise((resolve) => setTimeout(resolve, 1500));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('cspnexora_diagnostic_submitted', 'true');
+      }
       setIsSubmitted(true);
+      setAlreadySubmitted(false); // Direct post triggers standard success screen
       setFormData({ nome: '', email: '', empresa: '', telefone: '' });
     } catch (error) {
       setErrorMessage('Ocorreu um erro ao enviar seus dados. Tente novamente.');
@@ -240,23 +258,31 @@ const Diagnostic = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center py-10 space-y-6"
                   >
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto text-green-500">
+                    <div className="w-16 h-16 bg-green-100/80 rounded-full flex items-center justify-center mx-auto text-green-500">
                       <CheckCircle2 className="w-10 h-10" />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <h3 className="font-outfit text-2xl font-black text-gray-900">
-                        Obrigado pelo contato!
+                        {alreadySubmitted ? 'Diagnóstico já solicitado!' : 'Obrigado pelo contato!'}
                       </h3>
-                      <p className="text-gray-600 text-sm max-w-sm mx-auto">
-                        Nossos especialistas em automação receberam seus dados e entrarão em contato em breve para realizar o seu diagnóstico estratégico.
+                      <p className="text-gray-600 text-sm max-w-sm mx-auto leading-relaxed">
+                        {alreadySubmitted 
+                          ? 'Identificamos que você já solicitou o diagnóstico estratégico. Nossos especialistas de processos já receberam seus dados e estão analisando sua operação.' 
+                          : 'Nossos especialistas em automação receberam seus dados e entrarão em contato em breve para realizar o seu diagnóstico estratégico.'}
                       </p>
                     </div>
-                    <div>
+                    <div className="pt-2">
                       <button
-                        onClick={() => setIsSubmitted(false)}
-                        className="px-6 py-2.5 rounded-full border border-slate-200 text-gray-700 text-xs font-semibold hover:bg-slate-50 transition-all"
+                        onClick={() => {
+                          if (typeof window !== 'undefined') {
+                            localStorage.removeItem('cspnexora_diagnostic_submitted');
+                          }
+                          setIsSubmitted(false);
+                          setAlreadySubmitted(false);
+                        }}
+                        className="px-6 py-2.5 rounded-full border border-slate-200 text-gray-700 text-xs font-semibold hover:bg-slate-50 transition-all cursor-pointer"
                       >
-                        Enviar outro formulário
+                        {alreadySubmitted ? 'Enviar um novo formulário' : 'Enviar outro formulário'}
                       </button>
                     </div>
                   </motion.div>

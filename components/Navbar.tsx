@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -17,6 +18,88 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        if ('scrollRestoration' in window.history) {
+          window.history.scrollRestoration = 'manual';
+        }
+      } catch (err) {
+        console.error('Failed to set scrollRestoration', err);
+      }
+
+      if (!window.location.hash) {
+        window.scrollTo(0, 0);
+        
+        // Multi-stage fallback scroll to handle layout shifts / image loads on mobiles/tablets
+        const timer1 = setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        }, 50);
+        
+        const timer2 = setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        }, 150);
+
+        const timer3 = setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        }, 300);
+
+        const timer4 = setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        }, 600);
+
+        return () => {
+          clearTimeout(timer1);
+          clearTimeout(timer2);
+          clearTimeout(timer3);
+          clearTimeout(timer4);
+        };
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    // Scroll smoothly to hashed element on initial load or route transition with a hash
+    const handleHashScroll = () => {
+      if (typeof window !== 'undefined' && window.location.hash) {
+        const id = window.location.hash.substring(1);
+        const element = document.getElementById(id);
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }, 200);
+        }
+      }
+    };
+
+    handleHashScroll();
+    window.addEventListener('hashchange', handleHashScroll);
+    return () => window.removeEventListener('hashchange', handleHashScroll);
+  }, []);
+
+  const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (typeof window !== 'undefined' && href.startsWith('/#')) {
+      const id = href.split('#')[1];
+      const element = document.getElementById(id);
+      if (element) {
+        e.preventDefault();
+        element.scrollIntoView({ behavior: 'smooth' });
+        setIsMobileMenuOpen(false);
+      }
+    }
+  };
+
+  const handleClickDiagnostico = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (typeof window !== 'undefined') {
+      const element = document.getElementById('diagnostico');
+      if (element) {
+        e.preventDefault();
+        element.scrollIntoView({ behavior: 'smooth' });
+        setIsMobileMenuOpen(false);
+      }
+    }
+  };
 
   const navLinks = [
     { name: 'Soluções', href: '/#servicos' },
@@ -45,6 +128,7 @@ const Navbar = () => {
             <a
               key={link.name}
               href={link.href}
+              onClick={(e) => handleNavLinkClick(e, link.href)}
               className="px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-all rounded-full hover:bg-white/5"
             >
               {link.name}
@@ -61,12 +145,12 @@ const Navbar = () => {
           >
             <MessageSquare className="w-4 h-4 text-cyan-400" /> WhatsApp
           </a>
-          <a href="#diagnostico" className="relative group block">
+          <Link href="/#diagnostico" onClick={handleClickDiagnostico} className="relative group block">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full blur opacity-50 group-hover:opacity-100 transition duration-1000"></div>
             <div className="relative bg-white text-black px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all hover:scale-105 active:scale-95 text-center">
               Diagnóstico
             </div>
-          </a>
+          </Link>
         </div>
 
         {/* Mobile menu toggle */}
@@ -89,20 +173,20 @@ const Navbar = () => {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-lg font-bold uppercase tracking-widest text-[#AAA] hover:text-white"
+                  onClick={(e) => handleNavLinkClick(e, link.href)}
+                  className="text-lg font-bold uppercase tracking-widest text-[#AAA] hover:text-white cursor-pointer"
                 >
                   {link.name}
                 </a>
               ))}
               <div className="flex flex-col gap-4 pt-4 border-t border-white/10">
-                <a 
-                  href="#diagnostico"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                <Link 
+                  href="/#diagnostico"
+                  onClick={handleClickDiagnostico}
                   className="bg-white text-black px-5 py-4 rounded-xl font-bold uppercase tracking-widest text-center text-sm block hover:bg-white/90 transition-all"
                 >
                   Solicitar Diagnóstico
-                </a>
+                </Link>
                 <a 
                   href="https://wa.me/5561920043098"
                   target="_blank"

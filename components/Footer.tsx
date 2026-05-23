@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Facebook, Instagram, Mail, Globe } from 'lucide-react';
+import Link from 'next/link';
+import { Facebook, Instagram, Mail, Globe, Youtube } from 'lucide-react';
 import Logo from './Logo';
 
 const Footer = () => {
@@ -11,9 +12,7 @@ const Footer = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
           <div className="space-y-8">
-             <div className="flex items-center gap-2 group">
-                <Logo className="h-10 w-auto" />
-             </div>
+             <Logo className="h-10 w-auto" />
              <p className="text-gray-500 text-sm leading-relaxed max-w-xs italic">
                 Sua parceira estratégica na jornada da automação inteligente. Criamos o futuro da sua operação com IA.
              </p>
@@ -30,6 +29,16 @@ const Footer = () => {
                    >
                       <Instagram className="w-4 h-4" />
                    </a>
+                   <a 
+                      href="https://www.youtube.com/channel/UC7RHkQdtDzdHP-aIzrQl2tQ" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-cyan-500 hover:text-black transition-all cursor-pointer"
+                      title="YouTube"
+                      id="footer-youtube"
+                   >
+                      <Youtube className="w-4 h-4" />
+                    </a>
                    <a 
                       href="https://www.facebook.com/cspnexora/" 
                       target="_blank" 
@@ -60,22 +69,22 @@ const Footer = () => {
              <h4 className="font-bold uppercase text-[10px] tracking-[0.3em] text-cyan-500">Links Rápidos</h4>
              <ul className="space-y-4 text-sm text-gray-500 font-medium">
                 <li>
-                   <a href="#servicos" className="hover:text-cyan-400 cursor-pointer transition-colors block">
+                   <a href="/#servicos" className="hover:text-cyan-400 cursor-pointer transition-colors block">
                       Soluções
                    </a>
                 </li>
                 <li>
-                   <a href="#diferenciais" className="hover:text-cyan-400 cursor-pointer transition-colors block">
+                   <a href="/#diferenciais" className="hover:text-cyan-400 cursor-pointer transition-colors block">
                       Diferenciais
                    </a>
                 </li>
                 <li>
-                   <a href="#processo" className="hover:text-cyan-400 cursor-pointer transition-colors block">
+                   <a href="/#processo" className="hover:text-cyan-400 cursor-pointer transition-colors block">
                       Como Funciona
                    </a>
                 </li>
                 <li>
-                   <a href="#impacto" className="hover:text-cyan-400 cursor-pointer transition-colors block">
+                   <a href="/#impacto" className="hover:text-cyan-400 cursor-pointer transition-colors block">
                       Resultados
                    </a>
                 </li>

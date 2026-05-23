@@ -1,11 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Diagnostic from '@/components/Diagnostic';
 import { motion } from 'motion/react';
-import { Bot, Cpu, MessageSquare, Workflow, Zap, ArrowLeft, ArrowRight, MessageCircle } from 'lucide-react';
+import { Bot, Cpu, MessageSquare, Workflow, Zap, ArrowLeft, ArrowRight, MessageCircle, Shield } from 'lucide-react';
 
 const serviceDetails = [
   {
@@ -28,7 +29,7 @@ const serviceDetails = [
     id: 'chatbots-avancados',
     title: 'Chatbots Avançados',
     subtitle: 'Atendimento automatizado que gera resultados reais.',
-    description: 'Ofereça atendimento rápido, inteligente e disponível 24 horas por dia. Os chatbots desenvolvidos pela CSP Nexora utilizam IA para criar conversas naturais, melhorar a experiência do cliente e aumentar a geração de oportunidades para sua empresa.',
+    description: 'Ofereça atendimento rápido, inteligente e disponível 24 horas por dia. Os chatbots desenvolvidos pela CSP Nexora utilizam IA para create conversas naturais, melhorar a experiência do cliente e aumentar a geração de oportunidades para sua empresa.',
     icon: <MessageSquare className="w-12 h-12" />,
     color: 'from-purple-600 to-pink-500'
   },
@@ -47,10 +48,47 @@ const serviceDetails = [
     description: 'Automatize o principal canal de comunicação da sua empresa com fluxos inteligentes, respostas automáticas, captação de leads e atendimento escalável. Transforme o WhatsApp em uma ferramenta estratégica de vendas, suporte e relacionamento.',
     icon: <Zap className="w-12 h-12" />,
     color: 'from-green-400 to-cyan-500'
+  },
+  {
+    id: 'ia-atendimento',
+    title: 'IA para Atendimento',
+    subtitle: 'Redução drástica no tempo de resposta com precisão absoluta.',
+    description: 'Implemente soluções de Inteligência Artificial personalizadas para automatizar, qualificar e otimizar o atendimento ao cliente da sua empresa. A CSP Nexora desenvolve sistemas de atendimento que compreendem intenções, respondem a dúvidas frequentemente feitas de forma instantânea e humanizada e fazem a triagem inteligente de leads, operando 24/7 sem interrupções.',
+    icon: <Shield className="w-12 h-12" />,
+    color: 'from-cyan-500 to-indigo-500'
   }
 ];
 
 export default function ServicesPage() {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        if ('scrollRestoration' in window.history) {
+          window.history.scrollRestoration = 'manual';
+        }
+      } catch (err) {
+        console.error('Failed to set scrollRestoration', err);
+      }
+
+      if (!window.location.hash) {
+        window.scrollTo(0, 0);
+        
+        const timer1 = setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        }, 50);
+        
+        const timer2 = setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        }, 200);
+
+        return () => {
+          clearTimeout(timer1);
+          clearTimeout(timer2);
+        };
+      }
+    }
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#050505] selection:bg-cyan-500 selection:text-white">
       <Navbar />
@@ -113,20 +151,27 @@ export default function ServicesPage() {
                   {service.description}
                 </p>
 
-                <div className="pt-4 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                  <Link 
-                    href="/#diagnostico"
-                    className="group px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs overflow-hidden bg-white text-black transition-all hover:scale-105 flex items-center justify-center gap-2"
+                 <div className="pt-4 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                  <a 
+                    href="#diagnostico"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const element = document.getElementById('diagnostico');
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className="group px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs overflow-hidden bg-white text-black transition-all hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    Fale com Especialista <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
+                    FALE COM ESPECIALISTA <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </a>
                   <a 
                     href="https://wa.me/5561920043098"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs border border-white/10 bg-white/5 hover:bg-white/10 transition-all flex items-center justify-center gap-2 text-white"
                   >
-                    <MessageCircle className="w-4 h-4 text-cyan-400" /> WhatsApp
+                    <MessageCircle className="w-4 h-4 text-cyan-400" /> WHATSAPP
                   </a>
                 </div>
               </div>
@@ -135,6 +180,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      <Diagnostic />
       <Footer />
     </main>
   );
