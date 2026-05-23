@@ -76,7 +76,7 @@ const Diagnostic = () => {
       if (!response.ok) {
         if (response.status === 512) {
           throw new Error(
-            'As credenciais do Supabase não estão configuradas. Vá para a aba "Ambiente" do seu EasyPanel e adicione as variáveis SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY.'
+            'As credenciais do Supabase não estão configuradas. Por favor, acesse as Configurações (Settings / Env) no painel do Google AI Studio à direita ou acima de sua tela de desenvolvimento e adicione as variáveis SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY com os valores do seu painel do Supabase.'
           );
         } else if (result.code === '42P01' || (result.details && result.details.includes('relation "leads" does not exist'))) {
           throw new Error(
