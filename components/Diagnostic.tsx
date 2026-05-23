@@ -75,12 +75,8 @@ const Diagnostic = () => {
 
       if (!response.ok) {
         if (response.status === 512) {
-          const keysList = result.debugKeysFound && result.debugKeysFound.length > 0
-            ? ` (Configuradas atualmente: ${result.debugKeysFound.join(', ')})`
-            : ' (Nenhuma variável contendo "SUPABASE" foi encontrada)';
-          
           throw new Error(
-            `As credenciais do Supabase ainda não estão totalmente prontas ou salvas no servidor${keysList}. Por favor, verifique se você adicionou o Segredo (como SUPABASE_SERVICE_ROLE_KEY) na aba "Segredos" à direita do seu painel do Google AI Studio E clicou no botão "Aplicar alterações" para que o servidor reinicie com as novas configurações!`
+            'As credenciais do Supabase não estão configuradas. Por favor, acesse a aba "Segredos" (Secrets) no painel do Google AI Studio à direita, adicione as variáveis URL_SUPABASE e SUPABASE_SERVICE_ROLE_KEY, e clique no botão "Aplicar alterações".'
           );
         } else if (result.code === '42P01' || (result.details && result.details.includes('relation "leads" does not exist'))) {
           throw new Error(

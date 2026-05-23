@@ -7,55 +7,75 @@ export async function POST(req: NextRequest) {
 
     if (!nome || !email || !empresa || !telefone) {
       return NextResponse.json(
-        { error: 'Todos os campos são obrigatórios (nome, email, empresa, telefone).' },
+        { error: 'Todos os campos são obrigatórios.' },
         { status: 400 }
       );
     }
 
-    let supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ypuwizzaokddsllegmjl.supabase.co';
-    let supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ || process.env.SUPABASE_KEY;
+    // Capture URL from any potential variation of the user's keys
+    let supabaseUrl = 
+      process.env.URL_SUPABASE || 
+      process.env.SUPABASE_URL || 
+      process.env.NEXT_PUBLIC_SUPABASE_URL;
 
-    // Se a chave ainda não foi encontrada, buscar dinamicamente qualquer variável de ambiente do Supabase que pareça uma chave secreta
-    if (!supabaseKey) {
-      const foundKeyName = Object.keys(process.env).find(k => 
-        k.startsWith('SUPABASE') && 
-        !k.includes('URL') && 
-        (k.includes('KEY') || k.includes('SERVICE') || k.includes('SECRET') || k.endsWith('_'))
+    // Capture Key from any potential variation of the user's keys
+    let supabaseKey = 
+      process.env.SUPABASE_SERVICE_ROLE_KEY || 
+      process.env.SUPABASE_SERVICE_ || 
+      process.env.SUPABASE_ANON_KEY || 
+      process.env.SUPABASE_KEY;
+
+    // Smart-lookup in process.env if standard names are not found
+    if (!supabaseUrl) {
+      const foundUrlKey = Object.keys(process.env).find(k => 
+        k.toUpperCase().includes('SUPABASE') && k.toUpperCase().includes('URL')
       );
-      if (foundKeyName) {
-        supabaseKey = process.env[foundKeyName];
-        console.log(`Chave dinâmica do Supabase autodetectada a partir de: ${foundKeyName}`);
+      if (foundUrlKey) {
+        supabaseUrl = process.env[foundUrlKey];
       }
     }
 
+    if (!supabaseKey) {
+      const foundKey = Object.keys(process.env).find(k => 
+        k.toUpperCase().includes('SUPABASE') && 
+        (k.toUpperCase().includes('KEY') || k.toUpperCase().includes('SERVICE') || k.toUpperCase().includes('SECRET') || k.endsWith('_'))
+      );
+      if (foundKey) {
+        supabaseKey = process.env[foundKey];
+      }
+    }
+
+    // Fail gracefully with a 512 code if keys are missing
     if (!supabaseUrl || !supabaseKey) {
-      const existingSupabaseEnvKeys = Object.keys(process.env).filter(k => k.includes('SUPABASE'));
-      console.error('Supabase credentials missing. Available Supabase env keys:', existingSupabaseEnvKeys);
       return NextResponse.json(
-        { 
-          error: 'Credenciais do Supabase não configuradas no servidor.',
-          helper: 'Por favor, certifique-se de que adicionou as variáveis do Supabase no painel de Segredos (Secrets) do AI Studio.',
-          debugKeysFound: existingSupabaseEnvKeys
-        },
+        { error: 'Credenciais do Supabase não configuradas.' },
         { status: 512 }
       );
     }
 
-    // Limpa e cura a URL caso o usuário tenha colado incompletamente (por exemplo, cortado no final) ou com caminhos extras
+    // Sanitize and heal URL format (e.g. removing extra paths or incomplete parts)
     supabaseUrl = supabaseUrl.trim();
-    if (supabaseUrl.includes('ypuwizzaokddsllegmj')) {
+    if (supabaseUrl.includes('ypuwizzaokddsllegmj') && !supabaseUrl.endsWith('.co')) {
       supabaseUrl = 'https://ypuwizzaokddsllegmjl.supabase.co';
     }
-    supabaseUrl = supabaseUrl.replace(/\/rest\/v1\/?$/, ''); // Remove /rest/v1 ou /rest/v1/
-    supabaseUrl = supabaseUrl.replace(/\/+$/, ''); // Remove barras no final
+    
+    // Remove query endpoint path, if present
+    supabaseUrl = supabaseUrl.replace(/\/rest\/v1\/?$/, '');
+    supabaseUrl = supabaseUrl.replace(/\/+$/, '');
 
-    const supabase = createClient(supabaseUrl, supabaseKey, {
+    // Make sure it starts with https://
+    if (!supabaseUrl.startsWith('http://') && !supabaseUrl.startsWith('https://')) {
+      supabaseUrl = `https://${supabaseUrl}`;
+    }
+
+    // Create a pristine Supabase client
+    const supabase = createClient(supabaseUrl, supabaseKey.trim(), {
       auth: {
         persistSession: false,
       },
     });
 
-    // We will save to a 'leads' table
+    // Insertion operation on the 'leads' table
     const { data, error } = await supabase
       .from('leads')
       .insert([
@@ -70,12 +90,12 @@ export async function POST(req: NextRequest) {
       .select();
 
     if (error) {
-      console.error('Error inserting lead to Supabase:', error);
+      console.error('Database insertion error:', error);
       return NextResponse.json(
         { 
-          error: 'Erro ao salvar no banco de dados Supabase.',
-          details: error.message,
-          code: error.code
+          error: 'Erro de banco de dados.', 
+          details: error.message, 
+          code: error.code 
         },
         { status: 500 }
       );
@@ -83,7 +103,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, data });
   } catch (err: any) {
-    console.error('Internal API error:', err);
+    console.error('Server execution error:', err);
     return NextResponse.json(
       { error: 'Erro interno no servidor.', details: err.message },
       { status: 500 }
