@@ -24,7 +24,7 @@ const statusConfig: Record<string, { label: string; style: string }> = {
   cancelado: { label: 'Cancelado', style: 'bg-red-500/15 text-red-400 border-red-500/20' },
 };
 
-const SELECT_CLASS = 'bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2 text-gray-400 text-xs font-bold focus:outline-none focus:border-cyan-500/40 transition-all cursor-pointer min-w-[170px]';
+const SELECT_CLASS = 'bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2 text-[#F6F6F8] text-xs font-bold focus:outline-none focus:border-cyan-500/40 transition-all cursor-pointer min-w-[170px]';
 const INPUT_CLASS = 'w-full bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-cyan-500/40 transition-all';
 
 function StatusBadge({ value }: { value: string }) {
@@ -76,7 +76,7 @@ function ProjetoModal({ isOpen, onClose, onSuccess, projeto }: { isOpen: boolean
       <div className="w-full max-w-lg bg-[#0C0C0C] border border-white/10 rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between px-6 py-5 border-b border-white/5 sticky top-0 bg-[#0C0C0C] z-10">
           <h2 className="font-outfit text-base font-black text-white">{projeto ? 'Editar Projeto' : 'Novo Projeto'}</h2>
-          <button onClick={onClose} className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-[#F6F6F8] hover:text-white transition-all"><X className="w-4 h-4" /></button>
         </div>
         <div className="p-6 space-y-4">
           <div>
@@ -119,7 +119,7 @@ function ProjetoModal({ isOpen, onClose, onSuccess, projeto }: { isOpen: boolean
           </div>
         </div>
         <div className="flex gap-3 px-6 pb-6">
-          <button onClick={onClose} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60">Cancelar</button>
+          <button onClick={onClose} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-[#F6F6F8] text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60">Cancelar</button>
           <button onClick={handleSubmit} disabled={saving || !form.title.trim()} className="flex-1 relative group disabled:opacity-60">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl blur opacity-40 group-hover:opacity-70 transition duration-300" />
             <div className="relative flex items-center justify-center bg-white text-black py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest">{saving ? 'Salvando...' : projeto ? 'Salvar' : 'Cadastrar'}</div>
@@ -166,7 +166,7 @@ export default function ProjetosPage() {
       <div className="flex items-start justify-between mb-6">
         <div>
           <h1 className="font-outfit text-3xl font-black tracking-tight text-white">Projetos</h1>
-          <p className="text-gray-600 text-sm mt-1">{loading ? 'Carregando...' : `${filtered.length}${filterStatus ? ` de ${projetos.length}` : ''} projeto${projetos.length !== 1 ? 's' : ''} cadastrado${projetos.length !== 1 ? 's' : ''}`}</p>
+          <p className="text-[#F6F6F8] text-sm mt-1">{loading ? 'Carregando...' : `${filtered.length}${filterStatus ? ` de ${projetos.length}` : ''} projeto${projetos.length !== 1 ? 's' : ''} cadastrado${projetos.length !== 1 ? 's' : ''}`}</p>
         </div>
         <button onClick={() => setModalOpen(true)} className="relative group">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl blur opacity-40 group-hover:opacity-70 transition duration-300" />
@@ -179,7 +179,7 @@ export default function ProjetosPage() {
           <option value="">Todos os status</option>
           {Object.entries(statusConfig).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
         </select>
-        {filterStatus && <button onClick={() => setFilterStatus('')} className="text-[11px] text-gray-600 hover:text-gray-400 transition-colors font-black uppercase tracking-widest">Limpar filtros</button>}
+        {filterStatus && <button onClick={() => setFilterStatus('')} className="text-[11px] text-[#F6F6F8] hover:text-[#F6F6F8] transition-colors font-black uppercase tracking-widest">Limpar filtros</button>}
       </div>
       <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
@@ -187,7 +187,7 @@ export default function ProjetosPage() {
             <thead>
               <tr className="border-b border-white/5 bg-white/[0.015]">
                 {['Título', 'Escopo', 'Status', 'Setup', 'Mensalidade', 'Início', 'Entrega', 'Ações'].map(h => (
-                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-gray-400">{h}</th>
+                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-[#F6F6F8]">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -204,7 +204,7 @@ export default function ProjetosPage() {
                 <tr><td colSpan={8} className="py-20">
                   <div className="flex flex-col items-center justify-center text-center">
                     <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4"><InboxIcon className="w-6 h-6 text-gray-700" /></div>
-                    <p className="text-sm font-bold text-gray-600">Nenhum projeto encontrado</p>
+                    <p className="text-sm font-bold text-[#F6F6F8]">Nenhum projeto encontrado</p>
                     <p className="text-xs text-gray-700 mt-1">{filterStatus ? 'Tente ajustar os filtros' : 'Adicione o primeiro projeto pelo botão acima'}</p>
                   </div>
                 </td></tr>
@@ -212,16 +212,16 @@ export default function ProjetosPage() {
                 filtered.map(projeto => (
                   <tr key={projeto.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.025] transition-colors">
                     <td className="px-5 py-4"><span className="text-sm font-bold text-white">{projeto.title || '—'}</span></td>
-                    <td className="px-5 py-4 text-sm text-gray-300 max-w-[200px] truncate">{projeto.scope || '—'}</td>
+                    <td className="px-5 py-4 text-sm text-[#F6F6F8] max-w-[200px] truncate">{projeto.scope || '—'}</td>
                     <td className="px-5 py-4">{projeto.status ? <StatusBadge value={projeto.status} /> : <span className="text-sm text-gray-700">—</span>}</td>
-                    <td className="px-5 py-4 text-sm text-gray-200">{formatCurrency(projeto.setup_value)}</td>
-                    <td className="px-5 py-4 text-sm text-gray-200">{formatCurrency(projeto.monthly_value)}</td>
-                    <td className="px-5 py-4 text-xs text-gray-400 whitespace-nowrap">{projeto.start_date ? formatDate(projeto.start_date) : '—'}</td>
-                    <td className="px-5 py-4 text-xs text-gray-400 whitespace-nowrap">{projeto.delivery_date ? formatDate(projeto.delivery_date) : '—'}</td>
+                    <td className="px-5 py-4 text-sm text-[#F6F6F8]">{formatCurrency(projeto.setup_value)}</td>
+                    <td className="px-5 py-4 text-sm text-[#F6F6F8]">{formatCurrency(projeto.monthly_value)}</td>
+                    <td className="px-5 py-4 text-xs text-[#F6F6F8] whitespace-nowrap">{projeto.start_date ? formatDate(projeto.start_date) : '—'}</td>
+                    <td className="px-5 py-4 text-xs text-[#F6F6F8] whitespace-nowrap">{projeto.delivery_date ? formatDate(projeto.delivery_date) : '—'}</td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-1.5">
-                        <button onClick={() => setEditProjeto(projeto)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-cyan-500/10 border border-white/10 hover:border-cyan-500/20 flex items-center justify-center text-gray-600 hover:text-cyan-400 transition-all"><Pencil className="w-3 h-3" /></button>
-                        <button onClick={() => setDeleteTarget(projeto)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 flex items-center justify-center text-gray-600 hover:text-red-400 transition-all"><Trash2 className="w-3 h-3" /></button>
+                        <button onClick={() => setEditProjeto(projeto)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-cyan-500/10 border border-white/10 hover:border-cyan-500/20 flex items-center justify-center text-[#F6F6F8] hover:text-cyan-400 transition-all"><Pencil className="w-3 h-3" /></button>
+                        <button onClick={() => setDeleteTarget(projeto)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 flex items-center justify-center text-[#F6F6F8] hover:text-red-400 transition-all"><Trash2 className="w-3 h-3" /></button>
                       </div>
                     </td>
                   </tr>
@@ -240,12 +240,12 @@ export default function ProjetosPage() {
               <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0"><AlertTriangle className="w-5 h-5 text-red-400" /></div>
               <div>
                 <h3 className="font-outfit text-base font-black text-white">Excluir Projeto</h3>
-                <p className="text-xs text-gray-600 mt-0.5">Esta ação não pode ser desfeita</p>
+                <p className="text-xs text-[#F6F6F8] mt-0.5">Esta ação não pode ser desfeita</p>
               </div>
             </div>
-            <p className="text-sm text-gray-400 mb-6">Tem certeza que deseja excluir <span className="font-bold text-white">{deleteTarget.title}</span>?</p>
+            <p className="text-sm text-[#F6F6F8] mb-6">Tem certeza que deseja excluir <span className="font-bold text-white">{deleteTarget.title}</span>?</p>
             <div className="flex gap-3">
-              <button onClick={() => setDeleteTarget(null)} disabled={deleting} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60">Cancelar</button>
+              <button onClick={() => setDeleteTarget(null)} disabled={deleting} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-[#F6F6F8] text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60">Cancelar</button>
               <button onClick={handleDelete} disabled={deleting} className="flex-1 px-4 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 text-[11px] font-black uppercase tracking-widest transition-all disabled:opacity-60">{deleting ? 'Excluindo...' : 'Excluir'}</button>
             </div>
           </div>
