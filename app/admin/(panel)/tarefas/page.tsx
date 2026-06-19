@@ -26,7 +26,7 @@ const typeConfig: Record<string, { label: string; style: string }> = {
 };
 
 const SELECT_CLASS = 'bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2 text-[#F6F6F8] text-xs font-bold focus:outline-none focus:border-cyan-500/40 transition-all cursor-pointer min-w-[170px]';
-const INPUT_CLASS = 'w-full bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-cyan-500/40 transition-all';
+const INPUT_CLASS = 'w-full bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-[#F6F6F8] focus:outline-none focus:border-cyan-500/40 transition-all';
 
 function TypeBadge({ value }: { value: string }) {
   const cfg = typeConfig[value];
