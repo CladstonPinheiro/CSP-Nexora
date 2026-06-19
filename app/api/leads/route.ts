@@ -16,34 +16,30 @@ export async function POST(req: NextRequest) {
 
     const { data, error } = await supabase
       .from('leads')
-      .insert([
-        { 
-          nome, 
-          email, 
-          empresa, 
-          telefone,
-          created_at: new Date().toISOString()
-        }
-      ])
-      .select();
+      .insert([{
+        contact_name: nome,
+        company_name: empresa,
+        phone:        telefone,
+        email,
+        source:       'formulario',
+        stage:        'identificado',
+        created_at:   new Date().toISOString(),
+      }])
+      .select()
+      .single();
 
     if (error) {
-      console.error('Database insertion error:', error);
       return NextResponse.json(
-        { 
-          error: 'Erro de banco de dados.', 
-          details: error.message, 
-          code: error.code 
-        },
+        { error: 'Erro de banco de dados.', details: error.message, code: error.code },
         { status: 500 }
       );
     }
 
     return NextResponse.json({ success: true, data });
-  } catch (err: any) {
-    console.error('Server execution error:', err);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Erro desconhecido';
     return NextResponse.json(
-      { error: 'Erro interno no servidor.', details: err.message },
+      { error: 'Erro interno no servidor.', details: message },
       { status: 500 }
     );
   }
