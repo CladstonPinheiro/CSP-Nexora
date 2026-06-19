@@ -35,7 +35,7 @@ const nichoLabel: Record<string, string> = {
 };
 
 const SELECT_CLASS = 'bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2 text-[#F6F6F8] text-xs font-bold focus:outline-none focus:border-cyan-500/40 transition-all cursor-pointer min-w-[170px]';
-const INPUT_CLASS = 'w-full bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-[#F6F6F8] focus:outline-none focus:border-cyan-500/40 transition-all';
+const INPUT_CLASS = 'w-full bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-[#E9E9E9] focus:outline-none focus:border-cyan-500/40 transition-all';
 
 function StatusBadge({ value }: { value: string }) {
   const cfg = statusConfig[value];
@@ -84,33 +84,33 @@ function ClienteModal({ isOpen, onClose, onSuccess, cliente }: { isOpen: boolean
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Empresa *</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Empresa *</label>
             <input className={INPUT_CLASS} placeholder="Nome da empresa" value={form.company_name} onChange={e => setForm(f => ({ ...f, company_name: e.target.value }))} />
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Contato</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Contato</label>
             <input className={INPUT_CLASS} placeholder="Nome do contato" value={form.contact_name} onChange={e => setForm(f => ({ ...f, contact_name: e.target.value }))} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Telefone</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Telefone</label>
               <input className={INPUT_CLASS} placeholder="(11) 99999-9999" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} />
             </div>
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Email</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Email</label>
               <input className={INPUT_CLASS} type="email" placeholder="email@empresa.com" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Nicho</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Nicho</label>
               <select className={INPUT_CLASS} value={form.niche} onChange={e => setForm(f => ({ ...f, niche: e.target.value }))} style={{ backgroundColor: '#0D0D0D' }}>
                 <option value="">Selecione</option>
                 {Object.entries(nichoLabel).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Status</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Status</label>
               <select className={INPUT_CLASS} value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} style={{ backgroundColor: '#0D0D0D' }}>
                 {Object.entries(statusConfig).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
               </select>
