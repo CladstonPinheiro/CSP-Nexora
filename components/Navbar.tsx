@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import Logo from './Logo';
+
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -119,7 +119,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2 cursor-pointer group">
-          <Logo className="h-10 md:h-12 w-auto" />
+          <img src="/logo.png" alt="CSP Nexora" style={{ width: '140px', height: 'auto' }} className="object-contain" />
         </div>
 
         {/* Desktop Nav */}
