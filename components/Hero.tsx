@@ -105,8 +105,7 @@ const Hero = () => {
                   className="w-48 h-48 bg-gradient-to-tr from-cyan-400 via-blue-500 to-purple-600 rounded-[2.5rem] p-px"
                 >
                   <div className="w-full h-full bg-[#0A0A0A] rounded-[2.4rem] flex items-center justify-center overflow-hidden relative group">
-                    <img src="https://picsum.photos/seed/nexora/500/500" alt="AI Agent" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
-                    <Bot className="absolute text-white w-16 h-16 blur-[1px]" />
+                    <Bot className="text-white w-16 h-16 blur-[1px]" />
                   </div>
                 </motion.div>
 

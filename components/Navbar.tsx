@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -119,7 +120,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2 cursor-pointer group">
-          <img src="/logo.png" alt="CSP Nexora" style={{ width: '100px', height: 'auto' }} className="object-contain" />
+          <Image src="/logo.png" alt="CSP Nexora" width={207} height={113} className="w-[100px] h-auto object-contain" priority />
         </div>
 
         {/* Desktop Nav */}

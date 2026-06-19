@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Eye, EyeOff } from 'lucide-react';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
 
@@ -40,7 +41,7 @@ export default function AdminLoginPage() {
 
       <div className="relative z-10 w-full max-w-md">
         <div className="flex justify-center mb-6">
-          <img src="/logo.png" alt="CSP Nexora" className="w-[100px] object-contain" />
+          <Image src="/logo.png" alt="CSP Nexora" width={207} height={113} className="w-[100px] h-auto object-contain" />
         </div>
 
         <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl p-8 shadow-2xl">

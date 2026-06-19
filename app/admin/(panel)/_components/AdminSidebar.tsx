@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   LayoutDashboard,
   Users,
@@ -40,7 +41,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
     <aside className="fixed left-0 top-0 h-screen w-60 bg-[#080808] border-r border-white/5 flex flex-col z-40">
       {/* Logo */}
       <div className="px-4 py-5 border-b border-white/5 flex justify-center">
-        <img src="/logo.png" alt="CSP Nexora" className="w-[100px] object-contain" />
+        <Image src="/logo.png" alt="CSP Nexora" width={207} height={113} className="w-[100px] h-auto object-contain" />
       </div>
 
       {/* Nav */}

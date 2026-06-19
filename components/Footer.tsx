@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Facebook, Instagram, Mail, Globe, Youtube } from 'lucide-react';
 
 
@@ -12,7 +13,7 @@ const Footer = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
           <div className="space-y-8">
-             <img src="/logo.png" alt="CSP Nexora" style={{ width: '100px', height: 'auto' }} className="object-contain" />
+             <Image src="/logo.png" alt="CSP Nexora" width={207} height={113} className="w-[100px] h-auto object-contain" />
              <p className="text-gray-500 text-sm leading-relaxed max-w-xs italic">
                 Sua parceira estratégica na jornada da automação inteligente. Criamos o futuro da sua operação com IA.
              </p>
