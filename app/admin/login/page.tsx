@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
 
       <div className="relative z-10 w-full max-w-md">
         <div className="flex justify-center mb-6">
-          <img src="/logo.png" alt="CSP Nexora" className="w-[200px] object-contain" />
+          <img src="/logo.png" alt="CSP Nexora" className="w-[100px] object-contain" />
         </div>
 
         <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl p-8 shadow-2xl">
