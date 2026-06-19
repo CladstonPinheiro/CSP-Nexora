@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { createSupabaseBrowserClient } from '@/lib/supabase';
+import { createLead } from '../actions';
 import type { Lead } from './types';
 
 interface LeadModalProps {
@@ -62,38 +62,29 @@ export function LeadModal({ isOpen, onClose, onSuccess }: LeadModalProps) {
     setError('');
     setLoading(true);
 
-    const supabase = createSupabaseBrowserClient();
-    const { data, error: dbError } = await supabase
-      .from('leads')
-      .insert([
-        {
-          empresa:     form.empresa,
-          nome:        form.nome,
-          nicho:       form.nicho || null,
-          cidade:      form.cidade || null,
-          telefone:    form.telefone || null,
-          email:       form.email || null,
-          linkedin:    form.linkedin || null,
-          instagram:   form.instagram || null,
-          website:     form.website || null,
-          origem:      form.origem || null,
-          indicado_por: form.origem === 'indicacao' ? (form.indicado_por || null) : null,
-          score:       form.score || null,
-          anotacoes:   form.anotacoes || null,
-          estagio:     'identificado',
-          created_at:  new Date().toISOString(),
-        },
-      ])
-      .select()
-      .single();
+    const { data, error: dbError } = await createLead({
+      empresa:      form.empresa,
+      nome:         form.nome,
+      nicho:        form.nicho || null,
+      cidade:       form.cidade || null,
+      telefone:     form.telefone || null,
+      email:        form.email || null,
+      linkedin:     form.linkedin || null,
+      instagram:    form.instagram || null,
+      website:      form.website || null,
+      origem:       form.origem || null,
+      indicado_por: form.origem === 'indicacao' ? (form.indicado_por || null) : null,
+      score:        form.score || null,
+      anotacoes:    form.anotacoes || null,
+    });
 
     if (dbError) {
-      setError('Erro ao salvar. Verifique os dados e tente novamente.');
+      setError(dbError);
       setLoading(false);
       return;
     }
 
-    onSuccess(data as Lead);
+    onSuccess(data as unknown as Lead);
     setForm(EMPTY_FORM);
     setLoading(false);
   };
