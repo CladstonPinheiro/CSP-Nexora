@@ -40,7 +40,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
     <aside className="fixed left-0 top-0 h-screen w-60 bg-[#080808] border-r border-white/5 flex flex-col z-40">
       {/* Logo */}
       <div className="px-4 py-5 border-b border-white/5 flex justify-center">
-        <img src="/logo.png" alt="CSP Nexora" className="w-[160px] object-contain" />
+        <img src="/logo.png" alt="CSP Nexora" className="w-[100px] object-contain" />
       </div>
 
       {/* Nav */}
