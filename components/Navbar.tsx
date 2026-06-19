@@ -32,30 +32,6 @@ const Navbar = () => {
 
       if (!window.location.hash) {
         window.scrollTo(0, 0);
-        
-        // Multi-stage fallback scroll to handle layout shifts / image loads on mobiles/tablets
-        const timer1 = setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'auto' });
-        }, 50);
-        
-        const timer2 = setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'auto' });
-        }, 150);
-
-        const timer3 = setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'auto' });
-        }, 300);
-
-        const timer4 = setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'auto' });
-        }, 600);
-
-        return () => {
-          clearTimeout(timer1);
-          clearTimeout(timer2);
-          clearTimeout(timer3);
-          clearTimeout(timer4);
-        };
       }
     }
   }, []);
