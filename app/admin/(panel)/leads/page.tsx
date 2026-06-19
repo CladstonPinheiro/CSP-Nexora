@@ -71,8 +71,8 @@ export default function LeadsPage() {
   }, [fetchLeads]);
 
   const filteredLeads = leads.filter((l) => {
-    if (filterEstagio && l.estagio !== filterEstagio) return false;
-    if (filterOrigem && l.origem !== filterOrigem) return false;
+    if (filterEstagio && l.stage !== filterEstagio) return false;
+    if (filterOrigem && l.source !== filterOrigem) return false;
     return true;
   });
 
@@ -214,13 +214,13 @@ export default function LeadsPage() {
                     {/* Empresa */}
                     <td className="px-5 py-4">
                       <span className="text-sm font-bold text-white">
-                        {lead.empresa || '—'}
+                        {lead.company_name || '—'}
                       </span>
                     </td>
 
                     {/* Contato */}
                     <td className="px-5 py-4">
-                      <p className="text-sm text-white">{lead.nome || '—'}</p>
+                      <p className="text-sm text-white">{lead.contact_name || '—'}</p>
                       {lead.email && (
                         <p className="text-xs text-gray-600 mt-0.5">{lead.email}</p>
                       )}
@@ -228,18 +228,18 @@ export default function LeadsPage() {
 
                     {/* Nicho */}
                     <td className="px-5 py-4 text-sm text-gray-500">
-                      {lead.nicho ? (nichoLabel[lead.nicho] ?? lead.nicho) : '—'}
+                      {lead.niche ? (nichoLabel[lead.niche] ?? lead.niche) : '—'}
                     </td>
 
                     {/* Cidade */}
                     <td className="px-5 py-4 text-sm text-gray-500">
-                      {lead.cidade || '—'}
+                      {lead.city || '—'}
                     </td>
 
                     {/* Origem */}
                     <td className="px-5 py-4">
-                      {lead.origem ? (
-                        <OrigemBadge value={lead.origem} />
+                      {lead.source ? (
+                        <OrigemBadge value={lead.source} />
                       ) : (
                         <span className="text-sm text-gray-700">—</span>
                       )}
@@ -247,8 +247,8 @@ export default function LeadsPage() {
 
                     {/* Estágio */}
                     <td className="px-5 py-4">
-                      {lead.estagio ? (
-                        <EstagioBadge value={lead.estagio} />
+                      {lead.stage ? (
+                        <EstagioBadge value={lead.stage} />
                       ) : (
                         <span className="text-sm text-gray-700">—</span>
                       )}

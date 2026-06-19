@@ -20,20 +20,20 @@ export type Score = 'alto' | 'medio' | 'baixo';
 
 export type Lead = {
   id: string;
-  empresa?: string;
-  nome?: string;
-  nicho?: string;
-  cidade?: string;
-  telefone?: string;
+  company_name?: string;
+  contact_name?: string;
+  niche?: string;
+  city?: string;
+  phone?: string;
   email?: string;
   linkedin?: string;
   instagram?: string;
   website?: string;
-  origem?: Origem;
-  indicado_por?: string;
+  source?: Origem;
+  referred_by?: string;
   score?: Score;
-  anotacoes?: string;
-  estagio?: Estagio;
+  notes?: string;
+  stage?: Estagio;
   created_at: string;
 };
 

@@ -5,19 +5,19 @@ import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { redirect } from 'next/navigation';
 
 export type LeadPayload = {
-  empresa: string;
-  nome: string;
-  nicho?: string | null;
-  cidade?: string | null;
-  telefone?: string | null;
+  company_name: string;
+  contact_name: string;
+  niche?: string | null;
+  city?: string | null;
+  phone?: string | null;
   email?: string | null;
   linkedin?: string | null;
   instagram?: string | null;
   website?: string | null;
-  origem?: string | null;
-  indicado_por?: string | null;
+  source?: string | null;
+  referred_by?: string | null;
   score?: string | null;
-  anotacoes?: string | null;
+  notes?: string | null;
 };
 
 export async function createLead(
@@ -33,7 +33,7 @@ export async function createLead(
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from('leads')
-    .insert([{ ...payload, estagio: 'identificado', created_at: new Date().toISOString() }])
+    .insert([{ ...payload, stage: 'identificado', created_at: new Date().toISOString() }])
     .select()
     .single();
 

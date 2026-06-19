@@ -63,19 +63,19 @@ export function LeadModal({ isOpen, onClose, onSuccess }: LeadModalProps) {
     setLoading(true);
 
     const { data, error: dbError } = await createLead({
-      empresa:      form.empresa,
-      nome:         form.nome,
-      nicho:        form.nicho || null,
-      cidade:       form.cidade || null,
-      telefone:     form.telefone || null,
+      company_name: form.empresa,
+      contact_name: form.nome,
+      niche:        form.nicho || null,
+      city:         form.cidade || null,
+      phone:        form.telefone || null,
       email:        form.email || null,
       linkedin:     form.linkedin || null,
       instagram:    form.instagram || null,
       website:      form.website || null,
-      origem:       form.origem || null,
-      indicado_por: form.origem === 'indicacao' ? (form.indicado_por || null) : null,
+      source:       form.origem || null,
+      referred_by:  form.origem === 'indicacao' ? (form.indicado_por || null) : null,
       score:        form.score || null,
-      anotacoes:    form.anotacoes || null,
+      notes:        form.anotacoes || null,
     });
 
     if (dbError) {

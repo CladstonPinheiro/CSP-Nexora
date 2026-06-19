@@ -57,10 +57,10 @@ function Detail({
 export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
   const [updating, setUpdating] = useState(false);
 
-  const currentStageIndex = lead?.estagio
-    ? STAGE_ORDER.indexOf(lead.estagio as Estagio)
+  const currentStageIndex = lead?.stage
+    ? STAGE_ORDER.indexOf(lead.stage as Estagio)
     : -1;
-  const isTerminal = lead?.estagio === 'fechado' || lead?.estagio === 'perdido';
+  const isTerminal = lead?.stage === 'fechado' || lead?.stage === 'perdido';
   const canAdvance =
     lead && currentStageIndex >= 0 && currentStageIndex < STAGE_ORDER.length - 1;
   const canMarkLost = lead && !isTerminal;
@@ -72,7 +72,7 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
     const supabase = createSupabaseBrowserClient();
     const { data, error } = await supabase
       .from('leads')
-      .update({ estagio: nextStage })
+      .update({ stage: nextStage })
       .eq('id', lead.id)
       .select()
       .single();
@@ -86,7 +86,7 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
     const supabase = createSupabaseBrowserClient();
     const { data, error } = await supabase
       .from('leads')
-      .update({ estagio: 'perdido' })
+      .update({ stage: 'perdido' })
       .eq('id', lead.id)
       .select()
       .single();
@@ -120,9 +120,9 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
             <div className="flex items-start justify-between px-6 py-5 border-b border-white/5 shrink-0">
               <div className="flex-1 min-w-0 pr-3">
                 <p className="font-outfit text-lg font-black tracking-tight text-white truncate">
-                  {lead.empresa || 'Empresa não informada'}
+                  {lead.company_name || 'Empresa não informada'}
                 </p>
-                <p className="text-sm text-gray-500 truncate mt-0.5">{lead.nome || '—'}</p>
+                <p className="text-sm text-gray-500 truncate mt-0.5">{lead.contact_name || '—'}</p>
               </div>
               <button
                 onClick={onClose}
@@ -141,7 +141,7 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
 
                 <div className="space-y-0.5">
                   {STAGE_ORDER.map((stage, i) => {
-                    const isCurrent = lead.estagio === stage;
+                    const isCurrent = lead.stage === stage;
                     const isPast = currentStageIndex > i;
                     const cfg = estagioConfig[stage];
                     return (
@@ -181,7 +181,7 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                     );
                   })}
 
-                  {lead.estagio === 'perdido' && (
+                  {lead.stage === 'perdido' && (
                     <div className="flex items-center gap-3 px-3 py-2 rounded-xl border bg-red-500/10 border-red-500/20">
                       <div className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
                       <span className="text-[11px] font-black uppercase tracking-widest text-red-400">
@@ -231,10 +231,10 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                 <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                   <Detail
                     label="Nicho"
-                    value={lead.nicho ? (nichoLabel[lead.nicho] ?? lead.nicho) : null}
+                    value={lead.niche ? (nichoLabel[lead.niche] ?? lead.niche) : null}
                   />
-                  <Detail label="Cidade" value={lead.cidade} />
-                  <Detail label="Telefone" value={lead.telefone} />
+                  <Detail label="Cidade" value={lead.city} />
+                  <Detail label="Telefone" value={lead.phone} />
                   <Detail label="Email" value={lead.email} href={lead.email ? `mailto:${lead.email}` : null} />
                   <Detail label="LinkedIn" value={lead.linkedin} href={lead.linkedin} />
                   <Detail label="Instagram" value={lead.instagram} href={lead.instagram ? `https://instagram.com/${lead.instagram.replace('@', '')}` : null} />
@@ -247,11 +247,11 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                     <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1">
                       Origem
                     </p>
-                    {lead.origem ? (
+                    {lead.source ? (
                       <span
-                        className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest ${origemConfig[lead.origem]?.style ?? 'bg-gray-500/15 text-gray-400 border-gray-500/20'}`}
+                        className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest ${origemConfig[lead.source]?.style ?? 'bg-gray-500/15 text-gray-400 border-gray-500/20'}`}
                       >
-                        {origemConfig[lead.origem]?.label ?? lead.origem}
+                        {origemConfig[lead.source]?.label ?? lead.source}
                       </span>
                     ) : (
                       <p className="text-sm text-gray-700">—</p>
@@ -271,20 +271,20 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                     </div>
                   )}
 
-                  {lead.indicado_por && (
+                  {lead.referred_by && (
                     <div className="col-span-2">
-                      <Detail label="Indicado por" value={lead.indicado_por} />
+                      <Detail label="Indicado por" value={lead.referred_by} />
                     </div>
                   )}
                 </div>
 
-                {lead.anotacoes && (
+                {lead.notes && (
                   <div>
                     <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">
                       Anotações
                     </p>
                     <p className="text-sm text-gray-400 leading-relaxed bg-white/[0.03] border border-white/5 rounded-xl p-4 whitespace-pre-wrap">
-                      {lead.anotacoes}
+                      {lead.notes}
                     </p>
                   </div>
                 )}
