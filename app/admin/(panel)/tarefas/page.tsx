@@ -76,24 +76,24 @@ function TarefaModal({ isOpen, onClose, onSuccess, tarefa }: { isOpen: boolean; 
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Título *</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Título *</label>
             <input className={INPUT_CLASS} placeholder="Descrição da tarefa" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Tipo</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Tipo</label>
               <select className={INPUT_CLASS} value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))} style={{ backgroundColor: '#0D0D0D' }}>
                 <option value="">Selecione</option>
                 {Object.entries(typeConfig).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Canal</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Canal</label>
               <input className={INPUT_CLASS} placeholder="WhatsApp, Email..." value={form.channel} onChange={e => setForm(f => ({ ...f, channel: e.target.value }))} />
             </div>
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Prazo</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Prazo</label>
             <input className={INPUT_CLASS} type="datetime-local" value={form.due_at} onChange={e => setForm(f => ({ ...f, due_at: e.target.value }))} />
           </div>
           <label className="flex items-center gap-3 cursor-pointer group">

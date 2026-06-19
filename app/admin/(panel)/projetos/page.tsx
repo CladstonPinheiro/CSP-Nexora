@@ -80,41 +80,41 @@ function ProjetoModal({ isOpen, onClose, onSuccess, projeto }: { isOpen: boolean
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Título *</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Título *</label>
             <input className={INPUT_CLASS} placeholder="Nome do projeto" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Escopo</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Escopo</label>
             <input className={INPUT_CLASS} placeholder="Descrição do escopo" value={form.scope} onChange={e => setForm(f => ({ ...f, scope: e.target.value }))} />
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Status</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Status</label>
             <select className={INPUT_CLASS} value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} style={{ backgroundColor: '#0D0D0D' }}>
               {Object.entries(statusConfig).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
             </select>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Setup (R$)</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Setup (R$)</label>
               <input className={INPUT_CLASS} type="number" placeholder="0,00" value={form.setup_value} onChange={e => setForm(f => ({ ...f, setup_value: e.target.value }))} />
             </div>
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Mensalidade (R$)</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Mensalidade (R$)</label>
               <input className={INPUT_CLASS} type="number" placeholder="0,00" value={form.monthly_value} onChange={e => setForm(f => ({ ...f, monthly_value: e.target.value }))} />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Início</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Início</label>
               <input className={INPUT_CLASS} type="date" value={form.start_date} onChange={e => setForm(f => ({ ...f, start_date: e.target.value }))} />
             </div>
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Entrega</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Entrega</label>
               <input className={INPUT_CLASS} type="date" value={form.delivery_date} onChange={e => setForm(f => ({ ...f, delivery_date: e.target.value }))} />
             </div>
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1.5 block">Notas</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-[#F6F6F8] mb-1.5 block">Notas</label>
             <textarea className={`${INPUT_CLASS} resize-none`} rows={3} placeholder="Observações sobre o projeto" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} />
           </div>
         </div>
