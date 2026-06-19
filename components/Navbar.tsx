@@ -119,7 +119,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2 cursor-pointer group">
-          <img src="/logo.png" alt="CSP Nexora" style={{ width: '140px', height: 'auto' }} className="object-contain" />
+          <img src="/logo.png" alt="CSP Nexora" style={{ width: '100px', height: 'auto' }} className="object-contain" />
         </div>
 
         {/* Desktop Nav */}

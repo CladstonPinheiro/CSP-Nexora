@@ -12,7 +12,7 @@ const Footer = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
           <div className="space-y-8">
-             <img src="/logo.png" alt="CSP Nexora" style={{ width: '140px', height: 'auto' }} className="object-contain" />
+             <img src="/logo.png" alt="CSP Nexora" style={{ width: '100px', height: 'auto' }} className="object-contain" />
              <p className="text-gray-500 text-sm leading-relaxed max-w-xs italic">
                 Sua parceira estratégica na jornada da automação inteligente. Criamos o futuro da sua operação com IA.
              </p>
