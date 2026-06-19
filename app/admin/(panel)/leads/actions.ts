@@ -52,3 +52,52 @@ export async function createLead(
   if (error) return { error: error.message };
   return { data: data as Record<string, unknown> };
 }
+
+async function getAuthUser() {
+  const cookieStore = await cookies();
+  const authClient = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => cookieStore.getAll(),
+        setAll: (cookiesToSet) =>
+          cookiesToSet.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options)
+          ),
+      },
+    }
+  );
+  const { data: { user } } = await authClient.auth.getUser();
+  return user;
+}
+
+export async function updateLead(
+  id: string,
+  payload: Partial<LeadPayload>
+): Promise<{ data?: Record<string, unknown>; error?: string }> {
+  const user = await getAuthUser();
+  if (!user) redirect('/admin/login');
+
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from('leads')
+    .update(payload)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) return { error: error.message };
+  return { data: data as Record<string, unknown> };
+}
+
+export async function deleteLead(id: string): Promise<{ error?: string }> {
+  const user = await getAuthUser();
+  if (!user) redirect('/admin/login');
+
+  const supabase = createAdminClient();
+  const { error } = await supabase.from('leads').delete().eq('id', id);
+
+  if (error) return { error: error.message };
+  return {};
+}

@@ -11,7 +11,6 @@ import {
   LogOut,
   ChevronRight,
 } from 'lucide-react';
-import Logo from '@/components/Logo';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
@@ -41,7 +40,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
     <aside className="fixed left-0 top-0 h-screen w-60 bg-[#080808] border-r border-white/5 flex flex-col z-40">
       {/* Logo */}
       <div className="px-5 py-6 border-b border-white/5">
-        <Logo className="h-8" />
+        <img src="/logo.png" alt="CSP Nexora" className="h-8 w-auto object-contain" />
       </div>
 
       {/* Nav */}

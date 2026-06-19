@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Plus, SlidersHorizontal, InboxIcon } from 'lucide-react';
+import { Plus, SlidersHorizontal, InboxIcon, Pencil, Trash2, AlertTriangle } from 'lucide-react';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
+import { deleteLead } from './actions';
 import { LeadModal } from './_components/LeadModal';
 import { LeadPanel } from './_components/LeadPanel';
 import {
@@ -53,6 +54,9 @@ export default function LeadsPage() {
   const [filterEstagio, setFilterEstagio] = useState('');
   const [filterOrigem, setFilterOrigem] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [editLead, setEditLead] = useState<Lead | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Lead | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
   const fetchLeads = useCallback(async () => {
@@ -81,9 +85,27 @@ export default function LeadsPage() {
     setModalOpen(false);
   };
 
+  const handleLeadEdited = (updated: Lead) => {
+    setLeads((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
+    if (selectedLead?.id === updated.id) setSelectedLead(updated);
+    setEditLead(null);
+  };
+
   const handleLeadUpdate = (updated: Lead) => {
     setLeads((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
     setSelectedLead(updated);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    const { error } = await deleteLead(deleteTarget.id);
+    if (!error) {
+      setLeads((prev) => prev.filter((l) => l.id !== deleteTarget.id));
+      if (selectedLead?.id === deleteTarget.id) setSelectedLead(null);
+    }
+    setDeleteTarget(null);
+    setDeleting(false);
   };
 
   const hasFilters = filterEstagio || filterOrigem;
@@ -155,10 +177,10 @@ export default function LeadsPage() {
       {/* Table */}
       <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[900px]">
+          <table className="w-full min-w-[960px]">
             <thead>
               <tr className="border-b border-white/5 bg-white/[0.015]">
-                {['Empresa', 'Contato', 'Nicho', 'Cidade', 'Origem', 'Estágio', 'Data'].map(
+                {['Empresa', 'Contato', 'Nicho', 'Cidade', 'Origem', 'Estágio', 'Data', 'Ações'].map(
                   (h) => (
                     <th
                       key={h}
@@ -174,7 +196,7 @@ export default function LeadsPage() {
               {loading ? (
                 Array.from({ length: 6 }).map((_, i) => (
                   <tr key={i} className="border-b border-white/5">
-                    {Array.from({ length: 7 }).map((_, j) => (
+                    {Array.from({ length: 8 }).map((_, j) => (
                       <td key={j} className="px-5 py-4">
                         <div
                           className="h-3 bg-white/5 rounded-lg animate-pulse"
@@ -186,7 +208,7 @@ export default function LeadsPage() {
                 ))
               ) : filteredLeads.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-20">
+                  <td colSpan={8} className="py-20">
                     <div className="flex flex-col items-center justify-center text-center">
                       <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
                         <InboxIcon className="w-6 h-6 text-gray-700" />
@@ -258,6 +280,26 @@ export default function LeadsPage() {
                     <td className="px-5 py-4 text-xs text-gray-600 whitespace-nowrap">
                       {lead.created_at ? formatDate(lead.created_at) : '—'}
                     </td>
+
+                    {/* Ações */}
+                    <td className="px-5 py-4" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => setEditLead(lead)}
+                          className="w-7 h-7 rounded-lg bg-white/5 hover:bg-cyan-500/10 border border-white/10 hover:border-cyan-500/20 flex items-center justify-center text-gray-600 hover:text-cyan-400 transition-all"
+                          title="Editar"
+                        >
+                          <Pencil className="w-3 h-3" />
+                        </button>
+                        <button
+                          onClick={() => setDeleteTarget(lead)}
+                          className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 flex items-center justify-center text-gray-600 hover:text-red-400 transition-all"
+                          title="Excluir"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))
               )}
@@ -271,6 +313,50 @@ export default function LeadsPage() {
         onClose={() => setModalOpen(false)}
         onSuccess={handleLeadCreated}
       />
+
+      <LeadModal
+        isOpen={!!editLead}
+        onClose={() => setEditLead(null)}
+        onSuccess={handleLeadEdited}
+        lead={editLead ?? undefined}
+      />
+
+      {/* Delete confirmation */}
+      {deleteTarget && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-sm bg-[#0C0C0C] border border-white/10 rounded-2xl p-6 shadow-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-5 h-5 text-red-400" />
+              </div>
+              <div>
+                <h3 className="font-outfit text-base font-black text-white">Excluir Lead</h3>
+                <p className="text-xs text-gray-600 mt-0.5">Esta ação não pode ser desfeita</p>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400 mb-6">
+              Tem certeza que deseja excluir{' '}
+              <span className="font-bold text-white">{deleteTarget.company_name}</span>?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setDeleteTarget(null)}
+                disabled={deleting}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 text-[11px] font-black uppercase tracking-widest transition-all disabled:opacity-60"
+              >
+                {deleting ? 'Excluindo...' : 'Excluir'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <LeadPanel
         lead={selectedLead}

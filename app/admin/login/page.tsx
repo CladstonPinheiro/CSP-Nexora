@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
-import Logo from '@/components/Logo';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -41,7 +40,7 @@ export default function AdminLoginPage() {
 
       <div className="relative z-10 w-full max-w-md">
         <div className="flex justify-center mb-10">
-          <Logo className="h-10" />
+          <img src="/logo.png" alt="CSP Nexora" className="h-10 w-auto object-contain" />
         </div>
 
         <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl p-8 shadow-2xl">

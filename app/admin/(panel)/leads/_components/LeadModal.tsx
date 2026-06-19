@@ -1,15 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { createLead } from '../actions';
+import { createLead, updateLead } from '../actions';
 import type { Lead } from './types';
 
 interface LeadModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: (lead: Lead) => void;
+  lead?: Lead;
 }
 
 const EMPTY_FORM = {
@@ -41,10 +42,35 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-export function LeadModal({ isOpen, onClose, onSuccess }: LeadModalProps) {
-  const [form, setForm] = useState(EMPTY_FORM);
+function leadToForm(lead: Lead) {
+  return {
+    empresa:     lead.company_name ?? '',
+    nome:        lead.contact_name ?? '',
+    nicho:       lead.niche ?? '',
+    cidade:      lead.city ?? '',
+    telefone:    lead.phone ?? '',
+    email:       lead.email ?? '',
+    linkedin:    lead.linkedin ?? '',
+    instagram:   lead.instagram ?? '',
+    website:     lead.website ?? '',
+    origem:      lead.source ?? '',
+    indicado_por: lead.referred_by ?? '',
+    score:       lead.score ?? '',
+    anotacoes:   lead.notes ?? '',
+  };
+}
+
+export function LeadModal({ isOpen, onClose, onSuccess, lead }: LeadModalProps) {
+  const [form, setForm] = useState(lead ? leadToForm(lead) : EMPTY_FORM);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      setForm(lead ? leadToForm(lead) : EMPTY_FORM);
+      setError('');
+    }
+  }, [isOpen, lead]);
 
   const set =
     (field: string) =>
@@ -52,7 +78,6 @@ export function LeadModal({ isOpen, onClose, onSuccess }: LeadModalProps) {
       setForm((p) => ({ ...p, [field]: e.target.value }));
 
   const handleClose = () => {
-    setForm(EMPTY_FORM);
     setError('');
     onClose();
   };
@@ -62,7 +87,7 @@ export function LeadModal({ isOpen, onClose, onSuccess }: LeadModalProps) {
     setError('');
     setLoading(true);
 
-    const { data, error: dbError } = await createLead({
+    const payload = {
       company_name: form.empresa,
       contact_name: form.nome,
       niche:        form.nicho || null,
@@ -76,7 +101,11 @@ export function LeadModal({ isOpen, onClose, onSuccess }: LeadModalProps) {
       referred_by:  form.origem === 'indicacao' ? (form.indicado_por || null) : null,
       score:        form.score || null,
       notes:        form.anotacoes || null,
-    });
+    };
+
+    const { data, error: dbError } = lead
+      ? await updateLead(lead.id, payload)
+      : await createLead(payload);
 
     if (dbError) {
       setError(dbError);
@@ -85,7 +114,6 @@ export function LeadModal({ isOpen, onClose, onSuccess }: LeadModalProps) {
     }
 
     onSuccess(data as unknown as Lead);
-    setForm(EMPTY_FORM);
     setLoading(false);
   };
 
@@ -111,9 +139,11 @@ export function LeadModal({ isOpen, onClose, onSuccess }: LeadModalProps) {
             <div className="flex items-start justify-between mb-7">
               <div>
                 <h2 className="font-outfit text-xl font-black tracking-tight text-white">
-                  Novo Lead
+                  {lead ? 'Editar Lead' : 'Novo Lead'}
                 </h2>
-                <p className="text-gray-600 text-xs mt-1">Preencha os dados do novo lead</p>
+                <p className="text-gray-600 text-xs mt-1">
+                  {lead ? `Editando ${lead.company_name ?? 'lead'}` : 'Preencha os dados do novo lead'}
+                </p>
               </div>
               <button
                 type="button"
@@ -238,7 +268,7 @@ export function LeadModal({ isOpen, onClose, onSuccess }: LeadModalProps) {
                 <button type="submit" disabled={loading} className="flex-1 relative group">
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl blur opacity-40 group-hover:opacity-70 group-disabled:opacity-20 transition duration-300" />
                   <div className="relative w-full bg-white text-black py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60">
-                    {loading ? 'Salvando...' : 'Salvar Lead'}
+                    {loading ? 'Salvando...' : lead ? 'Salvar Alterações' : 'Salvar Lead'}
                   </div>
                 </button>
               </div>
