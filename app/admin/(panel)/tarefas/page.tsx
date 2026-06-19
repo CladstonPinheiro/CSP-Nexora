@@ -191,7 +191,7 @@ export default function TarefasPage() {
             <thead>
               <tr className="border-b border-white/5 bg-white/[0.015]">
                 {['', 'Título', 'Tipo', 'Canal', 'Prazo', 'Status', 'Ações'].map(h => (
-                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-gray-600">{h}</th>
+                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-gray-400">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -222,8 +222,8 @@ export default function TarefasPage() {
                     </td>
                     <td className="px-5 py-4"><span className={`text-sm font-bold ${tarefa.done ? 'line-through text-gray-600' : 'text-white'}`}>{tarefa.title || '—'}</span></td>
                     <td className="px-5 py-4">{tarefa.type ? <TypeBadge value={tarefa.type} /> : <span className="text-sm text-gray-700">—</span>}</td>
-                    <td className="px-5 py-4 text-sm text-gray-500">{tarefa.channel || '—'}</td>
-                    <td className="px-5 py-4 text-xs text-gray-600 whitespace-nowrap">{tarefa.due_at ? formatDate(tarefa.due_at) : '—'}</td>
+                    <td className="px-5 py-4 text-sm text-gray-300">{tarefa.channel || '—'}</td>
+                    <td className="px-5 py-4 text-xs text-gray-400 whitespace-nowrap">{tarefa.due_at ? formatDate(tarefa.due_at) : '—'}</td>
                     <td className="px-5 py-4">
                       <span className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap ${tarefa.done ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' : 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20'}`}>
                         {tarefa.done ? 'Concluída' : 'Pendente'}

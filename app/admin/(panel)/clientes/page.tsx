@@ -186,7 +186,7 @@ export default function ClientesPage() {
             <thead>
               <tr className="border-b border-white/5 bg-white/[0.015]">
                 {['Empresa', 'Contato', 'Nicho', 'Telefone', 'Email', 'Status', 'Desde', 'Ações'].map(h => (
-                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-gray-600">{h}</th>
+                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-gray-400">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -211,12 +211,12 @@ export default function ClientesPage() {
                 filtered.map(cliente => (
                   <tr key={cliente.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.025] transition-colors">
                     <td className="px-5 py-4"><span className="text-sm font-bold text-white">{cliente.company_name || '—'}</span></td>
-                    <td className="px-5 py-4 text-sm text-gray-400">{cliente.contact_name || '—'}</td>
-                    <td className="px-5 py-4 text-sm text-gray-500">{cliente.niche ? (nichoLabel[cliente.niche] ?? cliente.niche) : '—'}</td>
-                    <td className="px-5 py-4 text-sm text-gray-500">{cliente.phone || '—'}</td>
-                    <td className="px-5 py-4 text-sm text-gray-500">{cliente.email || '—'}</td>
+                    <td className="px-5 py-4 text-sm text-gray-200">{cliente.contact_name || '—'}</td>
+                    <td className="px-5 py-4 text-sm text-gray-300">{cliente.niche ? (nichoLabel[cliente.niche] ?? cliente.niche) : '—'}</td>
+                    <td className="px-5 py-4 text-sm text-gray-300">{cliente.phone || '—'}</td>
+                    <td className="px-5 py-4 text-sm text-gray-300">{cliente.email || '—'}</td>
                     <td className="px-5 py-4">{cliente.status ? <StatusBadge value={cliente.status} /> : <span className="text-sm text-gray-700">—</span>}</td>
-                    <td className="px-5 py-4 text-xs text-gray-600 whitespace-nowrap">{cliente.started_at ? formatDate(cliente.started_at) : '—'}</td>
+                    <td className="px-5 py-4 text-xs text-gray-400 whitespace-nowrap">{cliente.started_at ? formatDate(cliente.started_at) : '—'}</td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-1.5">
                         <button onClick={() => setEditCliente(cliente)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-cyan-500/10 border border-white/10 hover:border-cyan-500/20 flex items-center justify-center text-gray-600 hover:text-cyan-400 transition-all"><Pencil className="w-3 h-3" /></button>

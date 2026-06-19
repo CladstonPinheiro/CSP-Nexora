@@ -187,7 +187,7 @@ export default function ProjetosPage() {
             <thead>
               <tr className="border-b border-white/5 bg-white/[0.015]">
                 {['Título', 'Escopo', 'Status', 'Setup', 'Mensalidade', 'Início', 'Entrega', 'Ações'].map(h => (
-                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-gray-600">{h}</th>
+                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-gray-400">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -212,12 +212,12 @@ export default function ProjetosPage() {
                 filtered.map(projeto => (
                   <tr key={projeto.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.025] transition-colors">
                     <td className="px-5 py-4"><span className="text-sm font-bold text-white">{projeto.title || '—'}</span></td>
-                    <td className="px-5 py-4 text-sm text-gray-500 max-w-[200px] truncate">{projeto.scope || '—'}</td>
+                    <td className="px-5 py-4 text-sm text-gray-300 max-w-[200px] truncate">{projeto.scope || '—'}</td>
                     <td className="px-5 py-4">{projeto.status ? <StatusBadge value={projeto.status} /> : <span className="text-sm text-gray-700">—</span>}</td>
-                    <td className="px-5 py-4 text-sm text-gray-400">{formatCurrency(projeto.setup_value)}</td>
-                    <td className="px-5 py-4 text-sm text-gray-400">{formatCurrency(projeto.monthly_value)}</td>
-                    <td className="px-5 py-4 text-xs text-gray-600 whitespace-nowrap">{projeto.start_date ? formatDate(projeto.start_date) : '—'}</td>
-                    <td className="px-5 py-4 text-xs text-gray-600 whitespace-nowrap">{projeto.delivery_date ? formatDate(projeto.delivery_date) : '—'}</td>
+                    <td className="px-5 py-4 text-sm text-gray-200">{formatCurrency(projeto.setup_value)}</td>
+                    <td className="px-5 py-4 text-sm text-gray-200">{formatCurrency(projeto.monthly_value)}</td>
+                    <td className="px-5 py-4 text-xs text-gray-400 whitespace-nowrap">{projeto.start_date ? formatDate(projeto.start_date) : '—'}</td>
+                    <td className="px-5 py-4 text-xs text-gray-400 whitespace-nowrap">{projeto.delivery_date ? formatDate(projeto.delivery_date) : '—'}</td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-1.5">
                         <button onClick={() => setEditProjeto(projeto)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-cyan-500/10 border border-white/10 hover:border-cyan-500/20 flex items-center justify-center text-gray-600 hover:text-cyan-400 transition-all"><Pencil className="w-3 h-3" /></button>
