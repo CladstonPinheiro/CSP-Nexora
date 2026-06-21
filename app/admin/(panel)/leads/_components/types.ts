@@ -10,6 +10,7 @@ export type Estagio =
 export type Origem =
   | 'whatsapp'
   | 'formulario'
+  | 'contato_site'
   | 'email'
   | 'instagram'
   | 'indicacao'
@@ -59,6 +60,7 @@ export const estagioConfig: Record<string, { label: string; style: string }> = {
 export const origemConfig: Record<string, { label: string; style: string }> = {
   whatsapp:       { label: 'WhatsApp',       style: 'bg-green-500/15 text-green-400 border-green-500/20' },
   formulario:     { label: 'Formulário',     style: 'bg-blue-500/15 text-blue-400 border-blue-500/20' },
+  contato_site:   { label: 'Contato Site',   style: 'bg-teal-500/15 text-teal-400 border-teal-500/20' },
   email:          { label: 'Email',          style: 'bg-orange-500/15 text-orange-400 border-orange-500/20' },
   instagram:      { label: 'Instagram',      style: 'bg-pink-500/15 text-pink-400 border-pink-500/20' },
   indicacao:      { label: 'Indicação',      style: 'bg-purple-500/15 text-purple-400 border-purple-500/20' },

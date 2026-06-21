@@ -279,35 +279,33 @@ const Diagnostic = () => {
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-10 space-y-6"
+                    className="text-center py-3 space-y-4"
                   >
-                    <div className="w-16 h-16 bg-green-100/80 rounded-full flex items-center justify-center mx-auto text-green-500">
-                      <CheckCircle2 className="w-10 h-10" />
+                    <div className="w-14 h-14 bg-green-100/80 rounded-full flex items-center justify-center mx-auto text-green-500">
+                      <CheckCircle2 className="w-8 h-8" />
                     </div>
-                    <div className="space-y-3">
-                      <h3 className="font-outfit text-2xl font-black text-gray-900">
+                    <div className="space-y-2">
+                      <h3 className="font-outfit text-xl font-black text-gray-900">
                         {alreadySubmitted ? 'Diagnóstico já solicitado!' : 'Obrigado pelo contato!'}
                       </h3>
-                      <p className="text-gray-600 text-sm max-w-sm mx-auto leading-relaxed">
-                        {alreadySubmitted 
-                          ? 'Identificamos que você já solicitou o diagnóstico estratégico. Nossos especialistas de processos já receberam seus dados e estão analisando sua operação.' 
-                          : 'Nossos especialistas em automação receberam seus dados e entrarão em contato em breve para realizar o seu diagnóstico estratégico.'}
+                      <p className="text-gray-500 text-sm max-w-sm mx-auto leading-relaxed">
+                        {alreadySubmitted
+                          ? 'Você já solicitou o diagnóstico. Nossos especialistas receberam seus dados e estão analisando sua operação.'
+                          : 'Nossos especialistas receberam seus dados e entrarão em contato em breve para o diagnóstico estratégico.'}
                       </p>
                     </div>
-                    <div className="pt-2">
-                      <button
-                        onClick={() => {
-                          if (typeof window !== 'undefined') {
-                            localStorage.removeItem('cspnexora_diagnostic_submitted');
-                          }
-                          setIsSubmitted(false);
-                          setAlreadySubmitted(false);
-                        }}
-                        className="px-6 py-2.5 rounded-full border border-slate-200 text-gray-700 text-xs font-semibold hover:bg-slate-50 transition-all cursor-pointer"
-                      >
-                        {alreadySubmitted ? 'Enviar um novo formulário' : 'Enviar outro formulário'}
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => {
+                        if (typeof window !== 'undefined') {
+                          localStorage.removeItem('cspnexora_diagnostic_submitted');
+                        }
+                        setIsSubmitted(false);
+                        setAlreadySubmitted(false);
+                      }}
+                      className="px-6 py-2.5 rounded-full border border-slate-200 text-gray-700 text-xs font-semibold hover:bg-slate-50 transition-all cursor-pointer"
+                    >
+                      {alreadySubmitted ? 'Enviar um novo formulário' : 'Enviar outro formulário'}
+                    </button>
                   </motion.div>
                 )}
               </AnimatePresence>

@@ -89,6 +89,11 @@ const Footer = () => {
                       Resultados
                    </a>
                 </li>
+                <li>
+                   <Link href="/contato" className="hover:text-cyan-400 transition-colors block">
+                      Fale Conosco
+                   </Link>
+                </li>
              </ul>
           </div>
 
