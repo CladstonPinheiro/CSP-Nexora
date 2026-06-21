@@ -21,9 +21,9 @@ export async function POST(req: NextRequest) {
         company_name: '',
         phone:        '',
         email,
-        source:       'formulario',
+        source:       'contato_site',
         stage:        'identificado',
-        notes:        `[Contato via Site — Assunto: ${assunto}]\n\n${mensagem}`,
+        notes:        `Assunto: ${assunto}\n\n${mensagem}`,
         created_at:   new Date().toISOString(),
       }])
       .select()
