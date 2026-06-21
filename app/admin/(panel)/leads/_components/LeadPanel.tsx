@@ -176,21 +176,21 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                         className={cn(
                           'flex items-center gap-3 px-3 py-2 rounded-xl border transition-all',
                           isCurrent
-                            ? 'bg-cyan-500/10 border-cyan-500/20'
+                            ? 'bg-white/10 border-white/20'
                             : 'border-transparent'
                         )}
                       >
                         <div
                           className={cn(
                             'w-1.5 h-1.5 rounded-full shrink-0',
-                            isCurrent ? 'bg-cyan-400' : isPast ? 'bg-gray-600' : 'bg-gray-800'
+                            isCurrent ? 'bg-white' : isPast ? 'bg-gray-600' : 'bg-gray-800'
                           )}
                         />
                         <span
                           className={cn(
                             'text-[11px] font-black uppercase tracking-widest',
                             isCurrent
-                              ? 'text-cyan-400'
+                              ? 'text-white'
                               : isPast
                               ? 'text-gray-600'
                               : 'text-gray-800'
@@ -199,7 +199,7 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                           {cfg.label}
                         </span>
                         {isCurrent && (
-                          <span className="ml-auto text-[9px] font-black uppercase tracking-widest text-cyan-500/50">
+                          <span className="ml-auto text-[9px] font-black uppercase tracking-widest text-white/50">
                             atual
                           </span>
                         )}

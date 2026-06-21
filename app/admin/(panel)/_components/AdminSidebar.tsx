@@ -55,19 +55,19 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all group',
                 active
-                  ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
+                  ? 'bg-white/10 text-white border border-white/20'
                   : 'text-gray-600 hover:text-white hover:bg-white/5 border border-transparent'
               )}
             >
               <item.icon
                 className={cn(
                   'w-4 h-4 shrink-0',
-                  active ? 'text-cyan-400' : 'text-gray-700 group-hover:text-gray-300'
+                  active ? 'text-white' : 'text-gray-700 group-hover:text-gray-300'
                 )}
               />
               {item.label}
               {active && (
-                <ChevronRight className="w-3 h-3 ml-auto text-cyan-400/50" />
+                <ChevronRight className="w-3 h-3 ml-auto text-white/50" />
               )}
             </Link>
           );

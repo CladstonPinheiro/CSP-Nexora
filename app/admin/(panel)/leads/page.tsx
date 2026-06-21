@@ -46,7 +46,7 @@ function formatDate(iso: string) {
 }
 
 const SELECT_CLASS =
-  'bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2 text-gray-400 text-xs font-bold focus:outline-none focus:border-cyan-500/40 transition-all cursor-pointer min-w-[170px]';
+  'bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2 text-gray-400 text-xs font-bold focus:outline-none focus:border-white/20 transition-all cursor-pointer min-w-[170px]';
 
 export default function LeadsPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -286,7 +286,7 @@ export default function LeadsPage() {
                       <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => setEditLead(lead)}
-                          className="w-7 h-7 rounded-lg bg-white/5 hover:bg-cyan-500/10 border border-white/10 hover:border-cyan-500/20 flex items-center justify-center text-gray-600 hover:text-cyan-400 transition-all"
+                          className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 flex items-center justify-center text-gray-600 hover:text-white transition-all"
                           title="Editar"
                         >
                           <Pencil className="w-3 h-3" />
