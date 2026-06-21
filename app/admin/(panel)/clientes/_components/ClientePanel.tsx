@@ -24,6 +24,12 @@ type LeadOrigin = {
   contact_name: string | null;
 };
 
+type ProjetoVinculado = {
+  id: string;
+  title: string | null;
+  status: string | null;
+};
+
 const statusConfig: Record<string, { label: string; style: string }> = {
   ativo:     { label: 'Ativo',     style: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' },
   pausado:   { label: 'Pausado',   style: 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20' },
@@ -56,8 +62,16 @@ function Detail({ label, value }: { label: string; value?: string | null }) {
   );
 }
 
+const projetoStatusConfig: Record<string, { label: string; style: string }> = {
+  ativo:     { label: 'Ativo',     style: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' },
+  pausado:   { label: 'Pausado',   style: 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20' },
+  concluido: { label: 'Concluído', style: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/20' },
+  cancelado: { label: 'Cancelado', style: 'bg-red-500/15 text-red-400 border-red-500/20' },
+};
+
 export function ClientePanel({ cliente, onClose }: ClientePanelProps) {
   const [leadOrigin, setLeadOrigin] = useState<LeadOrigin | null>(null);
+  const [projetos, setProjetos] = useState<ProjetoVinculado[]>([]);
 
   useEffect(() => {
     if (!cliente?.lead_id) {
@@ -72,6 +86,20 @@ export function ClientePanel({ cliente, onClose }: ClientePanelProps) {
       .single()
       .then(({ data }) => setLeadOrigin(data ?? null));
   }, [cliente?.lead_id]);
+
+  useEffect(() => {
+    if (!cliente?.id) {
+      setProjetos([]);
+      return;
+    }
+    const supabase = createSupabaseBrowserClient();
+    supabase
+      .from('projetos')
+      .select('id, title, status')
+      .eq('client_id', cliente.id)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => setProjetos(data ?? []));
+  }, [cliente?.id]);
 
   const statusCfg = cliente?.status ? statusConfig[cliente.status] : null;
 
@@ -184,6 +212,39 @@ export function ClientePanel({ cliente, onClose }: ClientePanelProps) {
                     </div>
                   )}
                 </div>
+              </div>
+
+              {/* Projetos vinculados */}
+              <div className="px-6 py-5 border-t border-white/5">
+                <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-3">
+                  Projetos{projetos.length > 0 && <span className="ml-2 text-gray-600">({projetos.length})</span>}
+                </p>
+                {projetos.length === 0 ? (
+                  <p className="text-xs text-gray-700">Nenhum projeto vinculado</p>
+                ) : (
+                  <div className="space-y-2">
+                    {projetos.map(p => {
+                      const cfg = p.status ? projetoStatusConfig[p.status] : null;
+                      return (
+                        <Link
+                          key={p.id}
+                          href={`/admin/projetos?projetoId=${p.id}`}
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.06] hover:border-white/20 transition-all group"
+                        >
+                          <p className="flex-1 text-sm font-bold text-white truncate">
+                            {p.title || 'Projeto sem título'}
+                          </p>
+                          {cfg && (
+                            <span className={`inline-flex px-1.5 py-0.5 rounded-md border text-[8px] font-black uppercase tracking-widest shrink-0 ${cfg.style}`}>
+                              {cfg.label}
+                            </span>
+                          )}
+                          <ExternalLink className="w-3.5 h-3.5 text-gray-600 group-hover:text-gray-400 shrink-0 transition-colors" />
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>

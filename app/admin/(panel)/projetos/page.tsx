@@ -3,18 +3,25 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Plus, SlidersHorizontal, InboxIcon, Pencil, Trash2, AlertTriangle, X } from 'lucide-react';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
+import { ProjetoPanel } from './_components/ProjetoPanel';
 
 type Projeto = {
   id: string;
   title: string | null;
   scope: string | null;
   status: string | null;
+  client_id: string | null;
   setup_value: number | null;
   monthly_value: number | null;
   start_date: string | null;
   delivery_date: string | null;
   notes: string | null;
   created_at: string;
+};
+
+type ClienteOption = {
+  id: string;
+  company_name: string | null;
 };
 
 const statusConfig: Record<string, { label: string; style: string }> = {
@@ -44,13 +51,17 @@ function formatCurrency(value: number | null) {
 
 function ProjetoModal({ isOpen, onClose, onSuccess, projeto }: { isOpen: boolean; onClose: () => void; onSuccess: (p: Projeto) => void; projeto?: Projeto; }) {
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState({ title: '', scope: '', status: 'ativo', setup_value: '', monthly_value: '', start_date: '', delivery_date: '', notes: '' });
+  const [clientes, setClientes] = useState<ClienteOption[]>([]);
+  const [form, setForm] = useState({ title: '', scope: '', status: 'ativo', client_id: '', setup_value: '', monthly_value: '', start_date: '', delivery_date: '', notes: '' });
 
   useEffect(() => {
+    if (!isOpen) return;
+    const supabase = createSupabaseBrowserClient();
+    supabase.from('clientes').select('id, company_name').order('company_name').then(({ data }) => setClientes(data ?? []));
     if (projeto) {
-      setForm({ title: projeto.title ?? '', scope: projeto.scope ?? '', status: projeto.status ?? 'ativo', setup_value: projeto.setup_value?.toString() ?? '', monthly_value: projeto.monthly_value?.toString() ?? '', start_date: projeto.start_date ?? '', delivery_date: projeto.delivery_date ?? '', notes: projeto.notes ?? '' });
+      setForm({ title: projeto.title ?? '', scope: projeto.scope ?? '', status: projeto.status ?? 'ativo', client_id: projeto.client_id ?? '', setup_value: projeto.setup_value?.toString() ?? '', monthly_value: projeto.monthly_value?.toString() ?? '', start_date: projeto.start_date ?? '', delivery_date: projeto.delivery_date ?? '', notes: projeto.notes ?? '' });
     } else {
-      setForm({ title: '', scope: '', status: 'ativo', setup_value: '', monthly_value: '', start_date: '', delivery_date: '', notes: '' });
+      setForm({ title: '', scope: '', status: 'ativo', client_id: '', setup_value: '', monthly_value: '', start_date: '', delivery_date: '', notes: '' });
     }
   }, [projeto, isOpen]);
 
@@ -60,7 +71,17 @@ function ProjetoModal({ isOpen, onClose, onSuccess, projeto }: { isOpen: boolean
     if (!form.title.trim()) return;
     setSaving(true);
     const supabase = createSupabaseBrowserClient();
-    const payload = { title: form.title, scope: form.scope || null, status: form.status, setup_value: form.setup_value ? parseFloat(form.setup_value) : null, monthly_value: form.monthly_value ? parseFloat(form.monthly_value) : null, start_date: form.start_date || null, delivery_date: form.delivery_date || null, notes: form.notes || null };
+    const payload = {
+      title: form.title,
+      scope: form.scope || null,
+      status: form.status,
+      client_id: form.client_id || null,
+      setup_value: form.setup_value ? parseFloat(form.setup_value) : null,
+      monthly_value: form.monthly_value ? parseFloat(form.monthly_value) : null,
+      start_date: form.start_date || null,
+      delivery_date: form.delivery_date || null,
+      notes: form.notes || null,
+    };
     let data, error;
     if (projeto) {
       ({ data, error } = await supabase.from('projetos').update(payload).eq('id', projeto.id).select().single());
@@ -82,6 +103,15 @@ function ProjetoModal({ isOpen, onClose, onSuccess, projeto }: { isOpen: boolean
           <div>
             <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Título *</label>
             <input className={INPUT_CLASS} placeholder="Nome do projeto" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
+          </div>
+          <div>
+            <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Cliente</label>
+            <select className={INPUT_CLASS} value={form.client_id} onChange={e => setForm(f => ({ ...f, client_id: e.target.value }))} style={{ backgroundColor: '#0D0D0D' }}>
+              <option value="">Nenhum cliente</option>
+              {clientes.map(c => (
+                <option key={c.id} value={c.id}>{c.company_name || 'Empresa sem nome'}</option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Escopo</label>
@@ -138,6 +168,7 @@ export default function ProjetosPage() {
   const [editProjeto, setEditProjeto] = useState<Projeto | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Projeto | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [selectedProjeto, setSelectedProjeto] = useState<Projeto | null>(null);
 
   const fetchProjetos = useCallback(async () => {
     setLoading(true);
@@ -149,6 +180,16 @@ export default function ProjetosPage() {
 
   useEffect(() => { fetchProjetos(); }, [fetchProjetos]);
 
+  // Auto-open panel when navigating from clientes with ?projetoId=
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const projetoId = params.get('projetoId');
+    if (projetoId && projetos.length > 0) {
+      const found = projetos.find(p => p.id === projetoId);
+      if (found) setSelectedProjeto(found);
+    }
+  }, [projetos]);
+
   const filtered = projetos.filter(p => !filterStatus || p.status === filterStatus);
 
   const handleDelete = async () => {
@@ -156,7 +197,10 @@ export default function ProjetosPage() {
     setDeleting(true);
     const supabase = createSupabaseBrowserClient();
     const { error } = await supabase.from('projetos').delete().eq('id', deleteTarget.id);
-    if (!error) setProjetos(prev => prev.filter(p => p.id !== deleteTarget.id));
+    if (!error) {
+      setProjetos(prev => prev.filter(p => p.id !== deleteTarget.id));
+      if (selectedProjeto?.id === deleteTarget.id) setSelectedProjeto(null);
+    }
     setDeleteTarget(null);
     setDeleting(false);
   };
@@ -210,7 +254,15 @@ export default function ProjetosPage() {
                 </td></tr>
               ) : (
                 filtered.map(projeto => (
-                  <tr key={projeto.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.025] transition-colors">
+                  <tr
+                    key={projeto.id}
+                    onClick={() => setSelectedProjeto(projeto)}
+                    className={`border-b border-white/5 last:border-0 cursor-pointer transition-colors ${
+                      selectedProjeto?.id === projeto.id
+                        ? 'bg-white/[0.04]'
+                        : 'hover:bg-white/[0.025]'
+                    }`}
+                  >
                     <td className="px-5 py-4"><span className="text-sm font-bold text-white">{projeto.title || '—'}</span></td>
                     <td className="px-5 py-4 text-sm text-[#F6F6F8] max-w-[200px] truncate">{projeto.scope || '—'}</td>
                     <td className="px-5 py-4">{projeto.status ? <StatusBadge value={projeto.status} /> : <span className="text-sm text-gray-700">—</span>}</td>
@@ -218,7 +270,7 @@ export default function ProjetosPage() {
                     <td className="px-5 py-4 text-sm text-[#F6F6F8]">{formatCurrency(projeto.monthly_value)}</td>
                     <td className="px-5 py-4 text-xs text-[#F6F6F8] whitespace-nowrap">{projeto.start_date ? formatDate(projeto.start_date) : '—'}</td>
                     <td className="px-5 py-4 text-xs text-[#F6F6F8] whitespace-nowrap">{projeto.delivery_date ? formatDate(projeto.delivery_date) : '—'}</td>
-                    <td className="px-5 py-4">
+                    <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
                       <div className="flex items-center gap-1.5">
                         <button onClick={() => setEditProjeto(projeto)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 flex items-center justify-center text-[#F6F6F8] hover:text-white transition-all"><Pencil className="w-3 h-3" /></button>
                         <button onClick={() => setDeleteTarget(projeto)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 flex items-center justify-center text-[#F6F6F8] hover:text-red-400 transition-all"><Trash2 className="w-3 h-3" /></button>
@@ -251,6 +303,10 @@ export default function ProjetosPage() {
           </div>
         </div>
       )}
+      <ProjetoPanel
+        projeto={selectedProjeto}
+        onClose={() => setSelectedProjeto(null)}
+      />
     </div>
   );
 }
