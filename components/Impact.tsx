@@ -40,7 +40,7 @@ const Impact = () => {
                  {stats.map((stat, idx) => (
                     <motion.div
                        key={idx}
-                       initial={{ opacity: 0, scale: 0.9 }}
+                       initial={{ scale: 0.9 }}
                        whileInView={{ opacity: 1, scale: 1 }}
                        viewport={{ once: true }}
                        className="bg-white/10 backdrop-blur-xl border border-white/10 p-5 sm:p-8 rounded-3xl flex flex-col items-center sm:items-start text-center sm:text-left"

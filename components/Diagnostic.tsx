@@ -104,8 +104,8 @@ const Diagnostic = () => {
     <section id="diagnostico" className="relative py-24 md:py-32 bg-[#02183b] overflow-hidden">
       {/* Background Decorative Gradients */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] -translate-y-1/2 -translate-x-1/3"></div>
-        <div className="absolute -bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-blue-500/15 rounded-full blur-[140px]"></div>
+        <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[80px] -translate-y-1/2 -translate-x-1/3"></div>
+        <div className="absolute -bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-blue-500/15 rounded-full blur-[80px]"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
@@ -135,7 +135,8 @@ const Diagnostic = () => {
                   <motion.form 
                     onSubmit={handleSubmit}
                     initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     exit={{ opacity: 0, y: -15 }}
                     className="space-y-6"
                   >

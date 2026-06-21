@@ -10,7 +10,7 @@ const CTAFinal = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center space-y-12">
            <motion.div
-             initial={{ opacity: 0, scale: 0.9 }}
+             initial={{ scale: 0.9 }}
              whileInView={{ opacity: 1, scale: 1 }}
              viewport={{ once: true }}
              className="relative inline-block"
