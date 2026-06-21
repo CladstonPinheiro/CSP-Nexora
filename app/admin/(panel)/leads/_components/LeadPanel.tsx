@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, ChevronRight, AlertTriangle, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
@@ -54,8 +54,17 @@ function Detail({
   );
 }
 
+type Notification = { type: 'success' | 'warning' | 'info'; message: string };
+
 export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
   const [updating, setUpdating] = useState(false);
+  const [notification, setNotification] = useState<Notification | null>(null);
+
+  useEffect(() => {
+    if (!notification) return;
+    const t = setTimeout(() => setNotification(null), 4000);
+    return () => clearTimeout(t);
+  }, [notification]);
 
   const currentStageIndex = lead?.stage
     ? STAGE_ORDER.indexOf(lead.stage as Estagio)
@@ -69,14 +78,31 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
   const handleAdvanceStage = async () => {
     if (!lead || !canAdvance || !nextStage) return;
     setUpdating(true);
-    const supabase = createSupabaseBrowserClient();
-    const { data, error } = await supabase
-      .from('leads')
-      .update({ stage: nextStage })
-      .eq('id', lead.id)
-      .select()
-      .single();
-    if (!error && data) onUpdate(data as Lead);
+
+    if (nextStage === 'fechado') {
+      const res = await fetch(`/api/leads/${lead.id}/close`, { method: 'POST' });
+      if (res.ok) {
+        const body: { clienteCriado: boolean; motivo?: string } = await res.json();
+        onUpdate({ ...lead, stage: 'fechado' });
+        if (body.clienteCriado) {
+          setNotification({ type: 'success', message: 'Lead fechado. Cliente criado com sucesso.' });
+        } else if (body.motivo === 'empresa_nao_preenchida') {
+          setNotification({ type: 'warning', message: 'Lead fechado. Crie o cliente manualmente — nome da empresa não preenchido.' });
+        } else if (body.motivo === 'ja_convertido') {
+          setNotification({ type: 'info', message: 'Lead fechado. Esse lead já era cliente.' });
+        }
+      }
+    } else {
+      const supabase = createSupabaseBrowserClient();
+      const { data, error } = await supabase
+        .from('leads')
+        .update({ stage: nextStage })
+        .eq('id', lead.id)
+        .select()
+        .single();
+      if (!error && data) onUpdate(data as Lead);
+    }
+
     setUpdating(false);
   };
 
@@ -193,6 +219,27 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                     </div>
                   )}
                 </div>
+
+                {/* Notification */}
+                <AnimatePresence>
+                  {notification && (
+                    <motion.div
+                      key={notification.message}
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.18 }}
+                      className={cn(
+                        'mt-3 px-3 py-2.5 rounded-xl border text-[11px] font-bold leading-snug',
+                        notification.type === 'success' && 'bg-green-500/10 border-green-500/20 text-green-400',
+                        notification.type === 'warning' && 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400',
+                        notification.type === 'info'    && 'bg-cyan-500/10 border-cyan-500/20 text-cyan-400',
+                      )}
+                    >
+                      {notification.message}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {/* Action buttons */}
                 <div className="mt-4 space-y-2">

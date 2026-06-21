@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Instagram, Mail, Globe, Youtube } from 'lucide-react';
+import { Facebook, Instagram, Mail, Globe, Youtube, Lock } from 'lucide-react';
 
 
 const Footer = () => {
@@ -130,7 +130,11 @@ const Footer = () => {
               <span className="hover:text-white cursor-pointer transition-colors">Privacidade</span>
               <span className="hover:text-white cursor-pointer transition-colors">Termos</span>
            </div>
-           <div>
+           <div className="flex items-center gap-6">
+              <Link href="/admin/login" className="flex items-center gap-1 text-gray-700 hover:text-gray-500 transition-colors">
+                 <Lock className="w-2.5 h-2.5" />
+                 <span>Admin</span>
+              </Link>
               © 2026 CSP NEXORA. TODOS OS DIREITOS RESERVADOS.
            </div>
         </div>
