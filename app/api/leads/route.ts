@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase';
+import { sendLeadNotification } from '@/lib/mailer';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -34,6 +35,10 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       );
     }
+
+    sendLeadNotification({ nome, email, empresa, telefone }).catch((err) =>
+      console.error('[mailer] lead notification failed:', err)
+    );
 
     return NextResponse.json({ success: true, data });
   } catch (err: unknown) {
