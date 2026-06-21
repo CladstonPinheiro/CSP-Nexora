@@ -76,10 +76,10 @@ export default function ContatoPage() {
               Fale Conosco
             </div>
             <h1 className="font-outfit text-4xl sm:text-5xl font-black tracking-tighter leading-[1.05]">
-              Tem uma dúvida<br />ou quer um papo?
+              Tem uma dúvida ou quer<br />uma informação<br />sem compromisso?
             </h1>
             <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
-              Sem compromisso. Nossa equipe responde em até 24h.
+              Entre em contato. Nossa equipe responde em até 24h.
             </p>
           </div>
 
