@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const { nome, email, mensagem } = await req.json();
+    const { nome, email, assunto, mensagem } = await req.json();
 
-    if (!nome || !email || !mensagem) {
+    if (!nome || !email || !assunto || !mensagem) {
       return NextResponse.json(
         { error: 'Todos os campos são obrigatórios.' },
         { status: 400 }
@@ -18,10 +18,12 @@ export async function POST(req: NextRequest) {
       .from('leads')
       .insert([{
         contact_name: nome,
+        company_name: '',
+        phone:        '',
         email,
-        source:       'contato_site',
+        source:       'formulario',
         stage:        'identificado',
-        notes:        mensagem,
+        notes:        `[Contato via Site — Assunto: ${assunto}]\n\n${mensagem}`,
         created_at:   new Date().toISOString(),
       }])
       .select()

@@ -8,7 +8,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export default function ContatoPage() {
-  const [formData, setFormData] = useState({ nome: '', email: '', mensagem: '' });
+  const [formData, setFormData] = useState({ nome: '', email: '', assunto: '', mensagem: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -22,7 +22,7 @@ export default function ContatoPage() {
     e.preventDefault();
     setErrorMessage('');
 
-    if (!formData.nome || !formData.email || !formData.mensagem) {
+    if (!formData.nome || !formData.email || !formData.assunto || !formData.mensagem) {
       setErrorMessage('Por favor, preencha todos os campos.');
       return;
     }
@@ -51,7 +51,7 @@ export default function ContatoPage() {
 
   const reset = () => {
     setIsSubmitted(false);
-    setFormData({ nome: '', email: '', mensagem: '' });
+    setFormData({ nome: '', email: '', assunto: '', mensagem: '' });
   };
 
   return (
@@ -105,6 +105,22 @@ export default function ContatoPage() {
                       value={formData.nome}
                       onChange={handleChange}
                       placeholder="Seu nome"
+                      required
+                      className="w-full bg-[#f8fafc] border border-slate-200 text-black px-5 py-3.5 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all placeholder-gray-400"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-700 block" htmlFor="contato-assunto">
+                      Assunto*
+                    </label>
+                    <input
+                      id="contato-assunto"
+                      type="text"
+                      name="assunto"
+                      value={formData.assunto}
+                      onChange={handleChange}
+                      placeholder="Ex: Dúvida sobre automação, Orçamento..."
                       required
                       className="w-full bg-[#f8fafc] border border-slate-200 text-black px-5 py-3.5 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all placeholder-gray-400"
                     />
