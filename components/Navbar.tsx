@@ -56,25 +56,27 @@ const Navbar = () => {
   }, []);
 
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (typeof window !== 'undefined' && href.startsWith('/#')) {
+    if (href.startsWith('/#')) {
+      e.preventDefault();
+      setIsMobileMenuOpen(false);
       const id = href.split('#')[1];
       const element = document.getElementById(id);
       if (element) {
-        e.preventDefault();
         element.scrollIntoView({ behavior: 'smooth' });
-        setIsMobileMenuOpen(false);
+      } else {
+        window.location.hash = id;
       }
     }
   };
 
   const handleClickDiagnostico = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (typeof window !== 'undefined') {
-      const element = document.getElementById('diagnostico');
-      if (element) {
-        e.preventDefault();
-        element.scrollIntoView({ behavior: 'smooth' });
-        setIsMobileMenuOpen(false);
-      }
+    e.preventDefault();
+    setIsMobileMenuOpen(false);
+    const element = document.getElementById('diagnostico');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.location.hash = 'diagnostico';
     }
   };
 
@@ -131,7 +133,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile menu toggle */}
-        <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        <button type="button" className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
           {isMobileMenuOpen ? <X /> : <Menu />}
         </button>
       </div>
@@ -143,6 +145,7 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            style={{ pointerEvents: isMobileMenuOpen ? 'auto' : 'none' }}
             className="md:hidden absolute top-full left-0 right-0 bg-[#0A0A0A] border-b border-white/10 p-6 shadow-2xl"
           >
             <div className="flex flex-col gap-6">
