@@ -37,9 +37,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    sendContatoNotification({ nome, email, assunto, mensagem }).catch((err) =>
-      console.error('[mailer] contato notification failed:', err)
-    );
+    try {
+      await sendContatoNotification({ nome, email, assunto, mensagem });
+    } catch (err) {
+      console.error('[mailer] contato notification failed:', err);
+    }
 
     return NextResponse.json({ success: true, data });
   } catch (err: unknown) {

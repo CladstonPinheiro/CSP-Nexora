@@ -36,9 +36,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    sendLeadNotification({ nome, email, empresa, telefone }).catch((err) =>
-      console.error('[mailer] lead notification failed:', err)
-    );
+    try {
+      await sendLeadNotification({ nome, email, empresa, telefone });
+    } catch (err) {
+      console.error('[mailer] lead notification failed:', err);
+    }
 
     return NextResponse.json({ success: true, data });
   } catch (err: unknown) {
