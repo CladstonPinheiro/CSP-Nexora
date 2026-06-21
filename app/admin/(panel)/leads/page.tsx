@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Plus, SlidersHorizontal, InboxIcon, Pencil, Trash2, AlertTriangle } from 'lucide-react';
+import { Plus, SlidersHorizontal, InboxIcon, Pencil, Trash2, AlertTriangle, Building2 } from 'lucide-react';
+import Link from 'next/link';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
 import { deleteLead } from './actions';
 import { LeadModal } from './_components/LeadModal';
@@ -58,21 +59,39 @@ export default function LeadsPage() {
   const [deleteTarget, setDeleteTarget] = useState<Lead | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [convertedMap, setConvertedMap] = useState<Map<string, string>>(new Map());
+
+  const refreshConvertedMap = useCallback(async () => {
+    const supabase = createSupabaseBrowserClient();
+    const { data } = await supabase.from('clientes').select('id, lead_id').not('lead_id', 'is', null);
+    setConvertedMap(new Map((data ?? []).map(c => [c.lead_id!, c.id])));
+  }, []);
 
   const fetchLeads = useCallback(async () => {
     setLoading(true);
     const supabase = createSupabaseBrowserClient();
-    const { data } = await supabase
-      .from('leads')
-      .select('*')
-      .order('created_at', { ascending: false });
-    setLeads(data ?? []);
+    const [{ data: leadsData }, { data: clientesData }] = await Promise.all([
+      supabase.from('leads').select('*').order('created_at', { ascending: false }),
+      supabase.from('clientes').select('id, lead_id').not('lead_id', 'is', null),
+    ]);
+    setLeads(leadsData ?? []);
+    setConvertedMap(new Map((clientesData ?? []).map(c => [c.lead_id!, c.id])));
     setLoading(false);
   }, []);
 
   useEffect(() => {
     fetchLeads();
   }, [fetchLeads]);
+
+  // Auto-open panel when navigating from clientes with ?leadId=
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const leadId = params.get('leadId');
+    if (leadId && leads.length > 0) {
+      const found = leads.find(l => l.id === leadId);
+      if (found) setSelectedLead(found);
+    }
+  }, [leads]);
 
   const filteredLeads = leads.filter((l) => {
     if (filterEstagio && l.stage !== filterEstagio) return false;
@@ -94,6 +113,7 @@ export default function LeadsPage() {
   const handleLeadUpdate = (updated: Lead) => {
     setLeads((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
     setSelectedLead(updated);
+    if (updated.stage === 'fechado') refreshConvertedMap();
   };
 
   const handleDelete = async () => {
@@ -177,10 +197,10 @@ export default function LeadsPage() {
       {/* Table */}
       <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[960px]">
+          <table className="w-full min-w-[1060px]">
             <thead>
               <tr className="border-b border-white/5 bg-white/[0.015]">
-                {['Empresa', 'Contato', 'Nicho', 'Cidade', 'Origem', 'Estágio', 'Data', 'Ações'].map(
+                {['Empresa', 'Contato', 'Nicho', 'Cidade', 'Origem', 'Estágio', 'Data', 'Cliente', 'Ações'].map(
                   (h) => (
                     <th
                       key={h}
@@ -196,7 +216,7 @@ export default function LeadsPage() {
               {loading ? (
                 Array.from({ length: 6 }).map((_, i) => (
                   <tr key={i} className="border-b border-white/5">
-                    {Array.from({ length: 8 }).map((_, j) => (
+                    {Array.from({ length: 9 }).map((_, j) => (
                       <td key={j} className="px-5 py-4">
                         <div
                           className="h-3 bg-white/5 rounded-lg animate-pulse"
@@ -208,7 +228,7 @@ export default function LeadsPage() {
                 ))
               ) : filteredLeads.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="py-20">
+                  <td colSpan={9} className="py-20">
                     <div className="flex flex-col items-center justify-center text-center">
                       <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
                         <InboxIcon className="w-6 h-6 text-gray-700" />
@@ -279,6 +299,21 @@ export default function LeadsPage() {
                     {/* Data */}
                     <td className="px-5 py-4 text-xs text-gray-600 whitespace-nowrap">
                       {lead.created_at ? formatDate(lead.created_at) : '—'}
+                    </td>
+
+                    {/* Cliente */}
+                    <td className="px-5 py-4" onClick={(e) => e.stopPropagation()}>
+                      {convertedMap.has(lead.id) ? (
+                        <Link
+                          href={`/admin/clientes?clienteId=${convertedMap.get(lead.id)}`}
+                          className="inline-flex items-center gap-1 px-2 py-1 rounded-lg border bg-emerald-500/10 border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest whitespace-nowrap hover:bg-emerald-500/20 transition-colors"
+                        >
+                          <Building2 className="w-2.5 h-2.5" />
+                          Cliente
+                        </Link>
+                      ) : (
+                        <span className="text-sm text-gray-700">—</span>
+                      )}
                     </td>
 
                     {/* Ações */}

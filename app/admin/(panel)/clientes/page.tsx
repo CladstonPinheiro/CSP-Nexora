@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Plus, SlidersHorizontal, InboxIcon, Pencil, Trash2, AlertTriangle, X } from 'lucide-react';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
+import { ClientePanel } from './_components/ClientePanel';
 
 type Cliente = {
   id: string;
@@ -137,6 +138,7 @@ export default function ClientesPage() {
   const [editCliente, setEditCliente] = useState<Cliente | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Cliente | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [selectedCliente, setSelectedCliente] = useState<Cliente | null>(null);
 
   const fetchClientes = useCallback(async () => {
     setLoading(true);
@@ -148,6 +150,16 @@ export default function ClientesPage() {
 
   useEffect(() => { fetchClientes(); }, [fetchClientes]);
 
+  // Auto-open panel when navigating from leads with ?clienteId=
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const clienteId = params.get('clienteId');
+    if (clienteId && clientes.length > 0) {
+      const found = clientes.find(c => c.id === clienteId);
+      if (found) setSelectedCliente(found);
+    }
+  }, [clientes]);
+
   const filtered = clientes.filter(c => !filterStatus || c.status === filterStatus);
 
   const handleDelete = async () => {
@@ -155,7 +167,10 @@ export default function ClientesPage() {
     setDeleting(true);
     const supabase = createSupabaseBrowserClient();
     const { error } = await supabase.from('clientes').delete().eq('id', deleteTarget.id);
-    if (!error) setClientes(prev => prev.filter(c => c.id !== deleteTarget.id));
+    if (!error) {
+      setClientes(prev => prev.filter(c => c.id !== deleteTarget.id));
+      if (selectedCliente?.id === deleteTarget.id) setSelectedCliente(null);
+    }
     setDeleteTarget(null);
     setDeleting(false);
   };
@@ -209,7 +224,15 @@ export default function ClientesPage() {
                 </td></tr>
               ) : (
                 filtered.map(cliente => (
-                  <tr key={cliente.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.025] transition-colors">
+                  <tr
+                    key={cliente.id}
+                    onClick={() => setSelectedCliente(cliente)}
+                    className={`border-b border-white/5 last:border-0 cursor-pointer transition-colors ${
+                      selectedCliente?.id === cliente.id
+                        ? 'bg-white/[0.04]'
+                        : 'hover:bg-white/[0.025]'
+                    }`}
+                  >
                     <td className="px-5 py-4"><span className="text-sm font-bold text-white">{cliente.company_name || '—'}</span></td>
                     <td className="px-5 py-4 text-sm text-[#F6F6F8]">{cliente.contact_name || '—'}</td>
                     <td className="px-5 py-4 text-sm text-[#F6F6F8]">{cliente.niche ? (nichoLabel[cliente.niche] ?? cliente.niche) : '—'}</td>
@@ -217,7 +240,7 @@ export default function ClientesPage() {
                     <td className="px-5 py-4 text-sm text-[#F6F6F8]">{cliente.email || '—'}</td>
                     <td className="px-5 py-4">{cliente.status ? <StatusBadge value={cliente.status} /> : <span className="text-sm text-gray-700">—</span>}</td>
                     <td className="px-5 py-4 text-xs text-[#F6F6F8] whitespace-nowrap">{cliente.started_at ? formatDate(cliente.started_at) : '—'}</td>
-                    <td className="px-5 py-4">
+                    <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
                       <div className="flex items-center gap-1.5">
                         <button onClick={() => setEditCliente(cliente)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 flex items-center justify-center text-[#F6F6F8] hover:text-white transition-all"><Pencil className="w-3 h-3" /></button>
                         <button onClick={() => setDeleteTarget(cliente)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 flex items-center justify-center text-[#F6F6F8] hover:text-red-400 transition-all"><Trash2 className="w-3 h-3" /></button>
@@ -250,6 +273,10 @@ export default function ClientesPage() {
           </div>
         </div>
       )}
+      <ClientePanel
+        cliente={selectedCliente}
+        onClose={() => setSelectedCliente(null)}
+      />
     </div>
   );
 }
