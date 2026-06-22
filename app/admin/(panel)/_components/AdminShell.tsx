@@ -13,7 +13,7 @@ export function AdminShell({ userEmail }: { userEmail: string }) {
     <>
       {/* Barra de topo — só no mobile */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-14 z-[60] bg-[#080808] border-b border-white/5 flex items-center justify-between px-4">
-        <Link href="/" aria-label="Voltar ao site">
+        <Link href="/admin" aria-label="Dashboard">
           <Image
             src="/logo.png"
             alt="CSP Nexora"
