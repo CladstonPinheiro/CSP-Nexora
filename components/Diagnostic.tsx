@@ -221,9 +221,22 @@ const DiagnosticForm = () => {
                             className="w-full appearance-none bg-[#f8fafc] border border-slate-200 text-black px-5 py-4 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all cursor-pointer"
                           >
                             <option value="">Selecione o nicho...</option>
-                            <option value="imobiliaria">Imobiliária</option>
-                            <option value="administradora_imoveis">Administradora de Imóveis</option>
+                            <option value="academia">Academia</option>
                             <option value="administradora_condominios">Administradora de Condomínios</option>
+                            <option value="administradora_imoveis">Administradora de Imóveis</option>
+                            <option value="advocacia">Advocacia</option>
+                            <option value="barbearia">Barbearia</option>
+                            <option value="clinica_estetica">Clínica de Estética</option>
+                            <option value="clinica_saude">Clínica de Saúde</option>
+                            <option value="clinica_transplante_capilar">Clínica de Transplante Capilar</option>
+                            <option value="clinica_odontologica">Clínica Odontológica</option>
+                            <option value="clinica_veterinaria">Clínica Veterinária</option>
+                            <option value="contabilidade">Contabilidade</option>
+                            <option value="corretora_consignados">Corretora de Consignados</option>
+                            <option value="corretora_planos_saude">Corretora de Planos de Saúde</option>
+                            <option value="escola">Escola</option>
+                            <option value="nutricionista">Nutricionista</option>
+                            <option value="psicologo">Psicólogo</option>
                             <option value="outro">Outro</option>
                           </select>
                           <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
