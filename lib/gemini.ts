@@ -39,7 +39,7 @@ Exemplo de resposta esperada:
 {"score":"alto","reasoning":"Empresa do nicho imobiliário com alto volume de contratos, perfil ideal para automação de processos. A localização em grande centro urbano aumenta o potencial de ROI com nossas soluções."}`;
 
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
