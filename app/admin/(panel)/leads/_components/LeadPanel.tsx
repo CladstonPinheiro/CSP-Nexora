@@ -349,6 +349,57 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                   </p>
                 </div>
               </div>
+
+              {/* Qualificação IA */}
+              {lead.ai_score && (
+                <div className="px-6 py-5 border-t border-white/5 space-y-4">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700">
+                    Qualificação IA
+                  </p>
+
+                  <div>
+                    <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1">
+                      Score
+                    </p>
+                    <span
+                      className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest ${scoreConfig[lead.ai_score]?.style ?? ''}`}
+                    >
+                      {scoreConfig[lead.ai_score]?.label ?? lead.ai_score}
+                    </span>
+                  </div>
+
+                  {lead.ai_reasoning && (
+                    <div>
+                      <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">
+                        Análise
+                      </p>
+                      <p className="text-sm text-gray-400 leading-relaxed bg-white/[0.03] border border-white/5 rounded-xl p-4 whitespace-pre-wrap">
+                        {lead.ai_reasoning}
+                      </p>
+                    </div>
+                  )}
+
+                  {lead.ai_qualified_at && (
+                    <div>
+                      <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1">
+                        Qualificado em
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        {new Date(lead.ai_qualified_at).toLocaleDateString('pt-BR', {
+                          day: '2-digit',
+                          month: 'long',
+                          year: 'numeric',
+                        })}{' '}
+                        às{' '}
+                        {new Date(lead.ai_qualified_at).toLocaleTimeString('pt-BR', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </motion.div>
         </>

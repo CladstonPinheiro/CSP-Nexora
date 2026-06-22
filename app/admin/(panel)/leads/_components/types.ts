@@ -36,6 +36,9 @@ export type Lead = {
   notes?: string;
   stage?: Estagio;
   created_at: string;
+  ai_score?: 'alto' | 'medio' | 'baixo' | null;
+  ai_reasoning?: string | null;
+  ai_qualified_at?: string | null;
 };
 
 export const STAGE_ORDER: Estagio[] = [
