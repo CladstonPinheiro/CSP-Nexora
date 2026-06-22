@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,12 +9,14 @@ import { AdminSidebar } from './AdminSidebar';
 
 export function AdminShell({ userEmail }: { userEmail: string }) {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const logoHref = pathname === '/admin' ? '/' : '/admin';
 
   return (
     <>
       {/* Barra de topo — só no mobile */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-14 z-[60] bg-[#080808] border-b border-white/5 flex items-center justify-between px-4">
-        <Link href="/" aria-label="Voltar ao site">
+        <Link href={logoHref} aria-label={logoHref === '/' ? 'Voltar ao site' : 'Dashboard'}>
           <Image
             src="/logo.png"
             alt="CSP Nexora"
