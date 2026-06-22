@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
-import { AdminSidebar } from './_components/AdminSidebar';
+import { AdminShell } from './_components/AdminShell';
 
 export default async function AdminPanelLayout({
   children,
@@ -18,8 +18,8 @@ export default async function AdminPanelLayout({
 
   return (
     <div className="min-h-screen bg-[#050505] flex">
-      <AdminSidebar userEmail={user.email ?? ''} />
-      <main className="flex-1 ml-60 min-h-screen overflow-x-hidden">
+      <AdminShell userEmail={user.email ?? ''} />
+      <main className="flex-1 md:ml-60 min-h-screen overflow-x-hidden pt-14 md:pt-0">
         {children}
       </main>
     </div>

@@ -1,0 +1,46 @@
+'use client';
+
+import { useState } from 'react';
+import { Menu } from 'lucide-react';
+import Image from 'next/image';
+import { AdminSidebar } from './AdminSidebar';
+
+export function AdminShell({ userEmail }: { userEmail: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      {/* Barra de topo — só no mobile */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-14 z-[60] bg-[#080808] border-b border-white/5 flex items-center justify-between px-4">
+        <Image
+          src="/logo.png"
+          alt="CSP Nexora"
+          width={207}
+          height={113}
+          className="w-[80px] h-auto object-contain"
+        />
+        <button
+          onClick={() => setIsOpen(true)}
+          aria-label="Abrir menu"
+          className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Overlay — mobile, aparece ao abrir o menu */}
+      {isOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      <AdminSidebar
+        userEmail={userEmail}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
+    </>
+  );
+}

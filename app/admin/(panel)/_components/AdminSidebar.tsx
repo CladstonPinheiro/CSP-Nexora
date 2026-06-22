@@ -23,7 +23,13 @@ const navItems = [
   { href: '/admin/tarefas', label: 'Tarefas', icon: CheckSquare },
 ];
 
-export function AdminSidebar({ userEmail }: { userEmail: string }) {
+interface AdminSidebarProps {
+  userEmail: string;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function AdminSidebar({ userEmail, isOpen, onClose }: AdminSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -38,10 +44,25 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-60 bg-[#080808] border-r border-white/5 flex flex-col z-40">
+    <aside
+      className={cn(
+        'fixed left-0 top-0 h-screen w-60 bg-[#080808] border-r border-white/5 flex flex-col z-50',
+        'transition-transform duration-300 ease-in-out',
+        // Mobile: desliza para dentro/fora conforme isOpen
+        isOpen ? 'translate-x-0' : '-translate-x-full',
+        // Desktop: sempre visível, ignora isOpen
+        'md:translate-x-0',
+      )}
+    >
       {/* Logo */}
       <div className="px-4 py-5 border-b border-white/5 flex justify-center">
-        <Image src="/logo.png" alt="CSP Nexora" width={207} height={113} className="w-[100px] h-auto object-contain" />
+        <Image
+          src="/logo.png"
+          alt="CSP Nexora"
+          width={207}
+          height={113}
+          className="w-[100px] h-auto object-contain"
+        />
       </div>
 
       {/* Nav */}
@@ -52,6 +73,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onClose}
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all group',
                 active
@@ -66,9 +88,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
                 )}
               />
               {item.label}
-              {active && (
-                <ChevronRight className="w-3 h-3 ml-auto text-white/50" />
-              )}
+              {active && <ChevronRight className="w-3 h-3 ml-auto text-white/50" />}
             </Link>
           );
         })}
