@@ -56,13 +56,15 @@ export function AdminSidebar({ userEmail, isOpen, onClose }: AdminSidebarProps) 
     >
       {/* Logo */}
       <div className="px-4 py-5 border-b border-white/5 flex justify-center">
-        <Image
-          src="/logo.png"
-          alt="CSP Nexora"
-          width={207}
-          height={113}
-          className="w-[100px] h-auto object-contain"
-        />
+        <Link href="/" aria-label="Voltar ao site">
+          <Image
+            src="/logo.png"
+            alt="CSP Nexora"
+            width={207}
+            height={113}
+            className="w-[100px] h-auto object-contain"
+          />
+        </Link>
       </div>
 
       {/* Nav */}
