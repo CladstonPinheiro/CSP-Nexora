@@ -10,6 +10,7 @@ const DiagnosticForm = () => {
     nome: '',
     email: '',
     empresa: '',
+    niche: '',
     telefone: '',
   });
 
@@ -33,7 +34,7 @@ const DiagnosticForm = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -58,7 +59,7 @@ const DiagnosticForm = () => {
     e.preventDefault();
     setErrorMessage('');
 
-    if (!formData.nome || !formData.email || !formData.empresa || !formData.telefone) {
+    if (!formData.nome || !formData.email || !formData.empresa || !formData.niche || !formData.telefone) {
       setErrorMessage('Por favor, preencha todos os campos obrigatórios (*).');
       return;
     }
@@ -102,7 +103,7 @@ const DiagnosticForm = () => {
       }
       setIsSubmitted(true);
       setAlreadySubmitted(false);
-      setFormData({ nome: '', email: '', empresa: '', telefone: '' });
+      setFormData({ nome: '', email: '', empresa: '', niche: '', telefone: '' });
     } catch (error: any) {
       setErrorMessage(error.message || 'Ocorreu um erro ao enviar seus dados. Tente novamente.');
     } finally {
@@ -205,8 +206,32 @@ const DiagnosticForm = () => {
                         />
                       </div>
 
-                      {/* Phone field with Country prefix simulated */}
+                      {/* Niche field */}
                       <div className="space-y-2">
+                        <label className="text-xs font-bold text-gray-700 block" htmlFor="diag-niche">
+                          Nicho*
+                        </label>
+                        <div className="relative">
+                          <select
+                            id="diag-niche"
+                            name="niche"
+                            value={formData.niche}
+                            onChange={handleInputChange}
+                            required
+                            className="w-full appearance-none bg-[#f8fafc] border border-slate-200 text-black px-5 py-4 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all cursor-pointer"
+                          >
+                            <option value="">Selecione o nicho...</option>
+                            <option value="imobiliaria">Imobiliária</option>
+                            <option value="administradora_imoveis">Administradora de Imóveis</option>
+                            <option value="administradora_condominios">Administradora de Condomínios</option>
+                            <option value="outro">Outro</option>
+                          </select>
+                          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        </div>
+                      </div>
+
+                      {/* Phone field — spans full width since grid has odd count */}
+                      <div className="space-y-2 md:col-span-2">
                         <label className="text-xs font-bold text-gray-700 block" htmlFor="diag-telefone">
                           Telefone*
                         </label>

@@ -1,10 +1,11 @@
 import { createAdminClient } from '@/lib/supabase';
 import { sendLeadNotification } from '@/lib/mailer';
+import { qualificarLead } from '@/lib/gemini';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const { nome, email, empresa, telefone, recaptchaToken } = await req.json();
+    const { nome, email, empresa, telefone, niche, recaptchaToken } = await req.json();
 
     if (!nome || !email || !empresa || !telefone) {
       return NextResponse.json(
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
         company_name: empresa,
         phone:        telefone,
         email,
+        niche:        niche || null,
         source:       'formulario',
         stage:        'identificado',
         created_at:   new Date().toISOString(),
@@ -71,6 +73,14 @@ export async function POST(req: NextRequest) {
     } catch (err) {
       console.error('[mailer] lead notification failed:', err);
     }
+
+    await qualificarLead({
+      id:           data.id,
+      company_name: empresa,
+      niche:        niche || null,
+      city:         data.city ?? null,
+      notes:        data.notes ?? null,
+    });
 
     return NextResponse.json({ success: true, data });
   } catch (err: unknown) {
