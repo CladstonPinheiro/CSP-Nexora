@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
-const Diagnostic = () => {
+const DiagnosticForm = () => {
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -16,6 +17,8 @@ const Diagnostic = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [alreadySubmitted, setAlreadySubmitted] = useState(false);
+
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -39,7 +42,7 @@ const Diagnostic = () => {
     // Basic phone formatting for BR: (XX) XXXXX-XXXX
     let value = e.target.value.replace(/\D/g, '');
     if (value.length > 11) value = value.slice(0, 11);
-    
+
     if (value.length > 6) {
       value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
     } else if (value.length > 2) {
@@ -47,7 +50,7 @@ const Diagnostic = () => {
     } else if (value.length > 0) {
       value = `(${value}`;
     }
-    
+
     setFormData((prev) => ({ ...prev, telefone: value }));
   };
 
@@ -60,15 +63,22 @@ const Diagnostic = () => {
       return;
     }
 
+    if (!executeRecaptcha) {
+      setErrorMessage('Verificação de segurança não carregada. Recarregue a página e tente novamente.');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
+      const recaptchaToken = await executeRecaptcha('submit_lead');
+
       const response = await fetch('/api/leads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, recaptchaToken }),
       });
 
       const result = await response.json();
@@ -91,7 +101,7 @@ const Diagnostic = () => {
         localStorage.setItem('cspnexora_diagnostic_submitted', 'true');
       }
       setIsSubmitted(true);
-      setAlreadySubmitted(false); // Direct post triggers standard success screen
+      setAlreadySubmitted(false);
       setFormData({ nome: '', email: '', empresa: '', telefone: '' });
     } catch (error: any) {
       setErrorMessage(error.message || 'Ocorreu um erro ao enviar seus dados. Tente novamente.');
@@ -110,7 +120,7 @@ const Diagnostic = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
+
           {/* Left Column - Content */}
           <div className="lg:col-span-6 space-y-6 flex flex-col items-center lg:items-start text-center lg:text-left">
             <h2 className="font-outfit text-3xl sm:text-5xl lg:text-7xl font-black tracking-tighter text-white leading-[1.1] sm:leading-[1.05] text-center lg:text-left">
@@ -120,7 +130,7 @@ const Diagnostic = () => {
                 sua operação digital.
               </span>
             </h2>
-            
+
             <p className="text-gray-300 text-sm sm:text-base lg:text-xl font-normal leading-relaxed max-w-xl text-center lg:text-left mx-auto lg:mx-0">
               Solicite agora uma conversa técnica com um de nossos especialistas em BPM e Automação.
             </p>
@@ -129,10 +139,10 @@ const Diagnostic = () => {
           {/* Right Column - White Form Card */}
           <div className="lg:col-span-6 w-full max-w-xl mx-auto lg:mx-0">
             <div className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-white/10 relative text-black">
-              
+
               <AnimatePresence mode="wait">
                 {!isSubmitted ? (
-                  <motion.form 
+                  <motion.form
                     onSubmit={handleSubmit}
                     initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -140,10 +150,10 @@ const Diagnostic = () => {
                     exit={{ opacity: 0, y: -15 }}
                     className="space-y-6"
                   >
-                    
+
                     {/* Grid Inputs */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      
+
                       {/* Name field */}
                       <div className="space-y-2">
                         <label className="text-xs font-bold text-gray-700 block" htmlFor="diag-nome">
@@ -223,19 +233,19 @@ const Diagnostic = () => {
                     {/* Disclaimer text */}
                     <p className="text-[10px] text-gray-500 leading-normal">
                       Este site é protegido por reCAPTCHA e a{' '}
-                      <a 
-                        href="https://policies.google.com/privacy" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+                      <a
+                        href="https://policies.google.com/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-sky-600 font-semibold hover:underline"
                       >
                         Política de Privacidade
                       </a>{' '}
                       e os{' '}
-                      <a 
-                        href="https://policies.google.com/terms" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+                      <a
+                        href="https://policies.google.com/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-sky-600 font-semibold hover:underline"
                       >
                         Termos de Serviço
@@ -264,7 +274,7 @@ const Diagnostic = () => {
 
                     {/* Error message */}
                     {errorMessage && (
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         className="flex items-center gap-2 text-red-600 bg-red-50 p-3.5 rounded-xl text-xs"
@@ -318,5 +328,11 @@ const Diagnostic = () => {
     </section>
   );
 };
+
+const Diagnostic = () => (
+  <GoogleReCaptchaProvider reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ''}>
+    <DiagnosticForm />
+  </GoogleReCaptchaProvider>
+);
 
 export default Diagnostic;

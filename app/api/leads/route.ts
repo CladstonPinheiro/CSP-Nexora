@@ -4,11 +4,41 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const { nome, email, empresa, telefone } = await req.json();
+    const { nome, email, empresa, telefone, recaptchaToken } = await req.json();
 
     if (!nome || !email || !empresa || !telefone) {
       return NextResponse.json(
         { error: 'Todos os campos são obrigatórios.' },
+        { status: 400 }
+      );
+    }
+
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    if (!secretKey) {
+      return NextResponse.json(
+        { error: 'Configuração de segurança incompleta no servidor.' },
+        { status: 500 }
+      );
+    }
+
+    if (!recaptchaToken) {
+      return NextResponse.json(
+        { error: 'Token de verificação ausente. Recarregue a página e tente novamente.' },
+        { status: 400 }
+      );
+    }
+
+    const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret: secretKey, response: recaptchaToken }).toString(),
+    });
+
+    const verifyData = await verifyRes.json();
+
+    if (!verifyData.success || verifyData.score < 0.5) {
+      return NextResponse.json(
+        { error: 'Verificação de segurança falhou. Tente novamente.' },
         { status: 400 }
       );
     }
