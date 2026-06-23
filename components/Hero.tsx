@@ -28,16 +28,15 @@ const Hero = () => {
               </div>
               
               <h1 className="font-outfit text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white mb-6 leading-[1.05] lg:leading-[0.95] text-center lg:text-left">
-                Automação <br />
+                Construímos a <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
-                  Inteligente
+                  Infraestrutura
                 </span> <br />
-                para Empresas
+                de Operação do Seu Negócio com IA
               </h1>
               
               <p className="text-sm sm:text-base lg:text-xl text-gray-400 mb-10 max-w-2xl leading-relaxed text-center lg:text-left mx-auto lg:mx-0">
-                Criamos ecossistemas de automação com Inteligência Artificial para 
-                aumentar produtividade, reduzir custos e acelerar resultados.
+                Não vendemos ferramentas isoladas. Criamos ecossistemas completos — sistemas e automações conectados entre si, funcionando de forma integrada, para que sua operação inteira trabalhe sozinha.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center w-full sm:w-auto">

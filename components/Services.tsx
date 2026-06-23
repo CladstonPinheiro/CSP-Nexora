@@ -6,6 +6,13 @@ import { Bot, Cpu, MessageSquare, Workflow, Zap, BarChart3, Cloud, Shield, Datab
 
 const services = [
   {
+    id: 'ferramentas-proprias',
+    title: 'Ferramentas Próprias e Personalizadas',
+    description: 'Desenvolvemos soluções exclusivas para o seu negócio — com as informações que realmente importam para a sua operação, integradas diretamente ao seu ecossistema.',
+    icon: <Database className="w-8 h-8" />,
+    color: 'from-emerald-400 to-teal-500'
+  },
+  {
     id: 'automacao-ia',
     title: 'Automação com IA',
     description: 'Fluxos de trabalho inteligentes que aprendem e se adaptam.',

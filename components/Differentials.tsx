@@ -6,6 +6,7 @@ import { ShieldCheck, Zap, Globe, BarChart3, Database, Workflow, Cpu, Rocket, Se
 
 const Differentials = () => {
   const diffs = [
+    { title: 'Ecossistema Integrado', icon: <Globe className="text-teal-400" /> },
     { title: 'Alta Performance', icon: <Zap className="text-orange-400" /> },
     { title: 'Escalabilidade', icon: <TrendingUp className="text-cyan-400" /> },
     { title: 'Atendimento Inteligente', icon: <ShieldCheck className="text-green-400" /> },

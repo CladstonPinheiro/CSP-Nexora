@@ -58,18 +58,15 @@ const About = () => {
             </div>
             
             <h2 className="text-3xl sm:text-4xl lg:text-6xl font-black font-outfit tracking-tighter leading-[1.1] sm:leading-[0.95] text-center lg:text-left">
-              Transformamos Processos <br /> em <span className="text-cyan-400 italic">Ecossistemas Inteligentes</span>
+              Uma Automação Resolve uma Tarefa. <span className="text-cyan-400 italic">Um Ecossistema Resolve uma Operação Inteira.</span>
             </h2>
             
             <p className="text-sm sm:text-base lg:text-xl text-gray-400 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              A CSP Nexora desenvolve soluções avançadas de automação utilizando 
-              Inteligência Artificial, integrações inteligentes e fluxos automatizados 
-              para empresas que desejam escalar operações com eficiência.
+              A CSP Nexora não entrega automações avulsas. Construímos ecossistemas: conjuntos de ferramentas e sistemas conectados entre si, funcionando de forma integrada, entregando performance e resultado real para o seu negócio.
             </p>
             
             <p className="text-xs sm:text-sm lg:text-lg text-gray-500 max-w-xl mx-auto lg:mx-0">
-              Criamos sistemas inteligentes capazes de automatizar atendimento, vendas, 
-              processos internos, geração de leads, integrações e operações estratégicas.
+              Desenvolvemos ferramentas próprias e personalizadas para cada empresa — com as informações que realmente importam para o seu negócio, totalmente integradas ao ecossistema que construímos para você.
             </p>
             
             <div className="pt-4 sm:pt-8 w-full flex justify-center lg:justify-start">
