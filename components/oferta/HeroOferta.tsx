@@ -32,7 +32,7 @@ export default function HeroOferta() {
         </div>
       </div>
 
-      <section className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden px-6 py-24 text-center">
+      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 py-24 text-center">
         <div className="pointer-events-none absolute inset-0">
           <motion.div
             animate={{ scale: [1, 1.15, 1], opacity: [0.18, 0.28, 0.18] }}
