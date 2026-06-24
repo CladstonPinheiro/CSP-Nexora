@@ -7,7 +7,8 @@ export async function POST(req: NextRequest) {
   try {
     const { nome, email, empresa, telefone, niche, source, notes, recaptchaToken } = await req.json();
 
-    if (!nome || !email || !empresa || !telefone) {
+    const emailObrigatorio = source !== 'prospeccao_gmn';
+    if (!nome || !empresa || !telefone || (emailObrigatorio && !email)) {
       return NextResponse.json(
         { error: 'Todos os campos são obrigatórios.' },
         { status: 400 }
