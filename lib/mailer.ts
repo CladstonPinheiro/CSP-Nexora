@@ -70,6 +70,21 @@ export async function sendLeadNotification(data: {
   });
 }
 
+const origemMap: Record<string, string> = {
+  prospeccao_gmn: 'Prospecção GMN',
+  prospeccao_ia:  'Prospecção IA',
+  formulario:     'Formulário',
+  contato_site:   'Contato Site',
+};
+
+function formatOrigem(origem: string): string {
+  return origemMap[origem] ?? origem.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function formatStage(stage: string): string {
+  return stage.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
 export async function sendLeadGMNNotification(data: {
   nome: string;
   email: string;
@@ -82,6 +97,8 @@ export async function sendLeadGMNNotification(data: {
   codigo?: string;
 }) {
   const timestamp = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+  const origemFmt = formatOrigem(data.origem);
+  const stageFmt  = formatStage(data.stage);
 
   const codigoRow = data.codigo
     ? `
@@ -99,8 +116,8 @@ export async function sendLeadGMNNotification(data: {
     row('Empresa', data.empresa) +
     row('Telefone', data.telefone) +
     (data.plano ? row('Plano', data.plano) : '') +
-    row('Origem', data.origem) +
-    row('Estágio', data.stage) +
+    row('Origem', origemFmt) +
+    row('Estágio', stageFmt) +
     codigoRow +
     (data.notes ? row('Anotações', data.notes.replace(/\n/g, '<br>')) : '');
 
@@ -114,7 +131,7 @@ export async function sendLeadGMNNotification(data: {
   await createTransporter().sendMail({
     from: from(),
     to: to(),
-    subject: `[Lead GMN] [${data.stage}] — ${data.empresa}`,
+    subject: `[Lead GMN] [${stageFmt}] — ${data.empresa}`,
     html,
   });
 }
