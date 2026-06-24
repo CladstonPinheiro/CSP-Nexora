@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createAdminClient } from '@/lib/supabase';
 
 export interface GmnExtracted {
   company_name: string;
@@ -82,7 +83,30 @@ ${rawText}`;
       return NextResponse.json({ error: 'Resposta inválida do Gemini.' }, { status: 500 });
     }
 
-    return NextResponse.json({ data: parsed });
+    const supabase = createAdminClient();
+    const { data: prospect, error: dbError } = await supabase
+      .from('gmn_prospects')
+      .insert({
+        company_name: parsed.company_name,
+        phone:        parsed.phone,
+        address:      parsed.address,
+        city:         parsed.city,
+        instagram:    parsed.instagram,
+        facebook:     parsed.facebook,
+        whatsapp:     parsed.whatsapp,
+        description:  parsed.description,
+        niche:        parsed.niche,
+        services:     parsed.services,
+        raw_text:     rawText,
+      })
+      .select('id')
+      .single();
+
+    if (dbError) {
+      console.error('[gmn/extract] erro ao salvar prospect:', dbError.message);
+    }
+
+    return NextResponse.json({ data: parsed, prospectId: prospect?.id ?? null });
   } catch (err) {
     console.error('[gmn/extract] erro inesperado:', err);
     return NextResponse.json({ error: 'Erro interno.' }, { status: 500 });
