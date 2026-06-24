@@ -222,6 +222,9 @@ function PixModal({ plano, onClose }: PixModalProps) {
                 ✅ Já paguei — confirmar pelo WhatsApp
               </button>
 
+              <p className="text-xs text-white/40 text-center">
+                📎 Ao abrir o WhatsApp, anexe o comprovante de pagamento para agilizar a ativação do seu site.
+              </p>
               <p className="text-[10px] text-white/30 text-center">
                 Após o pagamento, nossa equipe ativa seu site em até 24h úteis.
               </p>
