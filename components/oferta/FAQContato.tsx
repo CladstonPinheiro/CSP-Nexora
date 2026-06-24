@@ -81,19 +81,18 @@ export function ContatoSection() {
     const form = e.currentTarget;
     const data = new FormData(form);
     const body = {
-      nome: data.get("nome"),
-      email: data.get("email"),
-      whatsapp: data.get("whatsapp"),
-      negocio: data.get("negocio"),
-      plano: data.get("plano"),
-      mensagem: data.get("mensagem"),
-      _subject: `[GMN] Novo lead: ${data.get("nome")} — ${data.get("negocio")}`,
-      identificador: "GMN",
+      nome:    data.get("nome"),
+      email:   data.get("email"),
+      empresa: data.get("negocio"),
+      telefone: data.get("whatsapp"),
+      source:  "prospeccao_gmn",
+      stage:   "identificado",
+      notes:   `Lead GMN — ${data.get("plano") || "sem plano"}`,
     };
     try {
-      await fetch("https://formsubmit.co/ajax/contato@cspnexora.com.br", {
+      await fetch("/api/leads", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       setStatus("sent");
