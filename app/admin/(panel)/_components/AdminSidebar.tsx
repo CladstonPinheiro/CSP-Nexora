@@ -11,16 +11,18 @@ import {
   CheckSquare,
   LogOut,
   ChevronRight,
+  Globe,
 } from 'lucide-react';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-  { href: '/admin/leads', label: 'Leads', icon: Users },
-  { href: '/admin/clientes', label: 'Clientes', icon: Building2 },
-  { href: '/admin/projetos', label: 'Projetos', icon: FolderKanban },
-  { href: '/admin/tarefas', label: 'Tarefas', icon: CheckSquare },
+  { href: '/admin',         label: 'Dashboard',       icon: LayoutDashboard, exact: true },
+  { href: '/admin/leads',   label: 'Leads',            icon: Users },
+  { href: '/admin/clientes',label: 'Clientes',         icon: Building2 },
+  { href: '/admin/projetos',label: 'Projetos',         icon: FolderKanban },
+  { href: '/admin/tarefas', label: 'Tarefas',          icon: CheckSquare },
+  { href: '/admin/gmn',     label: 'Prospecção GMN',   icon: Globe },
 ];
 
 interface AdminSidebarProps {
