@@ -163,7 +163,7 @@ function PixModal({ plano, onClose }: PixModalProps) {
               <p className="text-sm text-white/50">Informe seus dados para continuar com o pagamento.</p>
               <input required value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome completo" className={inputClass} />
               <input required value={empresa} onChange={(e) => setEmpresa(e.target.value)} placeholder="Nome da empresa" className={inputClass} />
-              <input required value={telefone} onChange={(e) => setTelefone(e.target.value)} placeholder="Telefone / WhatsApp" className={inputClass} />
+              <input required value={telefone} onChange={(e) => setTelefone(e.target.value)} placeholder="Telefone / WhatsApp" maxLength={11} className={inputClass} />
               <button
                 type="submit"
                 disabled={loading}
