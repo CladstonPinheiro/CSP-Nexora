@@ -1,5 +1,5 @@
 import { createAdminClient } from '@/lib/supabase';
-import { sendLeadNotification } from '@/lib/mailer';
+import { sendLeadNotification, sendLeadGMNNotification } from '@/lib/mailer';
 import { qualificarLead } from '@/lib/gemini';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -73,7 +73,19 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-      await sendLeadNotification({ nome, email, empresa, telefone });
+      if (source === 'prospeccao_gmn') {
+        await sendLeadGMNNotification({
+          nome,
+          email,
+          empresa,
+          telefone,
+          origem: source,
+          stage:  data.stage ?? 'identificado',
+          notes:  notes || undefined,
+        });
+      } else {
+        await sendLeadNotification({ nome, email, empresa, telefone });
+      }
     } catch (err) {
       console.error('[mailer] lead notification failed:', err);
     }

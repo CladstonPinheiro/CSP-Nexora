@@ -70,6 +70,55 @@ export async function sendLeadNotification(data: {
   });
 }
 
+export async function sendLeadGMNNotification(data: {
+  nome: string;
+  email: string;
+  empresa: string;
+  telefone: string;
+  plano?: string;
+  origem: string;
+  stage: string;
+  notes?: string;
+  codigo?: string;
+}) {
+  const timestamp = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+
+  const codigoRow = data.codigo
+    ? `
+    <tr>
+      <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#888;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;width:130px;vertical-align:top;">Código Pag.</td>
+      <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;">
+        <span style="background:#0e7490;color:#fff;font-size:13px;font-weight:700;letter-spacing:.05em;padding:4px 12px;border-radius:6px;display:inline-block;">${data.codigo}</span>
+      </td>
+    </tr>`
+    : '';
+
+  const rows =
+    row('Nome', data.nome) +
+    row('Email', data.email || '—') +
+    row('Empresa', data.empresa) +
+    row('Telefone', data.telefone) +
+    (data.plano ? row('Plano', data.plano) : '') +
+    row('Origem', data.origem) +
+    row('Estágio', data.stage) +
+    codigoRow +
+    (data.notes ? row('Anotações', data.notes.replace(/\n/g, '<br>')) : '');
+
+  const html = emailWrapper(
+    `Lead GMN — ${data.empresa}`,
+    'GMN',
+    rows,
+    timestamp,
+  );
+
+  await createTransporter().sendMail({
+    from: from(),
+    to: to(),
+    subject: `[Lead GMN] [${data.stage}] — ${data.empresa}`,
+    html,
+  });
+}
+
 export async function sendContatoNotification(data: {
   nome: string;
   email: string;
