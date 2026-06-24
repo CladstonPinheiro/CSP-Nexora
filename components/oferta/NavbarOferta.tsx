@@ -79,6 +79,7 @@ function WhatsAppModal({ onClose }: { onClose: () => void }) {
             required
             value={telefone}
             onChange={(e) => setTelefone(e.target.value)}
+            maxLength={11}
             placeholder="Telefone / WhatsApp"
             className={inputClass}
           />
