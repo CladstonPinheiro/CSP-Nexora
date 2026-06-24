@@ -34,6 +34,7 @@ function WhatsAppModal({ onClose }: { onClose: () => void }) {
     }).catch(() => {});
 
     window.open(`https://wa.me/5561984202578?text=${msg}`, "_blank");
+
     onClose();
   }
 
@@ -105,7 +106,7 @@ export default function NavbarOferta() {
         </Link>
         <div className="flex items-center gap-3">
           <div className="hidden sm:block border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">
-            WhatsApp (61) 9 8420-2578 &nbsp;|&nbsp; E-mail: contato@cspnexora.com.br
+            E-mail: contato@cspnexora.com.br
           </div>
           <button
             onClick={() => setModalOpen(true)}
