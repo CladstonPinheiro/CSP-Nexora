@@ -46,25 +46,36 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'GEMINI_API_KEY não configurada.' }, { status: 500 });
   }
 
-  const prompt = `Você é um extrator de dados estruturados especializado em perfis do Google Meu Negócio. Analise o texto abaixo e extraia todas as informações disponíveis.
+  const prompt = `Você é um extrator de dados estruturados especializado em perfis do Google Meu Negócio. Analise o texto abaixo, extraia os dados presentes E aplique as inferências descritas abaixo.
 
-REGRAS OBRIGATÓRIAS:
-- Extraia APENAS dados explicitamente presentes no texto. Nunca invente, assuma ou complete informações.
-- Campos ausentes no texto devem ser null (não string vazia).
-- Arrays sem dados devem ser [] (array vazio).
-- Para "phone" e "whatsapp": retorne apenas dígitos, sem formatação. Ex: "61999990000".
-- Para "niche": classifique entre "imobiliaria", "administradora_imoveis", "administradora_condominios" ou "outro".
-- Para "city": apenas o nome da cidade, sem estado ou país.
-- Para "state": sigla do estado, ex: "DF", "SP".
-- Para "cep": apenas os 8 dígitos, sem hífen.
-- Para "rating": número decimal, ex: 4.7.
-- Para "total_reviews": número inteiro.
-- Para "is_open_24h": true apenas se o texto mencionar explicitamente funcionamento 24 horas.
-- Para "business_hours": objeto com cada dia como chave e horário como valor, ex: {"Segunda": "09:00–18:00", "Sábado": "09:00–13:00"}.
-- Para "differentials": infira diferenciais a partir da descrição (ex: "Atendimento personalizado", "Mais de 20 anos de experiência"), apenas se a descrição mencionar.
-- Para "description_short": máximo 2 frases extraídas ou resumidas da descrição.
-- Para "service_options": ex: ["Atendimento no local", "Visita ao cliente", "Online"].
-- Para "instagram": apenas o @handle sem URL. Para "instagram_url": a URL completa se presente.
+REGRAS GERAIS:
+- Campos sem nenhuma base no texto devem ser null. Arrays sem dados devem ser [].
+- Nunca invente dados que não possam ser inferidos logicamente das informações presentes.
+
+REGRAS ESPECÍFICAS POR CAMPO:
+- "phone": apenas dígitos, sem formatação. Ex: "61999990000".
+- "whatsapp": SEMPRE preencher — use o número explícito de WhatsApp se mencionado; caso contrário, use o mesmo valor de "phone" (apenas dígitos). Nunca deixar null se "phone" existir.
+- "instagram": apenas o @handle sem URL, sem o "@". Ex: "minha.loja".
+- "instagram_url": SEMPRE inferir como "https://www.instagram.com/" + instagram se "instagram" não for null. Ex: "https://www.instagram.com/minha.loja".
+- "facebook": apenas o nome/handle da página, sem URL.
+- "facebook_url": SEMPRE inferir como "https://www.facebook.com/" + facebook se "facebook" não for null.
+- "neighborhood": extrair do endereço — geralmente o bairro aparece antes da cidade. Ex: "QE 30 Guará II, Brasília" → "Guará II". Se não identificável, null.
+- "city": apenas o nome da cidade, sem estado ou país. Ex: "Brasília".
+- "state": sigla do estado extraída do endereço. Ex: "DF", "SP", "RJ". Se não presente, null.
+- "cep": 8 dígitos sem hífen, extraído do endereço se presente. Ex: "71060300".
+- "maps_url": URL do Google Maps se presente no texto (começa com "https://maps.app.goo.gl/" ou "https://www.google.com/maps/"). null se ausente.
+- "niche": classifique entre "imobiliaria", "administradora_imoveis", "administradora_condominios" ou "outro".
+- "gmn_category": categoria principal do negócio mencionada no texto. Ex: "Lavanderia", "Imobiliária", "Restaurante". null se não identificável.
+- "is_open_24h": SEMPRE inferir — true se o texto contiver "24 horas", "24h", "aberto 24", "funciona 24" ou variações. false se horários específicos indicarem fechamento. null apenas se nenhuma informação de horário existir.
+- "business_hours": objeto com cada dia como chave e horário como valor. Ex: {"Segunda": "09:00–18:00", "Sábado": "09:00–13:00"}. null se não houver horários.
+- "description_full": descrição completa extraída do texto, exatamente como aparece.
+- "description_short": SEMPRE preencher se "description_full" não for null — resuma em até 2 frases curtas e diretas destacando o que o negócio faz e seu principal diferencial.
+- "differentials": SEMPRE preencher se houver descrição — infira os diferenciais competitivos mencionados ou implícitos. Ex: ["Atendimento 24 horas", "Autoatendimento", "Ambiente monitorado", "Máquinas modernas", "20 anos de experiência"]. [] se a descrição não oferecer base.
+- "areas_served": extraia bairros, regiões ou cidades atendidas mencionados no texto. [] se não mencionado.
+- "service_options": ex: ["Atendimento no local", "Visita ao cliente", "Online", "Entrega"]. [] se não mencionado.
+- "rating": número decimal. Ex: 4.7. null se não presente.
+- "total_reviews": número inteiro. null se não presente.
+- "parking": mencione se o texto indica estacionamento disponível. null se não mencionado.
 - Para "facebook": apenas o nome/handle. Para "facebook_url": a URL completa se presente.
 
 Retorne APENAS um objeto JSON válido, sem texto adicional, markdown ou blocos de código:
