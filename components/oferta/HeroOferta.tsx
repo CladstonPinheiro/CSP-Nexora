@@ -1,8 +1,6 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Zap, Globe, Mail, Shield } from "lucide-react";
-
 const stats = [
   { num: "24h", lbl: "Entrega garantida" },
   { num: "R$0", lbl: "Mensalidade" },

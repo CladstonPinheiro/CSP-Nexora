@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import NavbarOferta from "@/components/oferta/NavbarOferta";
 import HeroOferta from "@/components/oferta/HeroOferta";
 import { ProblemaSection, BeneficiosSection } from "@/components/oferta/BeneficiosOferta";
@@ -37,9 +38,9 @@ export default function OfertaPage() {
         <FAQSection />
         <ContatoSection />
         <footer className="border-t border-white/[0.05] px-6 py-10 text-center">
-          <p className="font-outfit text-lg font-black text-white">
-            CSP <span className="text-cyan-400">Nexora</span>
-          </p>
+          <div className="flex justify-center mb-4">
+            <Image src="/logo.png" alt="CSP Nexora" width={207} height={113} className="h-auto w-[100px] object-contain" />
+          </div>
           <p className="mt-2 text-xs text-white/30">Soluções digitais para negócios que querem crescer.</p>
           <p className="mt-1 text-xs text-white/30">📧 contato@cspnexora.com.br · 📱 (61) 98420-2578</p>
           <p className="mt-4 text-xs text-white/20">© {new Date().getFullYear()} CSP Nexora. Todos os direitos reservados.</p>
