@@ -132,7 +132,7 @@ function PixModal({ plano, onClose }: PixModalProps) {
 
   function confirmarPagamento() {
     const msg = encodeURIComponent(
-      `Olá! Efetuei o pagamento do ${plano.label}. Meu código é ${codigo}. Nome: ${nome}. Empresa: ${empresa}.`
+      `Olá! Efetuei o pagamento do ${plano.label}. Meu código é ${codigo}. Nome: ${nome}. Empresa: ${empresa}. Segue em anexo o comprovante do pagamento PIX.`
     );
     window.open(`https://wa.me/5561984202578?text=${msg}`, "_blank");
   }
