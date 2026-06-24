@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function NavbarOferta() {
   return (
-    <nav className="fixed left-0 right-0 top-0 z-50 flex h-[52px] max-h-[56px] items-center justify-between border-b border-white/[0.06] bg-[#050505]/90 px-6 py-0 backdrop-blur-md">
+    <nav className="fixed left-0 right-0 top-0 z-50 flex max-h-[56px] items-center justify-between border-b border-white/[0.06] bg-[#050505]/90 px-6 py-3 backdrop-blur-md">
       <Link href="https://cspnexora.com.br" target="_blank" rel="noopener noreferrer">
         <Image src="/logo.png" alt="CSP Nexora" width={120} height={66} className="h-auto w-[80px] object-contain" priority />
       </Link>

@@ -28,7 +28,7 @@ export default function OfertaPage() {
   return (
     <>
       <NavbarOferta />
-      <main className="min-h-screen bg-[#050505] pt-[105px]">
+      <main className="min-h-screen bg-[#050505] pt-[72px]">
         <HeroOferta />
         <ProblemaSection />
         <BeneficiosSection />
