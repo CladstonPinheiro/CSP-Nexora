@@ -31,6 +31,7 @@ type Prospect = GmnExtracted & {
   lead_cadastrado: boolean;
   lead_id: string | null;
   created_at: string;
+  description?: string | null;
 };
 
 function InfoRow({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
@@ -119,7 +120,7 @@ export default function GmnPage() {
           source:   'prospeccao_gmn',
           stage:    'identificado',
           notes: [
-            extracted.description && `Descrição: ${extracted.description}`,
+            extracted.description_full && `Descrição: ${extracted.description_full}`,
             extracted.services.length > 0 && `Serviços: ${extracted.services.join(', ')}`,
             extracted.address && `Endereço: ${extracted.address}`,
             extracted.instagram && `Instagram: ${extracted.instagram}`,
@@ -147,16 +148,36 @@ export default function GmnPage() {
 
   function handleLoadProspect(p: Prospect) {
     setExtracted({
-      company_name: p.company_name,
-      phone:        p.phone,
-      address:      p.address,
-      city:         p.city,
-      services:     p.services ?? [],
-      instagram:    p.instagram,
-      facebook:     p.facebook,
-      whatsapp:     p.whatsapp,
-      description:  p.description,
-      niche:        p.niche,
+      company_name:      p.company_name,
+      slogan:            null,
+      phone:             p.phone,
+      email:             null,
+      address:           p.address,
+      city:              p.city,
+      neighborhood:      null,
+      cep:               null,
+      state:             null,
+      maps_url:          p.maps_url ?? null,
+      business_hours:    p.business_hours ?? null,
+      is_open_24h:       null,
+      instagram:         p.instagram,
+      instagram_url:     null,
+      facebook:          p.facebook,
+      facebook_url:      null,
+      whatsapp:          p.whatsapp,
+      logo_url:          p.logo_url ?? null,
+      website:           null,
+      description_short: null,
+      description_full:  p.description ?? null,
+      niche:             p.niche,
+      gmn_category:      null,
+      services:          p.services ?? [],
+      areas_served:      p.areas_served ?? [],
+      differentials:     p.differentials ?? [],
+      parking:           null,
+      service_options:   [],
+      rating:            null,
+      total_reviews:     null,
     });
     setProspectId(p.id);
     setCrmStatus(p.lead_cadastrado ? 'saved' : 'idle');
@@ -306,13 +327,13 @@ export default function GmnPage() {
               <div className="h-px bg-white/5" />
 
               <div className="flex flex-col gap-4">
-                <InfoRow icon={Phone}        label="Telefone"  value={extracted.phone} />
-                <InfoRow icon={MapPin}        label="Endereço"  value={extracted.address} />
-                <InfoRow icon={MapPin}        label="Cidade"    value={extracted.city} />
-                <InfoRow icon={MessageCircle} label="WhatsApp"  value={extracted.whatsapp} />
-                <InfoRow icon={Instagram}     label="Instagram" value={extracted.instagram} />
-                <InfoRow icon={Facebook}      label="Facebook"  value={extracted.facebook} />
-                <InfoRow icon={FileText}      label="Descrição" value={extracted.description} />
+                <InfoRow icon={Phone}        label="Telefone"  value={extracted.phone ?? ''} />
+                <InfoRow icon={MapPin}        label="Endereço"  value={extracted.address ?? ''} />
+                <InfoRow icon={MapPin}        label="Cidade"    value={extracted.city ?? ''} />
+                <InfoRow icon={MessageCircle} label="WhatsApp"  value={extracted.whatsapp ?? ''} />
+                <InfoRow icon={Instagram}     label="Instagram" value={extracted.instagram ?? ''} />
+                <InfoRow icon={Facebook}      label="Facebook"  value={extracted.facebook ?? ''} />
+                <InfoRow icon={FileText}      label="Descrição" value={extracted.description_full ?? ''} />
               </div>
 
               {extracted.services.length > 0 && (
