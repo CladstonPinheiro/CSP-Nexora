@@ -16,6 +16,7 @@ import {
   MessageCircle,
   FileText,
   History,
+  Trash2,
 } from 'lucide-react';
 import type { GmnExtracted } from '@/app/api/gmn/extract/route';
 
@@ -146,6 +147,12 @@ export default function GmnPage() {
     }
   }
 
+  async function handleDeleteProspect(id: string) {
+    setProspects((prev) => prev.filter((p) => p.id !== id));
+    if (prospectId === id) { setExtracted(null); setProspectId(null); }
+    await fetch(`/api/gmn/prospects/${id}`, { method: 'DELETE' }).catch(() => {});
+  }
+
   function handleLoadProspect(p: Prospect) {
     setExtracted({
       company_name:      p.company_name,
@@ -263,28 +270,39 @@ export default function GmnPage() {
             ) : (
               <div className="divide-y divide-white/[0.04]">
                 {prospects.map((p) => (
-                  <button
+                  <div
                     key={p.id}
-                    onClick={() => handleLoadProspect(p)}
-                    className={`w-full flex items-center justify-between px-5 py-3 text-left transition-colors hover:bg-white/[0.03] ${
+                    className={`flex items-center gap-2 px-4 py-3 transition-colors hover:bg-white/[0.03] ${
                       prospectId === p.id ? 'bg-blue-500/[0.06]' : ''
                     }`}
                   >
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-white truncate">
-                        {p.company_name || '—'}
-                      </p>
-                      <p className="text-xs text-gray-600 mt-0.5">
-                        {[p.city, formatDate(p.created_at)].filter(Boolean).join(' · ')}
-                      </p>
-                    </div>
-                    {p.lead_cadastrado && (
-                      <span className="ml-3 shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest whitespace-nowrap">
-                        <CheckCircle2 className="w-2.5 h-2.5" />
-                        CRM
-                      </span>
-                    )}
-                  </button>
+                    <button
+                      onClick={() => handleLoadProspect(p)}
+                      className="flex-1 flex items-center justify-between text-left min-w-0"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-white truncate">
+                          {p.company_name || '—'}
+                        </p>
+                        <p className="text-xs text-gray-600 mt-0.5">
+                          {[p.city, formatDate(p.created_at)].filter(Boolean).join(' · ')}
+                        </p>
+                      </div>
+                      {p.lead_cadastrado && (
+                        <span className="ml-3 shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest whitespace-nowrap">
+                          <CheckCircle2 className="w-2.5 h-2.5" />
+                          CRM
+                        </span>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => handleDeleteProspect(p.id)}
+                      className="shrink-0 w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 flex items-center justify-center text-gray-700 hover:text-red-400 transition-all"
+                      title="Remover"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  </div>
                 ))}
               </div>
             )}
@@ -372,7 +390,7 @@ export default function GmnPage() {
 
                 <button
                   onClick={handleCopyPrompt}
-                  className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all bg-white/[0.04] border border-white/[0.08] text-gray-400 hover:text-white hover:bg-white/[0.08]"
+                  className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all bg-blue-600 hover:bg-blue-500 text-white hover:-translate-y-0.5 active:translate-y-0"
                 >
                   {copied
                     ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
