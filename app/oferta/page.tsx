@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import NavbarOferta from "@/components/oferta/NavbarOferta";
 import HeroOferta from "@/components/oferta/HeroOferta";
-import { ProblemaSection, BeneficiosSection } from "@/components/oferta/BeneficiosOferta";
+import { ProblemaSection, BeneficiosSection, GoogleComparativoSection } from "@/components/oferta/BeneficiosOferta";
 import { EntregaSection, ProcessoSection, PlanosSection } from "@/components/oferta/PlanosOferta";
 import { FAQSection, ContatoSection } from "@/components/oferta/FAQContato";
 
@@ -32,6 +32,7 @@ export default function OfertaPage() {
         <HeroOferta />
         <ProblemaSection />
         <BeneficiosSection />
+        <GoogleComparativoSection />
         <EntregaSection />
         <ProcessoSection />
         <PlanosSection />

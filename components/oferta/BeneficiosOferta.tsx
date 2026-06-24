@@ -85,3 +85,84 @@ export function BeneficiosSection() {
     </section>
   );
 }
+
+const comparativo = [
+  {
+    funcionalidade: "Alcance de Público",
+    sem: "Só para quem já te conhece",
+    com: "Aparece para quem busca seu serviço sem te conhecer",
+  },
+  {
+    funcionalidade: "Vendas e Agendamentos",
+    sem: "Depende de ligação ou WhatsApp",
+    com: "Vendas e agendamentos automáticos 24h",
+  },
+  {
+    funcionalidade: "Credibilidade",
+    sem: "Só pelas avaliações do Google",
+    com: "Autoridade e estrutura própria da marca",
+  },
+  {
+    funcionalidade: "Vitrine de Produtos",
+    sem: "Fotos isoladas na galeria",
+    com: "Catálogo com preços, descrições e botão de compra",
+  },
+];
+
+export function GoogleComparativoSection() {
+  return (
+    <section className="bg-white/[0.02] px-6 py-24">
+      <div className="mx-auto max-w-5xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <span className="inline-block rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1 text-xs font-bold uppercase tracking-widest text-blue-400">
+            Fonte: Google
+          </span>
+          <h2 className="font-outfit mt-4 text-3xl font-black tracking-tight text-white sm:text-4xl">
+            O que o Google diz sobre <em className="not-italic text-cyan-400">ter um site</em>
+          </h2>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="mt-12 overflow-hidden rounded-2xl border border-white/[0.06]"
+        >
+          {/* Header */}
+          <div className="grid grid-cols-3 bg-white/[0.04] px-6 py-3">
+            <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Funcionalidade</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-rose-400">GMN SEM Site</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400">GMN COM Site</p>
+          </div>
+
+          {comparativo.map((row, i) => (
+            <motion.div
+              key={row.funcionalidade}
+              initial={{ opacity: 0, x: -12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+              className="grid grid-cols-3 border-t border-white/[0.06] bg-white/[0.03] px-6 py-4 hover:bg-white/[0.05] transition-colors"
+            >
+              <p className="text-sm font-semibold text-white/70 pr-4">{row.funcionalidade}</p>
+              <div className="flex items-start gap-2 pr-4">
+                <span className="mt-0.5 shrink-0">❌</span>
+                <p className="text-xs leading-relaxed text-rose-400">{row.sem}</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="mt-0.5 shrink-0">✅</span>
+                <p className="text-xs leading-relaxed text-emerald-400">{row.com}</p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
