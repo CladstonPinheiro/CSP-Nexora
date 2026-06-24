@@ -96,6 +96,7 @@ export async function POST(req: NextRequest) {
       niche:        niche || null,
       city:         data.city ?? null,
       notes:        data.notes ?? null,
+      source:       source || null,
     });
 
     return NextResponse.json({ success: true, data });

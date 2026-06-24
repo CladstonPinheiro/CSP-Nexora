@@ -6,6 +6,7 @@ interface LeadParams {
   niche?: string | null;
   city?: string | null;
   notes?: string | null;
+  source?: string | null;
 }
 
 interface GeminiScore {
@@ -13,7 +14,7 @@ interface GeminiScore {
   reasoning: string;
 }
 
-export async function qualificarLead({ id, company_name, niche, city, notes }: LeadParams) {
+export async function qualificarLead({ id, company_name, niche, city, notes, source }: LeadParams) {
   if (!company_name || !niche) return;
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -23,7 +24,29 @@ export async function qualificarLead({ id, company_name, niche, city, notes }: L
   }
 
   try {
-    const prompt = `Você é um analista de negócios da CSP Nexora, empresa especializada em automação inteligente de processos para negócios do setor imobiliário e de gestão de imóveis.
+    const isGMN = source === 'prospeccao_gmn';
+
+    const prompt = isGMN
+      ? `Você é um analista de prospecção digital da CSP Nexora, especializada em identificar pequenos e médios negócios com potencial para ter um site profissional.
+
+Este lead veio de campanha de prospecção via Google Meu Negócio. Avalie seu potencial com base nas informações abaixo:
+- Empresa: ${company_name}
+- Nicho: ${niche}
+- Cidade: ${city ?? 'não informada'}
+- Anotações: ${notes ?? 'nenhuma'}
+
+Critérios de qualificação:
+- Score ALTO: anotações indicam "pagamento iniciado" ou dados completos fornecidos
+- Score MÉDIO: formulário preenchido com dados básicos (nome, empresa, telefone)
+- Score BAIXO: dados incompletos ou ausentes
+
+Retorne APENAS um objeto JSON válido, sem texto adicional, markdown ou blocos de código, com exatamente dois campos:
+- "score": uma das três opções: "alto", "medio" ou "baixo"
+- "reasoning": texto curto explicando o motivo, máximo 2 frases em português
+
+Exemplo de resposta esperada:
+{"score":"alto","reasoning":"Lead indicou pagamento iniciado nas anotações, sinal de alta intenção de compra. Dados completos reforçam o engajamento com a oferta."}`
+      : `Você é um analista de negócios da CSP Nexora, empresa especializada em automação inteligente de processos para negócios do setor imobiliário e de gestão de imóveis.
 
 Avalie o potencial deste lead como cliente da CSP Nexora com base nas informações abaixo:
 - Empresa: ${company_name}
