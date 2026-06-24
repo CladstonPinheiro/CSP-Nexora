@@ -20,7 +20,7 @@ async function getMetrics() {
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-  const [leadsRes, clientesRes, tarefasRes, projetosRes] = await Promise.allSettled([
+  const [leadsRes, clientesRes, tarefasRes, projetosRes, leadsSiteRes, leadsGmnRes] = await Promise.allSettled([
     supabase.from('leads').select('id, created_at, stage, ai_score, ai_qualified_at'),
     supabase.from('clientes').select('id', { count: 'exact', head: true }).eq('ativo', true),
     supabase.from('tarefas').select('id', { count: 'exact', head: true }).eq('status', 'pendente'),
@@ -29,6 +29,14 @@ async function getMetrics() {
       .select('setup_value, monthly_value')
       .not('setup_value', 'is', null)
       .not('monthly_value', 'is', null),
+    supabase
+      .from('leads')
+      .select('id', { count: 'exact', head: true })
+      .in('source', ['formulario', 'contato_site', 'email', 'instagram', 'indicacao', 'telefone', 'whatsapp']),
+    supabase
+      .from('leads')
+      .select('id', { count: 'exact', head: true })
+      .eq('source', 'prospeccao_gmn'),
   ]);
 
   const leads: LeadRow[] =
@@ -38,6 +46,8 @@ async function getMetrics() {
   const tarefas = tarefasRes.status === 'fulfilled' ? (tarefasRes.value.count ?? 0) : 0;
   const projetos: ProjetoRow[] =
     projetosRes.status === 'fulfilled' ? ((projetosRes.value.data ?? []) as ProjetoRow[]) : [];
+  const leadsSite = leadsSiteRes.status === 'fulfilled' ? (leadsSiteRes.value.count ?? 0) : 0;
+  const leadsGmn  = leadsGmnRes.status  === 'fulfilled' ? (leadsGmnRes.value.count  ?? 0) : 0;
 
   // Funil: count por stage (inclui 'perdido')
   const funnelCounts: Record<string, number> = {};
@@ -95,6 +105,8 @@ async function getMetrics() {
     ticketMedio,
     tempoMedio,
     scoreCount,
+    leadsSite,
+    leadsGmn,
   };
 }
 
@@ -177,6 +189,36 @@ export default async function AdminDashboardPage() {
             <p className="text-xs text-gray-700 mt-1">{card.sub}</p>
           </div>
         ))}
+      </div>
+
+      {/* Origem dos Leads */}
+      <div className="mt-6">
+        <h2 className="font-outfit text-lg font-black tracking-tight text-white mb-4">
+          Origem dos Leads
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className={`${CARD} hover:border-white/20 transition-all`}>
+            <div className="flex items-start justify-between mb-5">
+              <div className="w-10 h-10 rounded-xl border flex items-center justify-center bg-blue-500/10 text-blue-400 border-blue-500/20 text-lg">
+                🌐
+              </div>
+            </div>
+            <p className="font-outfit text-4xl font-black text-blue-400 tracking-tight">{metrics.leadsSite}</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mt-1">Site Público</p>
+            <p className="text-xs text-gray-700 mt-1">formulário, contato, redes sociais, WhatsApp, indicação</p>
+          </div>
+
+          <div className={`${CARD} hover:border-white/20 transition-all`}>
+            <div className="flex items-start justify-between mb-5">
+              <div className="w-10 h-10 rounded-xl border flex items-center justify-center bg-cyan-500/10 text-cyan-400 border-cyan-500/20 text-lg">
+                📍
+              </div>
+            </div>
+            <p className="font-outfit text-4xl font-black text-cyan-400 tracking-tight">{metrics.leadsGmn}</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mt-1">Prospecção GMN</p>
+            <p className="text-xs text-gray-700 mt-1">leads captados pela landing page de oferta GMN</p>
+          </div>
+        </div>
       </div>
 
       {/* Inteligência Comercial */}
