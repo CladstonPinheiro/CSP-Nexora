@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (source !== 'prospeccao_ia') {
+    if (source !== 'prospeccao_ia' && source !== 'prospeccao_gmn') {
       const secretKey = process.env.RECAPTCHA_SECRET_KEY;
       if (!secretKey) {
         return NextResponse.json(

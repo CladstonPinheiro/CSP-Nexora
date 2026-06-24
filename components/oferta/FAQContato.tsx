@@ -87,7 +87,7 @@ export function ContatoSection() {
       empresa: data.get("negocio"),
       telefone: data.get("whatsapp"),
       niche:   null,
-      source:  "prospeccao_ia",
+      source:  "prospeccao_gmn",
       stage:   "identificado",
       notes:   plano ? `Lead GMN — ${plano}` : "Lead GMN",
     };

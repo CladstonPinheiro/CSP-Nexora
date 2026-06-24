@@ -15,7 +15,8 @@ export type Origem =
   | 'instagram'
   | 'indicacao'
   | 'telefone'
-  | 'prospeccao_ia';
+  | 'prospeccao_ia'
+  | 'prospeccao_gmn';
 
 export type Score = 'alto' | 'medio' | 'baixo';
 
@@ -69,6 +70,7 @@ export const origemConfig: Record<string, { label: string; style: string }> = {
   indicacao:      { label: 'Indicação',      style: 'bg-purple-500/15 text-purple-400 border-purple-500/20' },
   telefone:       { label: 'Telefone',       style: 'bg-gray-500/15 text-gray-400 border-gray-500/20' },
   prospeccao_ia:  { label: 'Prospecção IA',  style: 'bg-emerald-900/40 text-emerald-400 border-emerald-700/30' },
+  prospeccao_gmn: { label: 'Prospecção GMN', style: 'bg-blue-900/40 text-blue-400 border-blue-700/30' },
 };
 
 export const nichoLabel: Record<string, string> = {
