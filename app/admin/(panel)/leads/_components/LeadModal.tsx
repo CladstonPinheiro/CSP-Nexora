@@ -184,7 +184,7 @@ export function LeadModal({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
               {/* Telefone + Email */}
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Telefone">
-                  <input type="tel" value={form.telefone} onChange={set('telefone')} placeholder="(61) 99999-9999" className={INPUT} />
+                  <input type="tel" value={form.telefone} onChange={set('telefone')} maxLength={11} placeholder="(61) 99999-9999" className={INPUT} />
                 </Field>
                 <Field label="Email">
                   <input type="email" value={form.email} onChange={set('email')} placeholder="contato@empresa.com" className={INPUT} />

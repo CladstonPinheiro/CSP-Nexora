@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
     await qualificarLead({
       id:           data.id,
       company_name: empresa,
-      niche:        niche || null,
+      niche:        niche || (source === 'prospeccao_gmn' ? 'outro' : null),
       city:         data.city ?? null,
       notes:        data.notes ?? null,
       source:       source || null,

@@ -147,7 +147,7 @@ export function ContatoSection() {
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <label className="text-xs font-semibold uppercase tracking-wider text-white/40">WhatsApp *</label>
-                  <input name="whatsapp" required placeholder="(61) 9 0000-0000"
+                  <input name="whatsapp" required maxLength={11} placeholder="(61) 9 0000-0000"
                     className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm text-white placeholder-white/20 outline-none transition focus:border-blue-500/60" />
                 </div>
               </div>
