@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const { nome, email, empresa, telefone, niche, recaptchaToken } = await req.json();
+    const { nome, email, empresa, telefone, niche, source, notes, recaptchaToken } = await req.json();
 
     if (!nome || !email || !empresa || !telefone) {
       return NextResponse.json(
@@ -14,34 +14,36 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-    if (!secretKey) {
-      return NextResponse.json(
-        { error: 'Configuração de segurança incompleta no servidor.' },
-        { status: 500 }
-      );
-    }
+    if (source !== 'prospeccao_ia') {
+      const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+      if (!secretKey) {
+        return NextResponse.json(
+          { error: 'Configuração de segurança incompleta no servidor.' },
+          { status: 500 }
+        );
+      }
 
-    if (!recaptchaToken) {
-      return NextResponse.json(
-        { error: 'Token de verificação ausente. Recarregue a página e tente novamente.' },
-        { status: 400 }
-      );
-    }
+      if (!recaptchaToken) {
+        return NextResponse.json(
+          { error: 'Token de verificação ausente. Recarregue a página e tente novamente.' },
+          { status: 400 }
+        );
+      }
 
-    const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ secret: secretKey, response: recaptchaToken }).toString(),
-    });
+      const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ secret: secretKey, response: recaptchaToken }).toString(),
+      });
 
-    const verifyData = await verifyRes.json();
+      const verifyData = await verifyRes.json();
 
-    if (!verifyData.success || verifyData.score < 0.5) {
-      return NextResponse.json(
-        { error: 'Verificação de segurança falhou. Tente novamente.' },
-        { status: 400 }
-      );
+      if (!verifyData.success || verifyData.score < 0.5) {
+        return NextResponse.json(
+          { error: 'Verificação de segurança falhou. Tente novamente.' },
+          { status: 400 }
+        );
+      }
     }
 
     const supabase = createAdminClient();
@@ -54,8 +56,9 @@ export async function POST(req: NextRequest) {
         phone:        telefone,
         email,
         niche:        niche || null,
-        source:       'formulario',
+        source:       source || 'formulario',
         stage:        'identificado',
+        notes:        notes || null,
         created_at:   new Date().toISOString(),
       }])
       .select()
