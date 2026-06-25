@@ -17,7 +17,7 @@ const entregaItems = [
   "Entrega em até 24 horas",
   "Suporte pós-entrega incluso",
   "Dados reais do seu negócio no site",
-  "Zero mensalidade no primeiro ano",
+  "Zero mensalidade ou taxa",
 ];
 
 const features = [
@@ -243,7 +243,7 @@ export function EntregaSection() {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
           <span className="inline-block rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1 text-xs font-bold uppercase tracking-widest text-blue-400">Tudo incluso</span>
           <h2 className="font-outfit mt-4 text-3xl font-black tracking-tight text-white sm:text-4xl">
-            Tudo o que você recebe no <em className="not-italic text-cyan-400">primeiro ano</em>
+            Tudo o que você recebe <em className="not-italic text-cyan-400">contratando agora</em>
           </h2>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-white/50">Sem pegadinha, sem mensalidade escondida. Uma única vez e pronto.</p>
         </motion.div>
