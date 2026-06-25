@@ -140,6 +140,16 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
   const scores = calcScores(extracted);
   const today = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
+  useEffect(() => {
+    const id = 'briefing-print-style';
+    if (document.getElementById(id)) return;
+    const el = document.createElement('style');
+    el.id = id;
+    el.textContent = '@media print { .no-print { display: none !important; } body > *:not(#briefing-root) { display: none !important; } #briefing-root { position: fixed; inset: 0; overflow: auto; background: white; color: black; } }';
+    document.head.appendChild(el);
+    return () => { document.getElementById(id)?.remove(); };
+  }, []);
+
   const scoreBadge = (s: 'alto' | 'medio' | 'baixo') =>
     s === 'alto'  ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400' :
     s === 'medio' ? 'bg-yellow-500/15 border-yellow-500/30 text-yellow-400' :
@@ -162,7 +172,6 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
 
   return (
     <div className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto bg-black/80 backdrop-blur-sm p-4 pt-8">
-      <style>{`@media print { .no-print { display: none !important; } body > *:not(#briefing-root) { display: none !important; } #briefing-root { position: fixed; inset: 0; overflow: auto; background: white; color: black; } }`}</style>
       <div id="briefing-root" className="w-full max-w-3xl bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-8">
 
         {/* Cabeçalho */}
