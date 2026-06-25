@@ -114,8 +114,10 @@ export async function POST(req: NextRequest) {
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
+    console.error('[gmn/extract] GEMINI_API_KEY ausente nas variáveis de ambiente');
     return NextResponse.json({ error: 'GEMINI_API_KEY não configurada.' }, { status: 500 });
   }
+  console.log('[gmn/extract] API key presente, primeiros 8 chars:', apiKey.slice(0, 8) + '...');
 
   const prompt = `Você é um extrator de dados estruturados especializado em perfis do Google Meu Negócio. Analise o texto abaixo e extraia as informações disponíveis.
 
@@ -185,20 +187,31 @@ ${rawText}`;
     );
 
     if (!res.ok) {
-      const err = await res.text();
-      console.error('[gmn/extract] Gemini error:', res.status, err);
-      return NextResponse.json({ error: 'Erro ao chamar Gemini.' }, { status: 500 });
+      const errBody = await res.text();
+      console.error('[gmn/extract] Gemini HTTP error:', res.status, res.statusText);
+      console.error('[gmn/extract] Gemini error body:', errBody);
+      let geminiMessage = `HTTP ${res.status}`;
+      try {
+        const errJson = JSON.parse(errBody);
+        geminiMessage = errJson?.error?.message ?? geminiMessage;
+      } catch { /* corpo não é JSON */ }
+      return NextResponse.json({ error: `Erro ao chamar Gemini: ${geminiMessage}` }, { status: 500 });
     }
 
     const geminiData = await res.json();
+    const finishReason = geminiData?.candidates?.[0]?.finishReason;
     const raw = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+    console.log('[gmn/extract] Gemini finishReason:', finishReason, '| raw length:', raw.length);
 
     let parsed: GmnExtracted;
     try {
       parsed = JSON.parse(raw);
     } catch {
-      console.error('[gmn/extract] falha ao parsear JSON:', raw);
-      return NextResponse.json({ error: 'Resposta inválida do Gemini.' }, { status: 500 });
+      console.error('[gmn/extract] falha ao parsear JSON. finishReason:', finishReason, '| raw:', raw.slice(0, 300));
+      return NextResponse.json({
+        error: 'Resposta inválida do Gemini.',
+        details: { finishReason, rawPreview: raw.slice(0, 200) },
+      }, { status: 500 });
     }
 
     if (logoUrl?.trim()) parsed.logo_url = logoUrl.trim();
