@@ -136,52 +136,31 @@ function calcScores(e: GmnExtracted) {
   return { presenca, presencaMotivo, marketing, marketingMotivo, estrutura, estruturaMotivo };
 }
 
+const scoreBadge = (s: 'alto' | 'medio' | 'baixo') =>
+  s === 'alto'  ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400' :
+  s === 'medio' ? 'bg-yellow-500/15 border-yellow-500/30 text-yellow-400' :
+                  'bg-red-500/15 border-red-500/30 text-red-400';
+
+const scoreLabel = (s: 'alto' | 'medio' | 'baixo') =>
+  s === 'alto' ? 'Alto' : s === 'medio' ? 'Médio' : 'Baixo';
+
 function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClose: () => void }) {
+  const today = new Date().toLocaleDateString('pt-BR');
+
   const scores = calcScores(extracted);
-  const today = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-
-  useEffect(() => {
-    const id = 'briefing-print-style';
-    if (document.getElementById(id)) return;
-    const el = document.createElement('style');
-    el.id = id;
-    el.textContent = '@media print { .no-print { display: none !important; } body > *:not(#briefing-root) { display: none !important; } #briefing-root { position: fixed; inset: 0; overflow: auto; background: white; color: black; } }';
-    document.head.appendChild(el);
-    return () => { document.getElementById(id)?.remove(); };
-  }, []);
-
-  const scoreBadge = (s: 'alto' | 'medio' | 'baixo') =>
-    s === 'alto'  ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400' :
-    s === 'medio' ? 'bg-yellow-500/15 border-yellow-500/30 text-yellow-400' :
-                    'bg-red-500/15 border-red-500/30 text-red-400';
-  const scoreLabel = (s: 'alto' | 'medio' | 'baixo') =>
-    s === 'alto' ? 'Alto' : s === 'medio' ? 'Médio' : 'Baixo';
-
-  const contatos: [string, string | null | undefined][] = [
-    ['Telefone', extracted.phone],
-    ['WhatsApp', extracted.whatsapp],
-    ['Instagram', extracted.instagram],
-    ['Facebook', extracted.facebook],
-    ['YouTube', extracted.youtube],
-    ['TikTok', extracted.tiktok],
-    ['LinkedIn', extracted.linkedin],
-    ['Website', extracted.website],
-    ['Catálogo', extracted.catalog_url],
-    ['Email', extracted.email],
-  ];
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto bg-black backdrop-blur-sm p-4 pt-8">
-      <div id="briefing-root" className="w-full max-w-3xl bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-8">
+    <div className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto bg-black p-4 pt-8">
+      <div className="w-full max-w-3xl bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-8">
 
         {/* Cabeçalho */}
         <div className="flex items-start justify-between px-6 py-5 border-b border-white/5">
-          <div className="flex items-start gap-4 flex-1 min-w-0">
+          <div className="flex items-start gap-4">
             {extracted.logo_url && (
-              <img src={extracted.logo_url} alt="Logo" className="w-16 h-16 rounded-xl object-contain border border-white/10 shrink-0" />
+              <img src={extracted.logo_url} alt="Logo" className="w-16 h-16 rounded-xl object-contain border border-white/10" />
             )}
-            <div className="min-w-0">
-              <h2 className="text-2xl font-black text-white tracking-tight">{extracted.company_name || '—'}</h2>
+            <div>
+              <h2 className="text-2xl font-black text-white">{extracted.company_name}</h2>
               {extracted.gmn_category && <p className="text-sm text-gray-500 mt-0.5">{extracted.gmn_category}</p>}
               {extracted.niche && (
                 <span className="inline-block mt-1 px-2 py-0.5 rounded-lg border bg-blue-500/10 border-blue-500/20 text-blue-400 text-[9px] font-black uppercase tracking-widest">
@@ -190,179 +169,187 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
               )}
             </div>
           </div>
-          <button onClick={onClose} className="no-print shrink-0 w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all ml-4">
+          <button onClick={onClose} className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all">
             <X className="w-4 h-4" />
           </button>
         </div>
 
         <div className="px-6 py-5 flex flex-col gap-6">
 
-          {/* Paleta de cores */}
+          {/* Paleta */}
           {(extracted.color_palette?.length ?? 0) > 0 && (
-            <BSection title="Paleta de Cores">
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Paleta de Cores</p>
               <div className="flex gap-2 flex-wrap">
                 {extracted.color_palette.map((cor) => (
                   <div key={cor} className="flex flex-col items-center gap-1">
-                    <div className="w-10 h-10 rounded-xl border border-white/10" style={{ backgroundColor: cor }} title={cor} />
+                    <div className="w-10 h-10 rounded-xl border border-white/10" style={{ backgroundColor: cor }} />
                     <span className="text-[9px] text-gray-600 font-mono">{cor}</span>
                   </div>
                 ))}
               </div>
-            </BSection>
+            </div>
           )}
 
           {/* Scores */}
-          <BSection title="Score — Perfil do Cliente Ideal">
+          <div>
+            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Score — Perfil do Cliente Ideal</p>
             <div className="grid grid-cols-3 gap-3">
               {[
-                { label: 'Presença Online',           score: scores.presenca,  motivo: scores.presencaMotivo },
+                { label: 'Presença Online', score: scores.presenca, motivo: scores.presencaMotivo },
                 { label: 'Investimento em Marketing', score: scores.marketing, motivo: scores.marketingMotivo },
-                { label: 'Estrutura Operacional',     score: scores.estrutura, motivo: scores.estruturaMotivo },
+                { label: 'Estrutura Operacional', score: scores.estrutura, motivo: scores.estruturaMotivo },
               ].map((item) => (
                 <div key={item.label} className="flex flex-col gap-2 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                   <p className="text-[9px] font-black uppercase tracking-widest text-gray-600">{item.label}</p>
-                  <span className={`inline-flex self-start px-2 py-0.5 rounded-lg border text-[9px] font-black uppercase tracking-widest ${scoreBadge(item.score)}`}>
+                  <span className={`self-start px-2 py-0.5 rounded-lg border text-[9px] font-black uppercase tracking-widest ${scoreBadge(item.score)}`}>
                     {scoreLabel(item.score)}
                   </span>
-                  <p className="text-xs text-gray-500 leading-relaxed">{item.motivo}</p>
+                  <p className="text-xs text-gray-500">{item.motivo}</p>
                 </div>
               ))}
             </div>
-          </BSection>
-
-          <div className="h-px bg-white/5" />
+          </div>
 
           {/* Contatos */}
-          <BSection title="Contatos">
-            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
-              {contatos.filter(([, v]) => v).map(([label, value]) => (
-                <div key={label}>
-                  <BLabel>{label}</BLabel>
-                  <BValue>{value}</BValue>
+          <div>
+            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Contatos</p>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                ['Telefone', extracted.phone],
+                ['WhatsApp', extracted.whatsapp],
+                ['Instagram', extracted.instagram],
+                ['Facebook', extracted.facebook],
+                ['YouTube', extracted.youtube],
+                ['TikTok', extracted.tiktok],
+                ['LinkedIn', extracted.linkedin],
+                ['Website', extracted.website],
+                ['Catálogo', extracted.catalog_url],
+                ['Email', extracted.email],
+              ].filter(([, v]) => v).map(([label, value]) => (
+                <div key={label as string}>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700">{label}</p>
+                  <p className="text-sm text-white mt-0.5">{value}</p>
                 </div>
               ))}
               {(extracted.extra_phones?.length ?? 0) > 0 && (
                 <div className="col-span-2">
-                  <BLabel>Telefones adicionais</BLabel>
-                  <BValue>{(extracted.extra_phones ?? []).join(' · ')}</BValue>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Telefones adicionais</p>
+                  <p className="text-sm text-white mt-0.5">{extracted.extra_phones.join(', ')}</p>
                 </div>
               )}
             </div>
-          </BSection>
+          </div>
 
           {/* Localização */}
-          {(extracted.address || extracted.city || extracted.state || extracted.cep) && (
-            <BSection title="Localização">
-              <div className="grid grid-cols-2 gap-x-6 gap-y-3">
-                {extracted.address && <div className="col-span-2"><BLabel>Endereço</BLabel><BValue>{extracted.address}</BValue></div>}
-                {extracted.city    && <div><BLabel>Cidade</BLabel><BValue>{extracted.city}</BValue></div>}
-                {extracted.state   && <div><BLabel>Estado</BLabel><BValue>{extracted.state}</BValue></div>}
-                {extracted.cep     && <div><BLabel>CEP</BLabel><BValue>{extracted.cep}</BValue></div>}
+          {(extracted.address || extracted.city) && (
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Localização</p>
+              <div className="grid grid-cols-2 gap-3">
+                {extracted.address && <div className="col-span-2"><p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Endereço</p><p className="text-sm text-white mt-0.5">{extracted.address}</p></div>}
+                {extracted.city && <div><p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Cidade</p><p className="text-sm text-white mt-0.5">{extracted.city}</p></div>}
+                {extracted.cep && <div><p className="text-[9px] font-black uppercase tracking-widest text-gray-700">CEP</p><p className="text-sm text-white mt-0.5">{extracted.cep}</p></div>}
               </div>
-            </BSection>
+            </div>
           )}
 
           {/* Descrição */}
           {extracted.description_full && (
-            <BSection title="Descrição">
-              <p className="text-sm text-gray-400 leading-relaxed whitespace-pre-wrap">{extracted.description_full}</p>
-            </BSection>
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Descrição</p>
+              <p className="text-sm text-gray-400 leading-relaxed">{extracted.description_full}</p>
+            </div>
           )}
 
           {/* Serviços */}
           {(extracted.services?.length ?? 0) > 0 && (
-            <BSection title="Serviços">
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Serviços</p>
               <div className="flex flex-wrap gap-1.5">
-                {(extracted.services ?? []).map((s) => (
+                {extracted.services.map((s) => (
                   <span key={s} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{s}</span>
                 ))}
               </div>
-            </BSection>
+            </div>
           )}
 
           {/* Diferenciais */}
           {(extracted.differentials?.length ?? 0) > 0 && (
-            <BSection title="Diferenciais">
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Diferenciais</p>
               <div className="flex flex-wrap gap-1.5">
-                {(extracted.differentials ?? []).map((d) => (
+                {extracted.differentials.map((d) => (
                   <span key={d} className="px-2 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-400">{d}</span>
                 ))}
               </div>
-            </BSection>
+            </div>
           )}
 
           {/* Horários */}
           {extracted.business_hours && Object.keys(extracted.business_hours).length > 0 && (
-            <BSection title="Horários de Funcionamento">
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Horários</p>
               <div className="grid grid-cols-2 gap-x-8 gap-y-1">
                 {Object.entries(extracted.business_hours).map(([dia, hora]) => (
-                  <div key={dia} className="flex justify-between gap-2 py-0.5 border-b border-white/[0.04]">
+                  <div key={dia} className="flex justify-between py-0.5 border-b border-white/[0.04]">
                     <span className="text-xs text-gray-600">{dia}</span>
                     <span className="text-xs text-white">{hora}</span>
                   </div>
                 ))}
               </div>
-            </BSection>
+            </div>
           )}
 
           {/* Avaliação */}
           {(extracted.rating != null || extracted.total_reviews != null) && (
-            <BSection title="Avaliação no Google">
-              <div className="flex gap-8">
-                {extracted.rating != null && (
-                  <div>
-                    <BLabel>Nota</BLabel>
-                    <p className="text-2xl font-black text-yellow-400 mt-1">⭐ {extracted.rating}</p>
-                  </div>
-                )}
-                {extracted.total_reviews != null && (
-                  <div>
-                    <BLabel>Avaliações</BLabel>
-                    <p className="text-2xl font-black text-white mt-1">{extracted.total_reviews}</p>
-                  </div>
-                )}
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Avaliação no Google</p>
+              <div className="flex gap-6">
+                {extracted.rating != null && <div><p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Nota</p><p className="text-2xl font-black text-yellow-400 mt-1">⭐ {extracted.rating}</p></div>}
+                {extracted.total_reviews != null && <div><p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Avaliações</p><p className="text-2xl font-black text-white mt-1">{extracted.total_reviews}</p></div>}
               </div>
-            </BSection>
+            </div>
           )}
 
           {/* Pagamentos */}
           {(extracted.payments?.length ?? 0) > 0 && (
-            <BSection title="Formas de Pagamento">
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Formas de Pagamento</p>
               <div className="flex flex-wrap gap-1.5">
-                {(extracted.payments ?? []).map((p) => (
+                {extracted.payments.map((p) => (
                   <span key={p} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{p}</span>
                 ))}
               </div>
-            </BSection>
+            </div>
           )}
 
           {/* Acessibilidade */}
           {(extracted.accessibility?.length ?? 0) > 0 && (
-            <BSection title="Acessibilidade">
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Acessibilidade</p>
               <div className="flex flex-wrap gap-1.5">
-                {(extracted.accessibility ?? []).map((a) => (
+                {extracted.accessibility.map((a) => (
                   <span key={a} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{a}</span>
                 ))}
               </div>
-            </BSection>
+            </div>
           )}
 
-          <div className="h-px bg-white/5" />
-
           {/* Rodapé */}
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between pt-2 border-t border-white/5">
             <p className="text-xs text-gray-700">CSP Nexora — cspnexora.com.br</p>
             <p className="text-xs text-gray-700">Extração: {today}</p>
           </div>
 
-          {/* Baixar PDF */}
+          {/* Botão PDF */}
           <button
             onClick={() => window.print()}
-            className="no-print flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all bg-violet-500/20 border border-violet-500/40 text-violet-400 hover:bg-violet-500/30"
+            className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest bg-violet-500/20 border border-violet-500/40 text-violet-400 hover:bg-violet-500/30"
           >
             <Printer className="w-3.5 h-3.5" />
             Baixar PDF
           </button>
+
         </div>
       </div>
     </div>
