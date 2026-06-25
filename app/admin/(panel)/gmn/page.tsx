@@ -149,24 +149,6 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
 
   const scores = calcScores(extracted);
 
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.id = 'briefing-print-style';
-    style.textContent = `
-      @media print {
-        body * { visibility: hidden !important; }
-        #briefing-print-root { visibility: visible !important; position: fixed !important; inset: 0 !important; width: 100% !important; height: auto !important; overflow: visible !important; background: white !important; z-index: 99999 !important; padding: 24px !important; box-sizing: border-box !important; }
-        #briefing-print-root * { visibility: visible !important; color: black !important; background: transparent !important; border-color: #ddd !important; }
-        #briefing-print-root img { visibility: visible !important; }
-        .no-print { display: none !important; visibility: hidden !important; }
-      }
-    `;
-    document.head.appendChild(style);
-    return () => {
-      document.getElementById('briefing-print-style')?.remove();
-    };
-  }, []);
-
   return (
     <div className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto bg-black p-4 pt-8">
       <div id="briefing-print-root" className="w-full max-w-3xl bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-8">
@@ -365,9 +347,105 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
               const nomeArquivo = extracted.company_name
                 ? extracted.company_name.replace(/[^a-zA-Z0-9À-ÿ\s]/g, '').trim().replace(/\s+/g, '_')
                 : 'briefing';
-              document.title = `Briefing_${nomeArquivo}`;
-              window.print();
-              setTimeout(() => { document.title = 'CSP Nexora | Automação com IA e Agentes Inteligentes'; }, 2000);
+
+              const logoHtml = extracted.logo_url
+                ? `<img src="${extracted.logo_url}" class="logo" alt="Logo" />`
+                : '';
+
+              const nicheHtml = extracted.niche
+                ? `<span class="niche-badge">${nichoLabel[extracted.niche] ?? extracted.niche}</span>`
+                : '';
+
+              const paletaHtml = (extracted.color_palette?.length ?? 0) > 0
+                ? `<div class="section"><div class="section-title">Paleta de Cores</div><div class="palette">${extracted.color_palette.map(c => `<div class="palette-item"><div class="palette-swatch" style="background:${c}"></div><span class="palette-hex">${c}</span></div>`).join('')}</div></div>`
+                : '';
+
+              const scoresHtml = [
+                { label: 'Presença Online',            score: scores.presenca,  motivo: scores.presencaMotivo },
+                { label: 'Investimento em Marketing',  score: scores.marketing, motivo: scores.marketingMotivo },
+                { label: 'Estrutura Operacional',      score: scores.estrutura, motivo: scores.estruturaMotivo },
+              ].map(item => `<div class="score-card"><div class="score-label">${item.label}</div><span class="score-badge ${item.score}">${item.score === 'alto' ? 'Alto' : item.score === 'medio' ? 'Médio' : 'Baixo'}</span><div class="score-motivo">${item.motivo}</div></div>`).join('');
+
+              const contatoFields: [string, string][] = ([
+                ['Telefone', extracted.phone],
+                ['WhatsApp', extracted.whatsapp],
+                ['Instagram', extracted.instagram],
+                ['Facebook', extracted.facebook],
+                ['YouTube', extracted.youtube],
+                ['TikTok', extracted.tiktok],
+                ['LinkedIn', extracted.linkedin],
+                ['Website', extracted.website],
+                ['Catálogo', extracted.catalog_url],
+                ['Email', extracted.email],
+              ] as [string, string | null][]).filter((p): p is [string, string] => !!p[1]);
+
+              const extraPhonesHtml = (extracted.extra_phones?.length ?? 0) > 0
+                ? `<div style="grid-column:span 2"><div class="field-label">Telefones adicionais</div><div class="field-value">${extracted.extra_phones.join(', ')}</div></div>`
+                : '';
+
+              const horariosRows = extracted.business_hours && Object.keys(extracted.business_hours).length > 0
+                ? Object.entries(extracted.business_hours).map(([dia, hora]) => `<div class="hour-row"><span class="hour-day">${dia}</span><span class="hour-time">${hora}</span></div>`).join('')
+                : '';
+
+              const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8" /><title>Briefing</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#111;background:#fff;padding:32px;max-width:800px;margin:auto}
+.header{display:flex;align-items:flex-start;gap:16px;padding-bottom:20px;border-bottom:2px solid #eee;margin-bottom:24px}
+.logo{width:72px;height:72px;border-radius:12px;object-fit:contain;border:1px solid #eee;flex-shrink:0}
+h1{font-size:24px;font-weight:900;color:#111}
+.category{font-size:13px;color:#666;margin-top:2px}
+.niche-badge{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:6px;background:#eff6ff;border:1px solid #bfdbfe;color:#3b82f6;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.section{margin-bottom:20px}
+.section-title{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#999;margin-bottom:8px}
+.palette{display:flex;gap:8px;flex-wrap:wrap}
+.palette-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+.palette-swatch{width:40px;height:40px;border-radius:8px;border:1px solid #eee}
+.palette-hex{font-size:9px;color:#888;font-family:monospace}
+.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.score-card{padding:12px;border-radius:10px;background:#f9f9f9;border:1px solid #eee}
+.score-label{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#666;margin-bottom:6px}
+.score-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;border:1px solid}
+.score-badge.alto{background:#ecfdf5;border-color:#6ee7b7;color:#059669}
+.score-badge.medio{background:#fefce8;border-color:#fde047;color:#ca8a04}
+.score-badge.baixo{background:#fef2f2;border-color:#fca5a5;color:#dc2626}
+.score-motivo{font-size:11px;color:#888;margin-top:4px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.field-label{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#999}
+.field-value{font-size:13px;color:#111;margin-top:2px;word-break:break-word}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{padding:4px 8px;border-radius:6px;background:#f3f4f6;border:1px solid #e5e7eb;font-size:11px;color:#555}
+.tag-cyan{background:#ecfeff;border-color:#a5f3fc;color:#0891b2}
+.hours-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0 32px}
+.hour-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #f3f4f6;font-size:12px}
+.hour-day{color:#999}
+.hour-time{color:#111}
+.rating{display:flex;gap:24px}
+.rating-val{font-size:28px;font-weight:900;color:#f59e0b;margin-top:4px}
+.reviews-val{font-size:28px;font-weight:900;color:#111;margin-top:4px}
+.footer{display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #eee;margin-top:8px}
+.footer p{font-size:11px;color:#bbb}
+@media print{body{padding:16px}@page{margin:1cm}}
+</style></head><body>
+<div class="header">${logoHtml}<div><h1>${extracted.company_name ?? ''}</h1>${extracted.gmn_category ? `<div class="category">${extracted.gmn_category}</div>` : ''}${nicheHtml}</div></div>
+${paletaHtml}
+<div class="section"><div class="section-title">Score — Perfil do Cliente Ideal</div><div class="scores">${scoresHtml}</div></div>
+${contatoFields.length > 0 || extraPhonesHtml ? `<div class="section"><div class="section-title">Contatos</div><div class="grid-2">${contatoFields.map(([l, v]) => `<div><div class="field-label">${l}</div><div class="field-value">${v}</div></div>`).join('')}${extraPhonesHtml}</div></div>` : ''}
+${extracted.address || extracted.city ? `<div class="section"><div class="section-title">Localização</div><div class="grid-2">${extracted.address ? `<div style="grid-column:span 2"><div class="field-label">Endereço</div><div class="field-value">${extracted.address}</div></div>` : ''}${extracted.city ? `<div><div class="field-label">Cidade</div><div class="field-value">${extracted.city}</div></div>` : ''}${extracted.cep ? `<div><div class="field-label">CEP</div><div class="field-value">${extracted.cep}</div></div>` : ''}</div></div>` : ''}
+${extracted.description_full ? `<div class="section"><div class="section-title">Descrição</div><p style="font-size:13px;color:#555;line-height:1.6">${extracted.description_full}</p></div>` : ''}
+${(extracted.services?.length ?? 0) > 0 ? `<div class="section"><div class="section-title">Serviços</div><div class="tags">${extracted.services.map(sv => `<span class="tag">${sv}</span>`).join('')}</div></div>` : ''}
+${(extracted.differentials?.length ?? 0) > 0 ? `<div class="section"><div class="section-title">Diferenciais</div><div class="tags">${extracted.differentials.map(d => `<span class="tag tag-cyan">${d}</span>`).join('')}</div></div>` : ''}
+${horariosRows ? `<div class="section"><div class="section-title">Horários</div><div class="hours-grid">${horariosRows}</div></div>` : ''}
+${extracted.rating != null || extracted.total_reviews != null ? `<div class="section"><div class="section-title">Avaliação no Google</div><div class="rating">${extracted.rating != null ? `<div><div class="field-label">Nota</div><div class="rating-val">⭐ ${extracted.rating}</div></div>` : ''}${extracted.total_reviews != null ? `<div><div class="field-label">Avaliações</div><div class="reviews-val">${extracted.total_reviews}</div></div>` : ''}</div></div>` : ''}
+${(extracted.payments?.length ?? 0) > 0 ? `<div class="section"><div class="section-title">Formas de Pagamento</div><div class="tags">${extracted.payments.map(pm => `<span class="tag">${pm}</span>`).join('')}</div></div>` : ''}
+${(extracted.accessibility?.length ?? 0) > 0 ? `<div class="section"><div class="section-title">Acessibilidade</div><div class="tags">${extracted.accessibility.map(ac => `<span class="tag">${ac}</span>`).join('')}</div></div>` : ''}
+<div class="footer"><p>CSP Nexora — cspnexora.com.br</p><p>Extração: ${today}</p></div>
+<script>window.onload=function(){document.title='Briefing_${nomeArquivo}';window.print()}<\/script>
+</body></html>`;
+
+              const janela = window.open('', '_blank');
+              if (!janela) return;
+              janela.document.write(html);
+              janela.document.close();
             }}
             className="no-print flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest bg-violet-500/20 border border-violet-500/40 text-violet-400 hover:bg-violet-500/30"
           >
