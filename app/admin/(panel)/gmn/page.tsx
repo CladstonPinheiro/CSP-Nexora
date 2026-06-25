@@ -344,6 +344,7 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           {/* Botão PDF */}
           <button
             onClick={() => {
+              const s = calcScores(extracted);
               const nomeArquivo = extracted.company_name
                 ? extracted.company_name.replace(/[^a-zA-Z0-9À-ÿ\s]/g, '').trim().replace(/\s+/g, '_')
                 : 'briefing';
@@ -361,9 +362,9 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
                 : '';
 
               const scoresHtml = [
-                { label: 'Presença Online',            score: scores.presenca,  motivo: scores.presencaMotivo },
-                { label: 'Investimento em Marketing',  score: scores.marketing, motivo: scores.marketingMotivo },
-                { label: 'Estrutura Operacional',      score: scores.estrutura, motivo: scores.estruturaMotivo },
+                { label: 'Presença Online',            score: s.presenca,  motivo: s.presencaMotivo },
+                { label: 'Investimento em Marketing',  score: s.marketing, motivo: s.marketingMotivo },
+                { label: 'Estrutura Operacional',      score: s.estrutura, motivo: s.estruturaMotivo },
               ].map(item => `<div class="score-card"><div class="score-label">${item.label}</div><span class="score-badge ${item.score}">${item.score === 'alto' ? 'Alto' : item.score === 'medio' ? 'Médio' : 'Baixo'}</span><div class="score-motivo">${item.motivo}</div></div>`).join('');
 
               const contatoFields: [string, string][] = ([
