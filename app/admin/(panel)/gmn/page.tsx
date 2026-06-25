@@ -154,10 +154,10 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
     style.id = 'briefing-print-style';
     style.textContent = `
       @media print {
-        body > * { display: none !important; }
-        #briefing-print-root { display: block !important; position: fixed; inset: 0; z-index: 9999; background: white; overflow: auto; }
-        #briefing-print-root * { color: black !important; border-color: #ddd !important; background: white !important; }
-        #briefing-print-root .no-print { display: none !important; }
+        body * { visibility: hidden; }
+        #briefing-print-root, #briefing-print-root * { visibility: visible; }
+        #briefing-print-root { position: absolute; left: 0; top: 0; width: 100%; }
+        .no-print { display: none !important; }
       }
     `;
     document.head.appendChild(style);
