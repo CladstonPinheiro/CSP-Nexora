@@ -243,7 +243,10 @@ ${rawText}`;
       }, { status: 500 });
     }
 
-    if (logoUrl?.trim()) parsed.logo_url = logoUrl.trim();
+    if (logoUrl?.trim()) {
+      const srcMatch = logoUrl.match(/src="([^"]+)"/);
+      parsed.logo_url = srcMatch ? srcMatch[1] : logoUrl.trim();
+    }
     console.log('[GMN] parsed.address:', parsed.address);
     const enriched = inferFields(parsed, rawText);
     console.log('[GMN] enriched.neighborhood:', enriched.neighborhood, 'cep:', enriched.cep, 'state:', enriched.state, 'is_open_24h:', enriched.is_open_24h, 'description_short:', enriched.description_short?.slice(0, 50));
