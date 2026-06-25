@@ -31,10 +31,10 @@ export default function OfertaPage() {
       <main className="min-h-screen bg-[#050505] pt-[72px]">
         <HeroOferta />
         <ProblemaSection />
-        <BeneficiosSection />
         <GoogleComparativoSection />
-        <EntregaSection />
+        <BeneficiosSection />
         <ProcessoSection />
+        <EntregaSection />
         <PlanosSection />
         <FAQSection />
         <ContatoSection />
