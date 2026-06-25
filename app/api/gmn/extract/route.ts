@@ -173,7 +173,7 @@ Retorne APENAS um objeto JSON válido, sem texto adicional, markdown ou blocos d
 TEXTO DO GOOGLE MEU NEGÓCIO:
 ${rawText}`;
 
-  const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
   const geminiBody = JSON.stringify({
     contents: [{ parts: [{ text: prompt }] }],
     generationConfig: { responseMimeType: 'application/json', temperature: 0.1 },
