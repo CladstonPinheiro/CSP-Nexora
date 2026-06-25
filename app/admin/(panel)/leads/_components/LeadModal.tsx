@@ -27,6 +27,7 @@ const EMPTY_FORM = {
   indicado_por: '',
   score: '',
   anotacoes: '',
+  site_demo: '',
 };
 
 const INPUT =
@@ -57,6 +58,7 @@ function leadToForm(lead: Lead) {
     indicado_por: lead.referred_by ?? '',
     score:       lead.score ?? '',
     anotacoes:   lead.notes ?? '',
+    site_demo:   lead.site_demo ?? '',
   };
 }
 
@@ -101,6 +103,7 @@ export function LeadModal({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
       referred_by:  form.origem === 'indicacao' ? (form.indicado_por || null) : null,
       score:        form.score || null,
       notes:        form.anotacoes || null,
+      site_demo:    form.site_demo || null,
     };
 
     const { data, error: dbError } = lead
@@ -238,6 +241,11 @@ export function LeadModal({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
                   </select>
                 </Field>
               </div>
+
+              {/* Site Demo */}
+              <Field label="Link do Site Demo">
+                <input type="url" value={form.site_demo} onChange={set('site_demo')} placeholder="https://..." className={INPUT} />
+              </Field>
 
               {/* Anotações */}
               <Field label="Anotações">

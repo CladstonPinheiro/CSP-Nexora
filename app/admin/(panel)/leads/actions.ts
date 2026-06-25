@@ -19,6 +19,7 @@ export type LeadPayload = {
   referred_by?: string | null;
   score?: string | null;
   notes?: string | null;
+  site_demo?: string | null;
 };
 
 export async function createLead(
