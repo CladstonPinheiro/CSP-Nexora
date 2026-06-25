@@ -343,7 +343,14 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
 
           {/* Botão PDF */}
           <button
-            onClick={() => window.print()}
+            onClick={() => {
+              const nomeArquivo = extracted.company_name
+                ? extracted.company_name.replace(/[^a-zA-Z0-9À-ÿ\s]/g, '').trim().replace(/\s+/g, '_')
+                : 'briefing';
+              document.title = `Briefing_${nomeArquivo}`;
+              window.print();
+              setTimeout(() => { document.title = 'CSP Nexora | Automação com IA e Agentes Inteligentes'; }, 2000);
+            }}
             className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest bg-violet-500/20 border border-violet-500/40 text-violet-400 hover:bg-violet-500/30"
           >
             <Printer className="w-3.5 h-3.5" />
