@@ -209,7 +209,7 @@ ${rawText}`;
 
   const geminiBody = JSON.stringify({
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { responseMimeType: 'application/json', temperature: 0.1 },
+    generationConfig: { temperature: 0.1 },
   });
 
   try {
