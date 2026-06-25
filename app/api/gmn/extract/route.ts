@@ -148,7 +148,17 @@ async function callGeminiWithFallback(apiKey: string, body: string): Promise<{ r
 }
 
 export async function POST(req: NextRequest) {
-  const { rawText, logoUrl } = await req.json();
+  const { rawText, logoUrl: rawLogoUrl } = await req.json();
+
+  function extractImageUrl(input: string): string {
+    const htmlMatch = input.match(/src="([^"]+)"/);
+    if (htmlMatch) return htmlMatch[1];
+    const bbMatch = input.match(/\[img\]([^\[]+)\[\/img\]/i);
+    if (bbMatch) return bbMatch[1];
+    return input.trim();
+  }
+
+  const logoUrl = rawLogoUrl?.trim() ? extractImageUrl(rawLogoUrl) : null;
 
   if (!rawText?.trim()) {
     return NextResponse.json({ error: 'rawText é obrigatório.' }, { status: 400 });
@@ -162,9 +172,9 @@ export async function POST(req: NextRequest) {
   // Fetch da imagem da logo para análise de cores
   let logoBase64: string | null = null;
   let logoMimeType: string = 'image/png';
-  if (logoUrl?.trim()) {
+  if (logoUrl) {
     try {
-      const imgRes = await fetch(logoUrl.trim());
+      const imgRes = await fetch(logoUrl);
       const imgBuffer = await imgRes.arrayBuffer();
       logoBase64 = Buffer.from(imgBuffer).toString('base64');
       logoMimeType = imgRes.headers.get('content-type') ?? 'image/png';
@@ -290,9 +300,8 @@ ${rawText}`;
       }, { status: 500 });
     }
 
-    if (logoUrl?.trim()) {
-      const srcMatch = logoUrl.match(/src="([^"]+)"/);
-      parsed.logo_url = srcMatch ? srcMatch[1] : logoUrl.trim();
+    if (logoUrl) {
+      parsed.logo_url = logoUrl;
     }
     console.log('[GMN] parsed.address:', parsed.address);
     const enriched = inferFields(parsed, rawText);
