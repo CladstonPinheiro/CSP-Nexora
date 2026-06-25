@@ -17,6 +17,8 @@ import {
   FileText,
   History,
   Trash2,
+  X,
+  Printer,
 } from 'lucide-react';
 import type { GmnExtracted } from '@/app/api/gmn/extract/route';
 
@@ -54,6 +56,306 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' });
 }
 
+function BSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 print:text-gray-500">{title}</p>
+      {children}
+    </div>
+  );
+}
+
+function BLabel({ children }: { children: React.ReactNode }) {
+  return <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mt-1 print:text-gray-500">{children}</p>;
+}
+
+function BValue({ children }: { children: React.ReactNode }) {
+  return <p className="text-sm text-white break-words print:text-black">{children}</p>;
+}
+
+function calcScores(e: GmnExtracted) {
+  let presenca: 'alto' | 'medio' | 'baixo';
+  let presencaMotivo: string;
+  if (e.website || (e.instagram_followers != null && e.instagram_followers > 200 && e.instagram_posts != null && e.instagram_posts > 50) || e.youtube || e.tiktok) {
+    presenca = 'alto';
+    presencaMotivo = [
+      e.website && 'Tem site próprio',
+      e.youtube && 'Canal no YouTube',
+      e.tiktok && 'Presença no TikTok',
+      e.instagram_followers != null && e.instagram_followers > 200 && `${e.instagram_followers} seguidores no Instagram`,
+    ].filter(Boolean).join(', ') || 'Forte presença digital';
+  } else if (e.instagram || e.facebook || (e.rating != null && e.rating > 4.0)) {
+    presenca = 'medio';
+    presencaMotivo = [
+      e.instagram && 'Tem Instagram',
+      e.facebook && 'Tem Facebook',
+      e.rating != null && e.rating > 4.0 && `Nota ${e.rating} no Google`,
+    ].filter(Boolean).join(', ') || 'Presença básica em redes sociais';
+  } else {
+    presenca = 'baixo';
+    presencaMotivo = 'Sem presença digital identificada';
+  }
+
+  let marketing: 'alto' | 'medio' | 'baixo';
+  let marketingMotivo: string;
+  if (e.rating != null && e.total_reviews != null && e.total_reviews > 20 && e.instagram_followers != null && e.instagram_followers > 100) {
+    marketing = 'alto';
+    marketingMotivo = `${e.total_reviews} avaliações e ${e.instagram_followers} seguidores no Instagram`;
+  } else if (e.rating != null || e.instagram) {
+    marketing = 'medio';
+    marketingMotivo = [
+      e.rating != null && `Nota ${e.rating} no Google`,
+      e.instagram && 'Tem Instagram',
+    ].filter(Boolean).join(', ') || 'Sinais moderados de investimento';
+  } else {
+    marketing = 'baixo';
+    marketingMotivo = 'Sem avaliações ou redes identificadas';
+  }
+
+  let estrutura: 'alto' | 'medio' | 'baixo';
+  let estruturaMotivo: string;
+  if (e.extra_phones.length > 0 && e.services.length > 1 && e.has_delivery) {
+    estrutura = 'alto';
+    estruturaMotivo = `${e.extra_phones.length + 1} telefones, ${e.services.length} serviços e entrega`;
+  } else if (e.services.length > 1 || e.has_delivery || e.payments.length > 1) {
+    estrutura = 'medio';
+    estruturaMotivo = [
+      e.services.length > 1 && `${e.services.length} serviços`,
+      e.has_delivery && 'Faz entrega',
+      e.payments.length > 1 && `${e.payments.length} formas de pagamento`,
+    ].filter(Boolean).join(', ') || 'Estrutura moderada';
+  } else {
+    estrutura = 'baixo';
+    estruturaMotivo = 'Poucas informações operacionais';
+  }
+
+  return { presenca, presencaMotivo, marketing, marketingMotivo, estrutura, estruturaMotivo };
+}
+
+function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClose: () => void }) {
+  const scores = calcScores(extracted);
+  const today = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+  const scoreBadge = (s: 'alto' | 'medio' | 'baixo') =>
+    s === 'alto'  ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400' :
+    s === 'medio' ? 'bg-yellow-500/15 border-yellow-500/30 text-yellow-400' :
+                    'bg-red-500/15 border-red-500/30 text-red-400';
+  const scoreLabel = (s: 'alto' | 'medio' | 'baixo') =>
+    s === 'alto' ? 'Alto' : s === 'medio' ? 'Médio' : 'Baixo';
+
+  const contatos: [string, string | null | undefined][] = [
+    ['Telefone', extracted.phone],
+    ['WhatsApp', extracted.whatsapp],
+    ['Instagram', extracted.instagram],
+    ['Facebook', extracted.facebook],
+    ['YouTube', extracted.youtube],
+    ['TikTok', extracted.tiktok],
+    ['LinkedIn', extracted.linkedin],
+    ['Website', extracted.website],
+    ['Catálogo', extracted.catalog_url],
+    ['Email', extracted.email],
+  ];
+
+  return (
+    <div className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto bg-black/80 backdrop-blur-sm p-4 pt-8">
+      <style>{`@media print { .no-print { display: none !important; } body > *:not(#briefing-root) { display: none !important; } #briefing-root { position: fixed; inset: 0; overflow: auto; background: white; color: black; } }`}</style>
+      <div id="briefing-root" className="w-full max-w-3xl bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-8">
+
+        {/* Cabeçalho */}
+        <div className="flex items-start justify-between px-6 py-5 border-b border-white/5">
+          <div className="flex items-start gap-4 flex-1 min-w-0">
+            {extracted.logo_url && (
+              <img src={extracted.logo_url} alt="Logo" className="w-16 h-16 rounded-xl object-contain border border-white/10 shrink-0" />
+            )}
+            <div className="min-w-0">
+              <h2 className="text-2xl font-black text-white tracking-tight">{extracted.company_name || '—'}</h2>
+              {extracted.gmn_category && <p className="text-sm text-gray-500 mt-0.5">{extracted.gmn_category}</p>}
+              {extracted.niche && (
+                <span className="inline-block mt-1 px-2 py-0.5 rounded-lg border bg-blue-500/10 border-blue-500/20 text-blue-400 text-[9px] font-black uppercase tracking-widest">
+                  {nichoLabel[extracted.niche] ?? extracted.niche}
+                </span>
+              )}
+            </div>
+          </div>
+          <button onClick={onClose} className="no-print shrink-0 w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all ml-4">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="px-6 py-5 flex flex-col gap-6">
+
+          {/* Paleta de cores */}
+          {extracted.color_palette && extracted.color_palette.length > 0 && (
+            <BSection title="Paleta de Cores">
+              <div className="flex gap-2 flex-wrap">
+                {extracted.color_palette.map((cor) => (
+                  <div key={cor} className="flex flex-col items-center gap-1">
+                    <div className="w-10 h-10 rounded-xl border border-white/10" style={{ backgroundColor: cor }} title={cor} />
+                    <span className="text-[9px] text-gray-600 font-mono">{cor}</span>
+                  </div>
+                ))}
+              </div>
+            </BSection>
+          )}
+
+          {/* Scores */}
+          <BSection title="Score — Perfil do Cliente Ideal">
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { label: 'Presença Online',           score: scores.presenca,  motivo: scores.presencaMotivo },
+                { label: 'Investimento em Marketing', score: scores.marketing, motivo: scores.marketingMotivo },
+                { label: 'Estrutura Operacional',     score: scores.estrutura, motivo: scores.estruturaMotivo },
+              ].map((item) => (
+                <div key={item.label} className="flex flex-col gap-2 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-600">{item.label}</p>
+                  <span className={`inline-flex self-start px-2 py-0.5 rounded-lg border text-[9px] font-black uppercase tracking-widest ${scoreBadge(item.score)}`}>
+                    {scoreLabel(item.score)}
+                  </span>
+                  <p className="text-xs text-gray-500 leading-relaxed">{item.motivo}</p>
+                </div>
+              ))}
+            </div>
+          </BSection>
+
+          <div className="h-px bg-white/5" />
+
+          {/* Contatos */}
+          <BSection title="Contatos">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+              {contatos.filter(([, v]) => v).map(([label, value]) => (
+                <div key={label}>
+                  <BLabel>{label}</BLabel>
+                  <BValue>{value}</BValue>
+                </div>
+              ))}
+              {extracted.extra_phones.length > 0 && (
+                <div className="col-span-2">
+                  <BLabel>Telefones adicionais</BLabel>
+                  <BValue>{extracted.extra_phones.join(' · ')}</BValue>
+                </div>
+              )}
+            </div>
+          </BSection>
+
+          {/* Localização */}
+          {(extracted.address || extracted.city || extracted.state || extracted.cep) && (
+            <BSection title="Localização">
+              <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                {extracted.address && <div className="col-span-2"><BLabel>Endereço</BLabel><BValue>{extracted.address}</BValue></div>}
+                {extracted.city    && <div><BLabel>Cidade</BLabel><BValue>{extracted.city}</BValue></div>}
+                {extracted.state   && <div><BLabel>Estado</BLabel><BValue>{extracted.state}</BValue></div>}
+                {extracted.cep     && <div><BLabel>CEP</BLabel><BValue>{extracted.cep}</BValue></div>}
+              </div>
+            </BSection>
+          )}
+
+          {/* Descrição */}
+          {extracted.description_full && (
+            <BSection title="Descrição">
+              <p className="text-sm text-gray-400 leading-relaxed whitespace-pre-wrap">{extracted.description_full}</p>
+            </BSection>
+          )}
+
+          {/* Serviços */}
+          {extracted.services.length > 0 && (
+            <BSection title="Serviços">
+              <div className="flex flex-wrap gap-1.5">
+                {extracted.services.map((s) => (
+                  <span key={s} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{s}</span>
+                ))}
+              </div>
+            </BSection>
+          )}
+
+          {/* Diferenciais */}
+          {extracted.differentials.length > 0 && (
+            <BSection title="Diferenciais">
+              <div className="flex flex-wrap gap-1.5">
+                {extracted.differentials.map((d) => (
+                  <span key={d} className="px-2 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-400">{d}</span>
+                ))}
+              </div>
+            </BSection>
+          )}
+
+          {/* Horários */}
+          {extracted.business_hours && Object.keys(extracted.business_hours).length > 0 && (
+            <BSection title="Horários de Funcionamento">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-1">
+                {Object.entries(extracted.business_hours).map(([dia, hora]) => (
+                  <div key={dia} className="flex justify-between gap-2 py-0.5 border-b border-white/[0.04]">
+                    <span className="text-xs text-gray-600">{dia}</span>
+                    <span className="text-xs text-white">{hora}</span>
+                  </div>
+                ))}
+              </div>
+            </BSection>
+          )}
+
+          {/* Avaliação */}
+          {(extracted.rating != null || extracted.total_reviews != null) && (
+            <BSection title="Avaliação no Google">
+              <div className="flex gap-8">
+                {extracted.rating != null && (
+                  <div>
+                    <BLabel>Nota</BLabel>
+                    <p className="text-2xl font-black text-yellow-400 mt-1">⭐ {extracted.rating}</p>
+                  </div>
+                )}
+                {extracted.total_reviews != null && (
+                  <div>
+                    <BLabel>Avaliações</BLabel>
+                    <p className="text-2xl font-black text-white mt-1">{extracted.total_reviews}</p>
+                  </div>
+                )}
+              </div>
+            </BSection>
+          )}
+
+          {/* Pagamentos */}
+          {extracted.payments.length > 0 && (
+            <BSection title="Formas de Pagamento">
+              <div className="flex flex-wrap gap-1.5">
+                {extracted.payments.map((p) => (
+                  <span key={p} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{p}</span>
+                ))}
+              </div>
+            </BSection>
+          )}
+
+          {/* Acessibilidade */}
+          {extracted.accessibility.length > 0 && (
+            <BSection title="Acessibilidade">
+              <div className="flex flex-wrap gap-1.5">
+                {extracted.accessibility.map((a) => (
+                  <span key={a} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{a}</span>
+                ))}
+              </div>
+            </BSection>
+          )}
+
+          <div className="h-px bg-white/5" />
+
+          {/* Rodapé */}
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-gray-700">CSP Nexora — cspnexora.com.br</p>
+            <p className="text-xs text-gray-700">Extração: {today}</p>
+          </div>
+
+          {/* Baixar PDF */}
+          <button
+            onClick={() => window.print()}
+            className="no-print flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all bg-violet-500/20 border border-violet-500/40 text-violet-400 hover:bg-violet-500/30"
+          >
+            <Printer className="w-3.5 h-3.5" />
+            Baixar PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function GmnPage() {
   const [rawText, setRawText]           = useState('');
   const [logoUrl, setLogoUrl]           = useState('');
@@ -63,6 +365,7 @@ export default function GmnPage() {
   const [error, setError]               = useState('');
   const [crmStatus, setCrmStatus]       = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [copied, setCopied]             = useState(false);
+  const [showBriefing, setShowBriefing] = useState(false);
   const [prospects, setProspects]       = useState<Prospect[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
 
@@ -432,6 +735,14 @@ export default function GmnPage() {
                 </button>
 
                 <button
+                  onClick={() => setShowBriefing(true)}
+                  className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all bg-violet-500/20 border border-violet-500/40 text-violet-400 hover:bg-violet-500/30"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  Ver Briefing
+                </button>
+
+                <button
                   onClick={handleCopyPrompt}
                   className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all disabled:opacity-60 disabled:cursor-not-allowed bg-amber-500 hover:bg-amber-400 text-black hover:-translate-y-0.5 active:translate-y-0"
                 >
@@ -451,6 +762,10 @@ export default function GmnPage() {
           )}
         </div>
       </div>
+
+      {showBriefing && extracted && (
+        <BriefingModal extracted={extracted} onClose={() => setShowBriefing(false)} />
+      )}
     </div>
   );
 }
