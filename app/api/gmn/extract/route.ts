@@ -106,7 +106,7 @@ function inferFields(parsed: GmnExtracted, rawText: string): GmnExtracted {
 }
 
 export async function POST(req: NextRequest) {
-  const { rawText } = await req.json();
+  const { rawText, logoUrl } = await req.json();
 
   if (!rawText?.trim()) {
     return NextResponse.json({ error: 'rawText é obrigatório.' }, { status: 400 });
@@ -201,6 +201,7 @@ ${rawText}`;
       return NextResponse.json({ error: 'Resposta inválida do Gemini.' }, { status: 500 });
     }
 
+    if (logoUrl?.trim()) parsed.logo_url = logoUrl.trim();
     const enriched = inferFields(parsed, rawText);
 
     const supabase = createAdminClient();

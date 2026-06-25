@@ -56,6 +56,7 @@ function formatDate(iso: string) {
 
 export default function GmnPage() {
   const [rawText, setRawText]           = useState('');
+  const [logoUrl, setLogoUrl]           = useState('');
   const [extracting, setExtracting]     = useState('');
   const [extracted, setExtracted]       = useState<GmnExtracted | null>(null);
   const [prospectId, setProspectId]     = useState<string | null>(null);
@@ -90,7 +91,7 @@ export default function GmnPage() {
       const res = await fetch('/api/gmn/extract', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rawText }),
+        body: JSON.stringify({ rawText, logoUrl: logoUrl.trim() || undefined }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? 'Erro desconhecido');
@@ -229,6 +230,18 @@ export default function GmnPage() {
               rows={14}
               className="w-full bg-white/[0.03] border border-white/[0.07] rounded-xl px-4 py-3 text-sm text-white placeholder-gray-700 outline-none resize-none focus:border-blue-500/40 transition-colors font-mono leading-relaxed"
             />
+            <div className="mt-3 flex flex-col gap-1.5">
+              <label className="text-[9px] font-black uppercase tracking-widest text-gray-600">
+                URL da Logo (opcional)
+              </label>
+              <input
+                type="url"
+                value={logoUrl}
+                onChange={(e) => setLogoUrl(e.target.value)}
+                placeholder="https://i.ibb.co/... (faça upload no ImgBB e cole aqui)"
+                className="w-full bg-white/[0.03] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-700 outline-none focus:border-blue-500/40 transition-colors"
+              />
+            </div>
             <button
               onClick={handleExtract}
               disabled={!!extracting || !rawText.trim()}
