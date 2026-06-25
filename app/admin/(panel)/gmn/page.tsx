@@ -171,7 +171,7 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
   ];
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto bg-black/80 backdrop-blur-sm p-4 pt-8">
+    <div className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto bg-black backdrop-blur-sm p-4 pt-8">
       <div id="briefing-root" className="w-full max-w-3xl bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-8">
 
         {/* Cabeçalho */}
