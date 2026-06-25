@@ -149,9 +149,26 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
 
   const scores = calcScores(extracted);
 
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.id = 'briefing-print-style';
+    style.textContent = `
+      @media print {
+        body > * { display: none !important; }
+        #briefing-print-root { display: block !important; position: fixed; inset: 0; z-index: 9999; background: white; overflow: auto; }
+        #briefing-print-root * { color: black !important; border-color: #ddd !important; background: white !important; }
+        #briefing-print-root .no-print { display: none !important; }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.getElementById('briefing-print-style')?.remove();
+    };
+  }, []);
+
   return (
     <div className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto bg-black p-4 pt-8">
-      <div className="w-full max-w-3xl bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-8">
+      <div id="briefing-print-root" className="w-full max-w-3xl bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-8">
 
         {/* Cabeçalho */}
         <div className="flex items-start justify-between px-6 py-5 border-b border-white/5">
@@ -351,7 +368,7 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
               window.print();
               setTimeout(() => { document.title = 'CSP Nexora | Automação com IA e Agentes Inteligentes'; }, 2000);
             }}
-            className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest bg-violet-500/20 border border-violet-500/40 text-violet-400 hover:bg-violet-500/30"
+            className="no-print flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest bg-violet-500/20 border border-violet-500/40 text-violet-400 hover:bg-violet-500/30"
           >
             <Printer className="w-3.5 h-3.5" />
             Baixar PDF
