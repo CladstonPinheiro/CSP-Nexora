@@ -57,25 +57,25 @@ type Plano = {
 
 const planos: Plano[] = [
   {
-    label: "Pagamento à vista",
-    price: "R$ 500",
-    period: "pagamento único no PIX",
-    desc: "Melhor custo-benefício. Paga uma vez e fica tranquilo por 1 ano completo.",
-    cta: "💳 Pagar R$ 500 via PIX",
-    destaque: false,
-    qrCode: "https://i.ibb.co/n8ZBcrb0/QR-CODE-500.png",
-    chavePix: "00020101021126580014br.gov.bcb.pix0136758f6005-f0aa-4b00-a23e-d02c71f2fb085204000053039865406500.005802BR5925CLADSTON DA SILVA PINHEIR6009SAO PAULO622905251KVWPSC6MEQ7Q47WR8HN3WM746304C1DF",
-  },
-  {
     label: "Parcelado em 2×",
     price: "2× R$ 350",
     period: "= R$ 700 no PIX",
     desc: "Divide em dois pagamentos e mantém o fluxo do caixa equilibrado.",
     cta: "💳 Pagar 1ª parcela R$ 350",
-    destaque: true,
-    badge: "⭐ Mais escolhido",
+    destaque: false,
     qrCode: "https://i.ibb.co/gLmRVHVd/QR-CODE-350.png",
     chavePix: "00020101021126580014br.gov.bcb.pix0136758f6005-f0aa-4b00-a23e-d02c71f2fb085204000053039865406350.005802BR5925CLADSTON DA SILVA PINHEIR6009SAO PAULO622905251KVWPV319Y8FZNK8A63N8PNY96304776C",
+  },
+  {
+    label: "Pagamento à vista",
+    price: "R$ 500",
+    period: "pagamento único no PIX",
+    desc: "Melhor custo-benefício. Paga uma vez e fica tranquilo por 1 ano completo.",
+    cta: "💳 Pagar R$ 500 via PIX",
+    destaque: true,
+    badge: "⭐ Mais escolhido",
+    qrCode: "https://i.ibb.co/n8ZBcrb0/QR-CODE-500.png",
+    chavePix: "00020101021126580014br.gov.bcb.pix0136758f6005-f0aa-4b00-a23e-d02c71f2fb085204000053039865406500.005802BR5925CLADSTON DA SILVA PINHEIR6009SAO PAULO622905251KVWPSC6MEQ7Q47WR8HN3WM746304C1DF",
   },
   {
     label: "Sob Consulta",
@@ -425,7 +425,7 @@ export function PlanosSection() {
                 </ul>
                 <button
                   onClick={() => p.isConsulta ? setShowConsulta(true) : setPlanoSelecionado(p)}
-                  className="mt-auto block w-full rounded-xl border border-orange-500/40 bg-orange-500/20 py-3 text-center text-sm font-bold text-orange-400 backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-orange-500/30">
+                  className={`mt-auto block w-full rounded-xl border py-3 text-center text-sm font-bold backdrop-blur-sm transition hover:-translate-y-0.5 ${p.destaque ? "border-blue-500/40 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30" : "border-orange-500/40 bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"}`}>
                   {p.isConsulta ? "Contatar" : "Contratar"}
                 </button>
               </motion.div>
