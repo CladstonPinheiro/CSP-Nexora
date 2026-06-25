@@ -262,6 +262,14 @@ function ConsultaModal({ onClose }: { onClose: () => void }) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+
+    // Abre WhatsApp ANTES do await para não ser bloqueado pelo browser
+    const msg = encodeURIComponent(
+      `Oi! Me chamo ${nome}, tenho interesse no plano personalizado da CSP Nexora para o meu negócio ${empresa}. Podem me passar mais detalhes?`
+    );
+    window.open(`https://wa.me/5561984202578?text=${msg}`, "_blank");
+
+    // Depois registra o lead
     try {
       await fetch("/api/leads", {
         method: "POST",
@@ -277,11 +285,8 @@ function ConsultaModal({ onClose }: { onClose: () => void }) {
         }),
       });
     } catch {}
+
     setLoading(false);
-    const msg = encodeURIComponent(
-      `Oi! Me chamo ${nome}, tenho interesse no plano personalizado da CSP Nexora para o meu negócio ${empresa}. Podem me passar mais detalhes?`
-    );
-    window.open(`https://wa.me/5561984202578?text=${msg}`, "_blank");
     onClose();
   }
 
