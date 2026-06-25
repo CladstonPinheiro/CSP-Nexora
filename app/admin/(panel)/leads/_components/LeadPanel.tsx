@@ -71,8 +71,10 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
   const canSendProposal = !!(phoneDigits && lead?.site_demo);
 
   const buildWhatsAppUrl = () => {
-    const msg = `Oi! Tudo bem? 👋\n\nVi o cadastro da *${lead?.company_name}* no Google Meu Negócio e já montei uma versão do site de vocês com os dados reais do negócio.\n\nDá uma olhada: 👉 ${lead?.site_demo}\n\nEntregamos em 24h com domínio .com.br, 3 e-mails profissionais e hospedagem inclusa — tudo por R$ 500 à vista ou 2x de R$ 350, sem mensalidade.\n\nMais detalhes: cspnexora.com.br/oferta\n\nQualquer dúvida é só responder aqui. 😊`;
-    return `https://wa.me/55${phoneDigits}?text=${encodeURIComponent(msg)}`;
+    const mensagem = encodeURIComponent(
+      `Oi! Tudo bem? 👋\n\nVi o cadastro da *${lead?.company_name}* no Google Meu Negócio e criamos um lindo projeto, um site totalmente atualizado, moderno e com os dados reais do seu negócio.\n\nDá uma olhada: 👉 ${lead?.site_demo}\n\nEntregamos em 24h com domínio próprio (.com.br), 3 e-mails profissionais, hospedagem com certificado de segurança e suporte — tudo isso por apenas R$ 500 à vista ou 2x de R$ 350, sem mensalidade ou taxas.\n\nMais detalhes: cspnexora.com.br/oferta\n\nQualquer dúvida é só responder aqui. 😊`
+    );
+    return `https://wa.me/55${phoneDigits}?text=${mensagem}`;
   };
 
   const currentStageIndex = lead?.stage
