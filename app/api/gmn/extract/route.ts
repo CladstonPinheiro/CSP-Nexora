@@ -39,6 +39,11 @@ export interface GmnExtracted {
   instagram_following:   number | null;
   instagram_posts:       number | null;
   color_palette:         string[];
+  youtube:               string | null;
+  tiktok:                string | null;
+  linkedin:              string | null;
+  catalog_url:           string | null;
+  has_delivery:          boolean | null;
 }
 
 const DIFFERENTIAL_KEYWORDS = [
@@ -208,6 +213,11 @@ REGRAS GERAIS:
 - "extra_phones": telefones adicionais além do principal.
 - "instagram_followers", "instagram_following", "instagram_posts": números do perfil Instagram se presentes.
 - "color_palette": ${logoBase64 ? 'analise a imagem da logo fornecida e retorne as 3 a 5 cores principais em hexadecimal. Ex: ["#FF5733", "#1A1A1A"].' : 'retorne [].'}
+- "youtube": URL ou handle do canal YouTube se presente no texto.
+- "tiktok": handle do TikTok sem "@" se presente no texto.
+- "linkedin": URL ou handle do LinkedIn se presente no texto.
+- "catalog_url": URL de catálogo digital (ex: Cardápio Online, Catálogo, LinkTree) se presente.
+- "has_delivery": true se o texto mencionar entrega, delivery ou táxi (no caso de pet shops). false se explicitamente negar. null se não mencionado.
 
 Retorne APENAS um objeto JSON válido, sem texto adicional, markdown ou blocos de código:
 {
@@ -247,7 +257,12 @@ Retorne APENAS um objeto JSON válido, sem texto adicional, markdown ou blocos d
   "service_options": [],
   "rating": null,
   "total_reviews": null,
-  "color_palette": []
+  "color_palette": [],
+  "youtube": null,
+  "tiktok": null,
+  "linkedin": null,
+  "catalog_url": null,
+  "has_delivery": null
 }
 
 TEXTO DO GOOGLE MEU NEGÓCIO:
@@ -328,6 +343,11 @@ ${rawText}`;
         business_hours: enriched.business_hours,
         areas_served:   enriched.areas_served,
         differentials:  enriched.differentials,
+        youtube:        enriched.youtube,
+        tiktok:         enriched.tiktok,
+        linkedin:       enriched.linkedin,
+        catalog_url:    enriched.catalog_url,
+        has_delivery:   enriched.has_delivery,
         raw_text:       rawText,
       })
       .select('id')

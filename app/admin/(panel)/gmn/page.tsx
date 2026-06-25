@@ -193,6 +193,11 @@ export default function GmnPage() {
       instagram_following:   null,
       instagram_posts:       null,
       color_palette:         [],
+      youtube:               null,
+      tiktok:                null,
+      linkedin:              null,
+      catalog_url:           null,
+      has_delivery:          null,
     });
     setProspectId(p.id);
     setCrmStatus(p.lead_cadastrado ? 'saved' : 'idle');
