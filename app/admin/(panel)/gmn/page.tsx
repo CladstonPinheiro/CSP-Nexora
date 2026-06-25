@@ -529,6 +529,7 @@ export default function GmnPage() {
   }
 
   return (
+    <>
     <div className="p-8 min-h-screen">
       {/* Header */}
       <div className="mb-8">
@@ -776,9 +777,10 @@ export default function GmnPage() {
         </div>
       </div>
 
-      {showBriefing && extracted && (
-        <BriefingModal extracted={extracted} onClose={() => setShowBriefing(false)} />
-      )}
     </div>
+    {showBriefing && extracted && (
+      <BriefingModal extracted={extracted} onClose={() => setShowBriefing(false)} />
+    )}
+    </>
   );
 }
