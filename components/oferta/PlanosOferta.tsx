@@ -20,13 +20,25 @@ const entregaItems = [
   "Zero mensalidade ou taxa",
 ];
 
-const features = [
+const defaultFeatures = [
   "Site profissional e responsivo",
   "Domínio .com.br por 12 meses",
   "3 e-mails profissionais",
   "Hospedagem + SSL/TLS",
   "Entrega em 24h",
   "Suporte pós-entrega",
+];
+
+const consultaFeatures = [
+  "Site profissional e responsivo",
+  "Domínio .com.br por 12 meses",
+  "3 e-mails profissionais",
+  "Hospedagem + SSL/TLS",
+  "Prazo conforme escopo do projeto",
+  "Suporte pós-entrega",
+  "Integrações personalizadas com IA",
+  "Chatbot e automações sob medida",
+  "CRM e dashboards personalizados",
 ];
 
 type Plano = {
@@ -37,8 +49,10 @@ type Plano = {
   cta: string;
   destaque: boolean;
   badge?: string;
-  qrCode: string;
-  chavePix: string;
+  isConsulta?: boolean;
+  features?: string[];
+  qrCode?: string;
+  chavePix?: string;
 };
 
 const planos: Plano[] = [
@@ -64,14 +78,14 @@ const planos: Plano[] = [
     chavePix: "00020101021126580014br.gov.bcb.pix0136758f6005-f0aa-4b00-a23e-d02c71f2fb085204000053039865406350.005802BR5925CLADSTON DA SILVA PINHEIR6009SAO PAULO622905251KVWPV319Y8FZNK8A63N8PNY96304776C",
   },
   {
-    label: "Parcelado em 12×",
-    price: "12× R$ 120",
-    period: "= R$ 1.440 no PIX",
-    desc: "Facilidade máxima. Invista no seu negócio com o menor impacto mensal.",
-    cta: "💳 Pagar 1ª parcela R$ 120",
+    label: "Sob Consulta",
+    price: "Sob Consulta",
+    period: "Implementações personalizadas",
+    desc: "Soluções sob medida para o seu negócio. Escopo, prazo e investimento definidos juntos.",
+    cta: "💬 Quero uma proposta personalizada",
     destaque: false,
-    qrCode: "https://i.ibb.co/HLGp71Xm/QR-CODE-120.png",
-    chavePix: "00020101021126580014br.gov.bcb.pix0136758f6005-f0aa-4b00-a23e-d02c71f2fb085204000053039865406120.005802BR5925CLADSTON DA SILVA PINHEIR6009SAO PAULO622905251KVWPW53KVYXM5WACD0R28PT26304B64C",
+    isConsulta: true,
+    features: consultaFeatures,
   },
 ];
 
@@ -125,7 +139,7 @@ function PixModal({ plano, onClose }: PixModalProps) {
   }
 
   function copiarChave() {
-    navigator.clipboard.writeText(plano.chavePix);
+    navigator.clipboard.writeText(plano.chavePix!);
     setCopiado(true);
     setTimeout(() => setCopiado(false), 2500);
   }
@@ -183,7 +197,7 @@ function PixModal({ plano, onClose }: PixModalProps) {
               {/* QR Code */}
               <div className="rounded-2xl border border-white/[0.06] bg-white p-3">
                 <Image
-                  src={plano.qrCode}
+                  src={plano.qrCode!}
                   alt={`QR Code ${plano.label}`}
                   width={200}
                   height={200}
@@ -230,6 +244,77 @@ function PixModal({ plano, onClose }: PixModalProps) {
               </p>
             </div>
           )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ConsultaModal({ onClose }: { onClose: () => void }) {
+  const [nome, setNome] = useState("");
+  const [empresa, setEmpresa] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const inputClass =
+    "w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm text-white placeholder-white/20 outline-none transition focus:border-cyan-500/50";
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome,
+          empresa,
+          telefone,
+          email: "",
+          source: "prospeccao_gmn",
+          stage: "proposta_enviada",
+          notes: "Lead GMN — interesse em plano personalizado (Sob Consulta)",
+        }),
+      });
+    } catch {}
+    setLoading(false);
+    const msg = encodeURIComponent(
+      `Oi! Me chamo ${nome}, tenho interesse no plano personalizado da CSP Nexora para o meu negócio ${empresa}. Podem me passar mais detalhes?`
+    );
+    window.open(`https://wa.me/5561984202578?text=${msg}`, "_blank");
+    onClose();
+  }
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative z-10 w-full max-w-md rounded-2xl border border-white/[0.06] bg-[#0a0a0a] shadow-2xl overflow-hidden">
+        <div className="flex items-center justify-between border-b border-white/[0.06] px-6 py-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest text-white/40">Plano personalizado</p>
+            <p className="font-outfit text-base font-black text-white">Sob Consulta — Proposta personalizada</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/40 transition hover:bg-white/10 hover:text-white"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="p-6">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <p className="text-sm text-white/50">Informe seus dados e entraremos em contato com uma proposta personalizada.</p>
+            <input required value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome completo" className={inputClass} />
+            <input required value={empresa} onChange={(e) => setEmpresa(e.target.value)} placeholder="Nome da empresa" className={inputClass} />
+            <input required value={telefone} onChange={(e) => setTelefone(e.target.value)} placeholder="Telefone / WhatsApp" maxLength={11} className={inputClass} />
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-2 rounded-xl bg-[#25D366] py-3.5 text-sm font-bold text-white shadow-lg shadow-[#25D366]/25 transition hover:-translate-y-0.5 hover:bg-[#20ba5a] disabled:opacity-60"
+            >
+              {loading ? "Aguarde..." : "💬 Enviar mensagem no WhatsApp →"}
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -302,6 +387,7 @@ export function ProcessoSection() {
 
 export function PlanosSection() {
   const [planoSelecionado, setPlanoSelecionado] = useState<Plano | null>(null);
+  const [showConsulta, setShowConsulta] = useState(false);
 
   return (
     <>
@@ -326,14 +412,14 @@ export function PlanosSection() {
                 <p className="mt-0.5 text-xs text-white/40">{p.period}</p>
                 <p className="mt-3 text-xs leading-relaxed text-white/50">{p.desc}</p>
                 <ul className="my-6 flex flex-col gap-2.5">
-                  {features.map((f) => (
+                  {(p.features ?? defaultFeatures).map((f) => (
                     <li key={f} className="flex items-center gap-2.5 text-xs text-white/70">
                       <Check className="h-3.5 w-3.5 shrink-0 text-emerald-400" strokeWidth={2.5} />{f}
                     </li>
                   ))}
                 </ul>
                 <button
-                  onClick={() => setPlanoSelecionado(p)}
+                  onClick={() => p.isConsulta ? setShowConsulta(true) : setPlanoSelecionado(p)}
                   className={`mt-auto block w-full rounded-xl py-3 text-center text-sm font-bold text-white transition hover:-translate-y-0.5 ${p.destaque ? "bg-blue-600 shadow-lg shadow-blue-600/30 hover:bg-blue-500" : "bg-white/[0.08] hover:bg-white/[0.14]"}`}>
                   {p.cta} →
                 </button>
@@ -349,6 +435,9 @@ export function PlanosSection() {
 
       {planoSelecionado && (
         <PixModal plano={planoSelecionado} onClose={() => setPlanoSelecionado(null)} />
+      )}
+      {showConsulta && (
+        <ConsultaModal onClose={() => setShowConsulta(false)} />
       )}
     </>
   );
