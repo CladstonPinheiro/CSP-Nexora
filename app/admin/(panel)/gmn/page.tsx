@@ -154,10 +154,11 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
     style.id = 'briefing-print-style';
     style.textContent = `
       @media print {
-        body * { visibility: hidden; }
-        #briefing-print-root, #briefing-print-root * { visibility: visible; }
-        #briefing-print-root { position: absolute; left: 0; top: 0; width: 100%; }
-        .no-print { display: none !important; }
+        body * { visibility: hidden !important; }
+        #briefing-print-root { visibility: visible !important; position: fixed !important; inset: 0 !important; width: 100% !important; height: auto !important; overflow: visible !important; background: white !important; z-index: 99999 !important; padding: 24px !important; box-sizing: border-box !important; }
+        #briefing-print-root * { visibility: visible !important; color: black !important; background: transparent !important; border-color: #ddd !important; }
+        #briefing-print-root img { visibility: visible !important; }
+        .no-print { display: none !important; visibility: hidden !important; }
       }
     `;
     document.head.appendChild(style);
@@ -186,7 +187,7 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
               )}
             </div>
           </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all">
+          <button onClick={onClose} className="no-print w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all">
             <X className="w-4 h-4" />
           </button>
         </div>
