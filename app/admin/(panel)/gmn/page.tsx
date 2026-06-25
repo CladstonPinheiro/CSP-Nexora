@@ -403,12 +403,12 @@ export default function GmnPage() {
 
                 <button
                   onClick={handleCopyPrompt}
-                  className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all bg-blue-600 hover:bg-blue-500 text-white hover:-translate-y-0.5 active:translate-y-0"
+                  className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all disabled:opacity-60 disabled:cursor-not-allowed bg-amber-500 hover:bg-amber-400 text-black hover:-translate-y-0.5 active:translate-y-0"
                 >
                   {copied
-                    ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    ? <CheckCircle2 className="w-3.5 h-3.5" />
                     : <ClipboardCopy className="w-3.5 h-3.5" />}
-                  {copied ? 'Copiado!' : 'Copiar JSON para AI Studio'}
+                  {copied ? '✓ Copiado!' : 'Copiar JSON para AI Studio'}
                 </button>
               </div>
 
