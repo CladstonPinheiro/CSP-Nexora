@@ -96,8 +96,8 @@ function inferFields(parsed: GmnExtracted, rawText: string): GmnExtracted {
   if (p.differentials.length === 0 && desc) {
     const sentences = desc.match(/[^.!?,;]+[.!?,;]*/g) ?? [];
     const found = sentences
-      .map((s) => s.trim())
-      .filter((s) => s.length > 8 && DIFFERENTIAL_KEYWORDS.some((kw) => s.toLowerCase().includes(kw)))
+      .map((s) => s.trim().replace(/[,\.]+$/, ''))
+      .filter((s) => s.length >= 15 && DIFFERENTIAL_KEYWORDS.some((kw) => s.toLowerCase().includes(kw)))
       .slice(0, 5);
     if (found.length > 0) p.differentials = found;
   }
