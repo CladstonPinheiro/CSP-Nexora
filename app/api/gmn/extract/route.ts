@@ -34,6 +34,77 @@ export interface GmnExtracted {
   total_reviews:     number | null;
 }
 
+const DIFFERENTIAL_KEYWORDS = [
+  'moderno', 'moderna', 'modernos', 'modernas',
+  '24', 'seguro', 'segura', 'limpo', 'limpa',
+  'rápido', 'rápida', 'fácil', 'qualidade',
+  'experiência', 'anos', 'atendimento', 'especializado',
+  'exclusivo', 'completo', 'tecnologia', 'automatizado',
+];
+
+function inferFields(parsed: GmnExtracted, rawText: string): GmnExtracted {
+  const p = { ...parsed };
+  const desc = p.description_full ?? '';
+  const searchText = (desc + ' ' + rawText).toLowerCase();
+
+  // neighborhood: primeira parte do address antes da primeira vírgula
+  if (!p.neighborhood && p.address) {
+    const before = p.address.split(',')[0]?.trim();
+    if (before && before !== p.address.trim()) p.neighborhood = before;
+  }
+
+  // cep: regex no address
+  if (!p.cep && p.address) {
+    const match = p.address.match(/\d{5}-?\d{3}/);
+    if (match) p.cep = match[0].replace('-', '');
+  }
+
+  // state: sigla de 2 letras maiúsculas no address
+  if (!p.state && p.address) {
+    const match = p.address.match(/\b([A-Z]{2})\b/);
+    if (match) p.state = match[1];
+  }
+
+  // instagram_url
+  if (!p.instagram_url && p.instagram) {
+    p.instagram_url = `https://www.instagram.com/${p.instagram}`;
+  }
+
+  // facebook_url
+  if (!p.facebook_url && p.facebook) {
+    p.facebook_url = `https://www.facebook.com/${p.facebook}`;
+  }
+
+  // whatsapp: fallback para phone
+  if (!p.whatsapp && p.phone) {
+    p.whatsapp = p.phone;
+  }
+
+  // is_open_24h
+  if (p.is_open_24h === null) {
+    const open24 = /24\s*h(oras?)?|aberto\s+24|funciona\s+24/i.test(searchText);
+    if (open24) p.is_open_24h = true;
+  }
+
+  // description_short: primeiras 2 frases da description_full
+  if (!p.description_short && desc) {
+    const sentences = desc.match(/[^.!?]+[.!?]+/g) ?? [];
+    p.description_short = sentences.slice(0, 2).join(' ').trim() || desc.slice(0, 160);
+  }
+
+  // differentials: frases da descrição com palavras-chave
+  if (p.differentials.length === 0 && desc) {
+    const sentences = desc.match(/[^.!?,;]+[.!?,;]*/g) ?? [];
+    const found = sentences
+      .map((s) => s.trim())
+      .filter((s) => s.length > 8 && DIFFERENTIAL_KEYWORDS.some((kw) => s.toLowerCase().includes(kw)))
+      .slice(0, 5);
+    if (found.length > 0) p.differentials = found;
+  }
+
+  return p;
+}
+
 export async function POST(req: NextRequest) {
   const { rawText } = await req.json();
 
@@ -46,37 +117,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'GEMINI_API_KEY não configurada.' }, { status: 500 });
   }
 
-  const prompt = `Você é um extrator de dados estruturados especializado em perfis do Google Meu Negócio. Analise o texto abaixo, extraia os dados presentes E aplique as inferências descritas abaixo.
+  const prompt = `Você é um extrator de dados estruturados especializado em perfis do Google Meu Negócio. Analise o texto abaixo e extraia as informações disponíveis.
 
-REGRAS GERAIS:
-- Campos sem nenhuma base no texto devem ser null. Arrays sem dados devem ser [].
-- Nunca invente dados que não possam ser inferidos logicamente das informações presentes.
-
-REGRAS ESPECÍFICAS POR CAMPO:
-- "phone": apenas dígitos, sem formatação. Ex: "61999990000".
-- "whatsapp": SEMPRE preencher — use o número explícito de WhatsApp se mencionado; caso contrário, use o mesmo valor de "phone" (apenas dígitos). Nunca deixar null se "phone" existir.
-- "instagram": apenas o @handle sem URL, sem o "@". Ex: "minha.loja".
-- "instagram_url": SEMPRE inferir como "https://www.instagram.com/" + instagram se "instagram" não for null. Ex: "https://www.instagram.com/minha.loja".
-- "facebook": apenas o nome/handle da página, sem URL.
-- "facebook_url": SEMPRE inferir como "https://www.facebook.com/" + facebook se "facebook" não for null.
-- "neighborhood": extrair do endereço — geralmente o bairro aparece antes da cidade. Ex: "QE 30 Guará II, Brasília" → "Guará II". Se não identificável, null.
-- "city": apenas o nome da cidade, sem estado ou país. Ex: "Brasília".
-- "state": sigla do estado extraída do endereço. Ex: "DF", "SP", "RJ". Se não presente, null.
-- "cep": 8 dígitos sem hífen, extraído do endereço se presente. Ex: "71060300".
-- "maps_url": URL do Google Maps se presente no texto (começa com "https://maps.app.goo.gl/" ou "https://www.google.com/maps/"). null se ausente.
+REGRAS:
+- Extraia APENAS dados explicitamente presentes no texto. Nunca invente informações.
+- Campos ausentes devem ser null. Arrays sem dados devem ser [].
+- "phone": apenas dígitos. Ex: "61999990000".
+- "instagram": apenas o handle sem "@" e sem URL. Ex: "minha.loja".
+- "facebook": apenas o nome/handle sem URL.
 - "niche": classifique entre "imobiliaria", "administradora_imoveis", "administradora_condominios" ou "outro".
-- "gmn_category": categoria principal do negócio mencionada no texto. Ex: "Lavanderia", "Imobiliária", "Restaurante". null se não identificável.
-- "is_open_24h": SEMPRE inferir — true se o texto contiver "24 horas", "24h", "aberto 24", "funciona 24" ou variações. false se horários específicos indicarem fechamento. null apenas se nenhuma informação de horário existir.
-- "business_hours": objeto com cada dia como chave e horário como valor. Ex: {"Segunda": "09:00–18:00", "Sábado": "09:00–13:00"}. null se não houver horários.
-- "description_full": descrição completa extraída do texto, exatamente como aparece.
-- "description_short": SEMPRE preencher se "description_full" não for null — resuma em até 2 frases curtas e diretas destacando o que o negócio faz e seu principal diferencial.
-- "differentials": SEMPRE preencher se houver descrição — infira os diferenciais competitivos mencionados ou implícitos. Ex: ["Atendimento 24 horas", "Autoatendimento", "Ambiente monitorado", "Máquinas modernas", "20 anos de experiência"]. [] se a descrição não oferecer base.
-- "areas_served": extraia bairros, regiões ou cidades atendidas mencionados no texto. [] se não mencionado.
-- "service_options": ex: ["Atendimento no local", "Visita ao cliente", "Online", "Entrega"]. [] se não mencionado.
-- "rating": número decimal. Ex: 4.7. null se não presente.
-- "total_reviews": número inteiro. null se não presente.
-- "parking": mencione se o texto indica estacionamento disponível. null se não mencionado.
-- Para "facebook": apenas o nome/handle. Para "facebook_url": a URL completa se presente.
+- "gmn_category": categoria principal do negócio. Ex: "Lavanderia", "Imobiliária".
+- "business_hours": objeto por dia. Ex: {"Segunda": "09:00–18:00"}.
+- "rating": número decimal. "total_reviews": número inteiro.
+- "maps_url": URL do Google Maps se presente no texto.
+- "description_full": descrição completa exatamente como aparece no texto.
+- "service_options": ex: ["Atendimento no local", "Online"].
+- "areas_served": bairros ou regiões atendidas mencionadas.
 
 Retorne APENAS um objeto JSON válido, sem texto adicional, markdown ou blocos de código:
 {
@@ -145,27 +201,29 @@ ${rawText}`;
       return NextResponse.json({ error: 'Resposta inválida do Gemini.' }, { status: 500 });
     }
 
+    const enriched = inferFields(parsed, rawText);
+
     const supabase = createAdminClient();
     const { data: prospect, error: dbError } = await supabase
       .from('gmn_prospects')
       .insert({
-        company_name:      parsed.company_name,
-        slogan:            parsed.slogan,
-        phone:             parsed.phone,
-        address:           parsed.address,
-        city:              parsed.city,
-        instagram:         parsed.instagram,
-        facebook:          parsed.facebook,
-        whatsapp:          parsed.whatsapp,
-        description:       parsed.description_full,
-        niche:             parsed.niche,
-        services:          parsed.services,
-        logo_url:          parsed.logo_url,
-        maps_url:          parsed.maps_url,
-        business_hours:    parsed.business_hours,
-        areas_served:      parsed.areas_served,
-        differentials:     parsed.differentials,
-        raw_text:          rawText,
+        company_name:   enriched.company_name,
+        slogan:         enriched.slogan,
+        phone:          enriched.phone,
+        address:        enriched.address,
+        city:           enriched.city,
+        instagram:      enriched.instagram,
+        facebook:       enriched.facebook,
+        whatsapp:       enriched.whatsapp,
+        description:    enriched.description_full,
+        niche:          enriched.niche,
+        services:       enriched.services,
+        logo_url:       enriched.logo_url,
+        maps_url:       enriched.maps_url,
+        business_hours: enriched.business_hours,
+        areas_served:   enriched.areas_served,
+        differentials:  enriched.differentials,
+        raw_text:       rawText,
       })
       .select('id')
       .single();
@@ -174,7 +232,7 @@ ${rawText}`;
       console.error('[gmn/extract] erro ao salvar prospect:', dbError.message);
     }
 
-    return NextResponse.json({ data: parsed, prospectId: prospect?.id ?? null });
+    return NextResponse.json({ data: enriched, prospectId: prospect?.id ?? null });
   } catch (err) {
     console.error('[gmn/extract] erro inesperado:', err);
     return NextResponse.json({ error: 'Erro interno.' }, { status: 500 });
