@@ -107,8 +107,8 @@ function inferFields(parsed: GmnExtracted, rawText: string): GmnExtracted {
 
 const GEMINI_MODELS = [
   'gemini-2.0-flash',
-  'gemini-1.5-flash',
-  'gemini-1.5-flash-8b',
+  'gemini-2.0-flash-lite',
+  'gemini-1.5-pro',
 ];
 
 async function callGeminiWithFallback(apiKey: string, body: string): Promise<{ res: Response; model: string }> {
