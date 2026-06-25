@@ -390,6 +390,24 @@ export default function GmnPage() {
                 </div>
               )}
 
+              {extracted.color_palette && extracted.color_palette.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Paleta de Cores</p>
+                  <div className="flex gap-2 flex-wrap">
+                    {extracted.color_palette.map((cor) => (
+                      <div key={cor} className="flex flex-col items-center gap-1">
+                        <div
+                          className="w-10 h-10 rounded-xl border border-white/10 shadow-inner"
+                          style={{ backgroundColor: cor }}
+                          title={cor}
+                        />
+                        <span className="text-[9px] text-gray-600 font-mono">{cor}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="h-px bg-white/5" />
 
               <div className="flex flex-col gap-2.5">
