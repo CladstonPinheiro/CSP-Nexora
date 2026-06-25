@@ -22,7 +22,7 @@ async function getMetrics() {
 
   const [leadsRes, clientesRes, tarefasRes, projetosRes, leadsSiteRes, leadsGmnRes] = await Promise.allSettled([
     supabase.from('leads').select('id, created_at, stage, ai_score, ai_qualified_at'),
-    supabase.from('clientes').select('id', { count: 'exact', head: true }).eq('ativo', true),
+    supabase.from('clientes').select('id', { count: 'exact', head: true }).eq('status', 'ativo'),
     supabase.from('tarefas').select('id', { count: 'exact', head: true }).eq('status', 'pendente'),
     supabase
       .from('projetos')
