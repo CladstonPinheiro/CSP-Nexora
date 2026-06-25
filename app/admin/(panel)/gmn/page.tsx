@@ -670,7 +670,7 @@ export default function GmnPage() {
             </div>
           )}
 
-          {extracted && (
+          {extracted && !showBriefing && (
             <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl p-6 flex flex-col gap-5">
               {/* Nome + Nicho */}
               <div>
