@@ -25,13 +25,20 @@ export interface GmnExtracted {
   description_full:  string | null;
   niche:             string | null;
   gmn_category:      string | null;
-  services:          string[];
-  areas_served:      string[];
-  differentials:     string[];
-  parking:           string | null;
-  service_options:   string[];
-  rating:            number | null;
-  total_reviews:     number | null;
+  services:              string[];
+  areas_served:          string[];
+  differentials:         string[];
+  parking:               string | null;
+  service_options:       string[];
+  rating:                number | null;
+  total_reviews:         number | null;
+  extra_phones:          string[];
+  payments:              string[];
+  accessibility:         string[];
+  instagram_followers:   number | null;
+  instagram_following:   number | null;
+  instagram_posts:       number | null;
+  color_palette:         string[];
 }
 
 const DIFFERENTIAL_KEYWORDS = [
@@ -152,28 +159,51 @@ export async function POST(req: NextRequest) {
     console.error('[gmn/extract] GEMINI_API_KEY ausente nas variáveis de ambiente');
     return NextResponse.json({ error: 'GEMINI_API_KEY não configurada.' }, { status: 500 });
   }
-  const prompt = `Você é um extrator de dados estruturados especializado em perfis do Google Meu Negócio. Analise o texto abaixo e extraia as informações disponíveis.
+  // Fetch da imagem da logo para análise de cores
+  let logoBase64: string | null = null;
+  let logoMimeType: string = 'image/png';
+  if (logoUrl?.trim()) {
+    try {
+      const imgRes = await fetch(logoUrl.trim());
+      const imgBuffer = await imgRes.arrayBuffer();
+      logoBase64 = Buffer.from(imgBuffer).toString('base64');
+      logoMimeType = imgRes.headers.get('content-type') ?? 'image/png';
+    } catch {
+      console.warn('[gmn/extract] Não foi possível fazer fetch da logo');
+    }
+  }
 
-REGRAS:
-- Extraia APENAS dados explicitamente presentes no texto. Nunca invente informações.
-- Campos ausentes devem ser null. Arrays sem dados devem ser [].
-- "phone": apenas dígitos. Ex: "61999990000".
-- "instagram": apenas o handle sem "@" e sem URL. Ex: "minha.loja".
+  const prompt = `Você é um extrator de dados especializado em perfis do Google Meu Negócio.
+
+REGRAS GERAIS:
+- Extraia TUDO que estiver presente no texto, sem exceção.
+- Campos ausentes: null. Arrays sem dados: [].
+- Não invente informações ausentes.
+- "phone" e "extra_phones": apenas dígitos. Ex: "61999990000".
+- "instagram": apenas o handle sem "@" e sem URL.
 - "facebook": apenas o nome/handle sem URL.
 - "niche": classifique entre "imobiliaria", "administradora_imoveis", "administradora_condominios" ou "outro".
-- "gmn_category": categoria principal do negócio. Ex: "Lavanderia", "Imobiliária".
-- "business_hours": objeto por dia. Ex: {"Segunda": "09:00–18:00"}.
+- "gmn_category": categoria principal. Ex: "Pet Shop", "Lavanderia".
+- "business_hours": objeto por dia. Ex: {"Segunda": "09:00–18:00", "Domingo": "Fechado"}.
 - "rating": número decimal. "total_reviews": número inteiro.
-- "maps_url": URL do Google Maps se presente no texto.
+- "maps_url": URL completa do Google Maps se presente.
 - "description_full": descrição completa exatamente como aparece no texto.
-- "service_options": ex: ["Atendimento no local", "Online"].
-- "areas_served": bairros ou regiões atendidas mencionadas.
+- "description_short": primeiras 2 frases da descrição.
+- "service_options": formas de atendimento. Ex: ["Entrega", "Visita rápida"].
+- "payments": formas de pagamento. Ex: ["Cartão de crédito", "PIX"].
+- "accessibility": recursos de acessibilidade. Ex: ["Entrada acessível para cadeiras de rodas"].
+- "areas_served": todos os bairros ou regiões mencionados.
+- "differentials": frases que destacam diferenciais competitivos extraídas de avaliações ou descrição.
+- "extra_phones": telefones adicionais além do principal.
+- "instagram_followers", "instagram_following", "instagram_posts": números do perfil Instagram se presentes.
+- "color_palette": ${logoBase64 ? 'analise a imagem da logo fornecida e retorne as 3 a 5 cores principais em hexadecimal. Ex: ["#FF5733", "#1A1A1A"].' : 'retorne [].'}
 
 Retorne APENAS um objeto JSON válido, sem texto adicional, markdown ou blocos de código:
 {
   "company_name": null,
   "slogan": null,
   "phone": null,
+  "extra_phones": [],
   "email": null,
   "address": null,
   "city": null,
@@ -185,6 +215,9 @@ Retorne APENAS um objeto JSON válido, sem texto adicional, markdown ou blocos d
   "is_open_24h": null,
   "instagram": null,
   "instagram_url": null,
+  "instagram_followers": null,
+  "instagram_following": null,
+  "instagram_posts": null,
   "facebook": null,
   "facebook_url": null,
   "whatsapp": null,
@@ -197,17 +230,31 @@ Retorne APENAS um objeto JSON válido, sem texto adicional, markdown ou blocos d
   "services": [],
   "areas_served": [],
   "differentials": [],
+  "payments": [],
+  "accessibility": [],
   "parking": null,
   "service_options": [],
   "rating": null,
-  "total_reviews": null
+  "total_reviews": null,
+  "color_palette": []
 }
 
 TEXTO DO GOOGLE MEU NEGÓCIO:
 ${rawText}`;
 
+  // Monta parts da requisição — texto + imagem se disponível
+  const parts: object[] = [{ text: prompt }];
+  if (logoBase64) {
+    parts.push({
+      inline_data: {
+        mime_type: logoMimeType,
+        data: logoBase64,
+      },
+    });
+  }
+
   const geminiBody = JSON.stringify({
-    contents: [{ parts: [{ text: prompt }] }],
+    contents: [{ parts }],
     generationConfig: { responseMimeType: 'application/json', temperature: 0.1 },
   });
 
