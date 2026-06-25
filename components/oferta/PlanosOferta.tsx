@@ -425,8 +425,8 @@ export function PlanosSection() {
                 </ul>
                 <button
                   onClick={() => p.isConsulta ? setShowConsulta(true) : setPlanoSelecionado(p)}
-                  className={`mt-auto block w-full rounded-xl py-3 text-center text-sm font-bold text-white transition hover:-translate-y-0.5 ${p.destaque ? "bg-blue-600 shadow-lg shadow-blue-600/30 hover:bg-blue-500" : "bg-white/[0.08] hover:bg-white/[0.14]"}`}>
-                  {p.cta} →
+                  className="mt-auto block w-full rounded-xl border border-orange-500/40 bg-orange-500/20 py-3 text-center text-sm font-bold text-orange-400 backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-orange-500/30">
+                  {p.isConsulta ? "Contatar" : "Contratar"}
                 </button>
               </motion.div>
             ))}
