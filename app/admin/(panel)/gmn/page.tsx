@@ -114,15 +114,19 @@ function calcScores(e: GmnExtracted) {
 
   let estrutura: 'alto' | 'medio' | 'baixo';
   let estruturaMotivo: string;
-  if (e.extra_phones.length > 0 && e.services.length > 1 && e.has_delivery) {
+  const extraPhones = e.extra_phones ?? [];
+  const services    = e.services    ?? [];
+  const payments    = e.payments    ?? [];
+
+  if (extraPhones.length > 0 && services.length > 1 && e.has_delivery) {
     estrutura = 'alto';
-    estruturaMotivo = `${e.extra_phones.length + 1} telefones, ${e.services.length} serviços e entrega`;
-  } else if (e.services.length > 1 || e.has_delivery || e.payments.length > 1) {
+    estruturaMotivo = `${extraPhones.length + 1} telefones, ${services.length} serviços e entrega`;
+  } else if (services.length > 1 || e.has_delivery || payments.length > 1) {
     estrutura = 'medio';
     estruturaMotivo = [
-      e.services.length > 1 && `${e.services.length} serviços`,
+      services.length > 1 && `${services.length} serviços`,
       e.has_delivery && 'Faz entrega',
-      e.payments.length > 1 && `${e.payments.length} formas de pagamento`,
+      payments.length > 1 && `${payments.length} formas de pagamento`,
     ].filter(Boolean).join(', ') || 'Estrutura moderada';
   } else {
     estrutura = 'baixo';
@@ -185,7 +189,7 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
         <div className="px-6 py-5 flex flex-col gap-6">
 
           {/* Paleta de cores */}
-          {extracted.color_palette && extracted.color_palette.length > 0 && (
+          {(extracted.color_palette?.length ?? 0) > 0 && (
             <BSection title="Paleta de Cores">
               <div className="flex gap-2 flex-wrap">
                 {extracted.color_palette.map((cor) => (
@@ -228,10 +232,10 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
                   <BValue>{value}</BValue>
                 </div>
               ))}
-              {extracted.extra_phones.length > 0 && (
+              {(extracted.extra_phones?.length ?? 0) > 0 && (
                 <div className="col-span-2">
                   <BLabel>Telefones adicionais</BLabel>
-                  <BValue>{extracted.extra_phones.join(' · ')}</BValue>
+                  <BValue>{(extracted.extra_phones ?? []).join(' · ')}</BValue>
                 </div>
               )}
             </div>
@@ -257,10 +261,10 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           )}
 
           {/* Serviços */}
-          {extracted.services.length > 0 && (
+          {(extracted.services?.length ?? 0) > 0 && (
             <BSection title="Serviços">
               <div className="flex flex-wrap gap-1.5">
-                {extracted.services.map((s) => (
+                {(extracted.services ?? []).map((s) => (
                   <span key={s} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{s}</span>
                 ))}
               </div>
@@ -268,10 +272,10 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           )}
 
           {/* Diferenciais */}
-          {extracted.differentials.length > 0 && (
+          {(extracted.differentials?.length ?? 0) > 0 && (
             <BSection title="Diferenciais">
               <div className="flex flex-wrap gap-1.5">
-                {extracted.differentials.map((d) => (
+                {(extracted.differentials ?? []).map((d) => (
                   <span key={d} className="px-2 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-400">{d}</span>
                 ))}
               </div>
@@ -313,10 +317,10 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           )}
 
           {/* Pagamentos */}
-          {extracted.payments.length > 0 && (
+          {(extracted.payments?.length ?? 0) > 0 && (
             <BSection title="Formas de Pagamento">
               <div className="flex flex-wrap gap-1.5">
-                {extracted.payments.map((p) => (
+                {(extracted.payments ?? []).map((p) => (
                   <span key={p} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{p}</span>
                 ))}
               </div>
@@ -324,10 +328,10 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           )}
 
           {/* Acessibilidade */}
-          {extracted.accessibility.length > 0 && (
+          {(extracted.accessibility?.length ?? 0) > 0 && (
             <BSection title="Acessibilidade">
               <div className="flex flex-wrap gap-1.5">
-                {extracted.accessibility.map((a) => (
+                {(extracted.accessibility ?? []).map((a) => (
                   <span key={a} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{a}</span>
                 ))}
               </div>
