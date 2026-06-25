@@ -105,6 +105,42 @@ function inferFields(parsed: GmnExtracted, rawText: string): GmnExtracted {
   return p;
 }
 
+const GEMINI_MODELS = [
+  'gemini-2.0-flash',
+  'gemini-1.5-flash',
+  'gemini-1.5-flash-8b',
+];
+
+async function callGeminiWithFallback(apiKey: string, body: string): Promise<{ res: Response; model: string }> {
+  for (const model of GEMINI_MODELS) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+    let res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    });
+
+    if (res.status === 503) {
+      await new Promise((r) => setTimeout(r, 2000));
+      res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+      });
+    }
+
+    if (res.status === 429) {
+      console.warn(`[gmn/extract] ${model} quota excedida — tentando próximo modelo...`);
+      continue;
+    }
+
+    return { res, model };
+  }
+
+  throw new Error('Todos os modelos Gemini estão com quota excedida. Tente novamente mais tarde.');
+}
+
 export async function POST(req: NextRequest) {
   const { rawText, logoUrl } = await req.json();
 
@@ -117,8 +153,6 @@ export async function POST(req: NextRequest) {
     console.error('[gmn/extract] GEMINI_API_KEY ausente nas variáveis de ambiente');
     return NextResponse.json({ error: 'GEMINI_API_KEY não configurada.' }, { status: 500 });
   }
-  console.log('[gmn/extract] API key presente, primeiros 8 chars:', apiKey.slice(0, 8) + '...');
-
   const prompt = `Você é um extrator de dados estruturados especializado em perfis do Google Meu Negócio. Analise o texto abaixo e extraia as informações disponíveis.
 
 REGRAS:
@@ -173,32 +207,14 @@ Retorne APENAS um objeto JSON válido, sem texto adicional, markdown ou blocos d
 TEXTO DO GOOGLE MEU NEGÓCIO:
 ${rawText}`;
 
-  const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
   const geminiBody = JSON.stringify({
     contents: [{ parts: [{ text: prompt }] }],
     generationConfig: { responseMimeType: 'application/json', temperature: 0.1 },
   });
 
-  async function callGemini(): Promise<Response> {
-    const r = await fetch(geminiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: geminiBody,
-    });
-    if (r.status === 503) {
-      console.warn('[gmn/extract] Gemini 503 — aguardando 2s e tentando novamente...');
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      return fetch(geminiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: geminiBody,
-      });
-    }
-    return r;
-  }
-
   try {
-    const res = await callGemini();
+    const { res, model } = await callGeminiWithFallback(apiKey, geminiBody);
+    console.log(`[gmn/extract] usando modelo: ${model}`);
 
     if (!res.ok) {
       const errBody = await res.text();
