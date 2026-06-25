@@ -203,7 +203,7 @@ REGRAS GERAIS:
 - "payments": formas de pagamento. Ex: ["Cartão de crédito", "PIX"].
 - "accessibility": recursos de acessibilidade. Ex: ["Entrada acessível para cadeiras de rodas"].
 - "areas_served": todos os bairros ou regiões mencionados.
-- "differentials": frases que destacam diferenciais competitivos extraídas de avaliações ou descrição.
+- "differentials": extraia de avaliações e descrição os diferenciais competitivos do negócio. Cada item deve ser uma frase curta, objetiva e no infinitivo ou substantivo. Máximo 8 itens. Exemplos corretos: "Atendimento 24h", "Equipe especializada", "Ambiente limpo e organizado", "Busca e entrega inclusos". Exemplos incorretos: parágrafos inteiros de avaliações ou frases longas com mais de 8 palavras.
 - "extra_phones": telefones adicionais além do principal.
 - "instagram_followers", "instagram_following", "instagram_posts": números do perfil Instagram se presentes.
 - "color_palette": ${logoBase64 ? 'analise a imagem da logo fornecida e retorne as 3 a 5 cores principais em hexadecimal. Ex: ["#FF5733", "#1A1A1A"].' : 'retorne [].'}
