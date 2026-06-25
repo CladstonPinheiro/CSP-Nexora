@@ -1,14 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 
 export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const { id } = await params;
-  const supabase = createAdminClient();
+  const supabase = await createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 });
+  }
 
-  const { error } = await supabase
+  const { id } = await params;
+  const supabaseAdmin = createAdminClient();
+
+  const { error } = await supabaseAdmin
     .from('gmn_prospects')
     .delete()
     .eq('id', id);
@@ -25,11 +32,17 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const supabase = await createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 });
+  }
+
   const { id } = await params;
   const body = await req.json();
-  const supabase = createAdminClient();
+  const supabaseAdmin = createAdminClient();
 
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from('gmn_prospects')
     .update(body)
     .eq('id', id);

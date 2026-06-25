@@ -1,10 +1,17 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 
 export async function GET() {
-  const supabase = createAdminClient();
+  const supabase = await createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 });
+  }
 
-  const { data, error } = await supabase
+  const supabaseAdmin = createAdminClient();
+
+  const { data, error } = await supabaseAdmin
     .from('gmn_prospects')
     .select('id, company_name, city, niche, phone, lead_cadastrado, lead_id, created_at, services, address, instagram, facebook, whatsapp, description')
     .order('created_at', { ascending: false })

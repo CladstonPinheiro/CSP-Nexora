@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 
 export interface GmnExtracted {
   company_name:      string | null;
@@ -153,6 +154,12 @@ async function callGeminiWithFallback(apiKey: string, body: string): Promise<{ r
 }
 
 export async function POST(req: NextRequest) {
+  const supabase = await createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 });
+  }
+
   const { rawText, logoUrl: rawLogoUrl } = await req.json();
 
   function extractImageUrl(input: string): string {
