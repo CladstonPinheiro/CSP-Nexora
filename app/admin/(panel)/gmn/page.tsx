@@ -399,7 +399,7 @@ h1{font-size:24px;font-weight:900;color:#111}
 .section-title{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#999;margin-bottom:8px}
 .palette{display:flex;gap:8px;flex-wrap:wrap}
 .palette-item{display:flex;flex-direction:column;align-items:center;gap:4px}
-.palette-swatch{width:40px;height:40px;border-radius:8px;border:1px solid #eee}
+.palette-swatch{width:40px;height:40px;border-radius:8px;border:2px solid rgba(0,0,0,0.1);-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .palette-hex{font-size:9px;color:#888;font-family:monospace}
 .scores{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .score-card{padding:12px;border-radius:10px;background:#f9f9f9;border:1px solid #eee}
@@ -439,13 +439,14 @@ ${extracted.rating != null || extracted.total_reviews != null ? `<div class="sec
 ${(extracted.payments?.length ?? 0) > 0 ? `<div class="section"><div class="section-title">Formas de Pagamento</div><div class="tags">${extracted.payments.map(pm => `<span class="tag">${pm}</span>`).join('')}</div></div>` : ''}
 ${(extracted.accessibility?.length ?? 0) > 0 ? `<div class="section"><div class="section-title">Acessibilidade</div><div class="tags">${extracted.accessibility.map(ac => `<span class="tag">${ac}</span>`).join('')}</div></div>` : ''}
 <div class="footer"><p>CSP Nexora — cspnexora.com.br</p><p>Extração: ${today}</p></div>
-<script>window.onload=function(){document.title='Briefing_${nomeArquivo}';window.print()}<\/script>
+<script>setTimeout(function(){document.title='Briefing_${nomeArquivo}';window.print();},500)<\/script>
 </body></html>`;
 
-              const janela = window.open('', '_blank');
+              const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+              const url = URL.createObjectURL(blob);
+              const janela = window.open(url, '_blank');
               if (!janela) return;
-              janela.document.write(html);
-              janela.document.close();
+              setTimeout(() => URL.revokeObjectURL(url), 10000);
             }}
             className="no-print flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest bg-violet-500/20 border border-violet-500/40 text-violet-400 hover:bg-violet-500/30"
           >
