@@ -73,7 +73,7 @@ const planos: Plano[] = [
     desc: "Melhor custo-benefício. Paga uma vez e fica tranquilo por 1 ano completo.",
     cta: "💳 Pagar R$ 500 via PIX",
     destaque: true,
-    badge: "⭐ Mais escolhido",
+    badge: "⭐ MAIS ESCOLHIDO",
     qrCode: "https://i.ibb.co/n8ZBcrb0/QR-CODE-500.png",
     chavePix: "00020101021126580014br.gov.bcb.pix0136758f6005-f0aa-4b00-a23e-d02c71f2fb085204000053039865406500.005802BR5925CLADSTON DA SILVA PINHEIR6009SAO PAULO622905251KVWPSC6MEQ7Q47WR8HN3WM746304C1DF",
   },
@@ -426,7 +426,7 @@ export function PlanosSection() {
                 <button
                   onClick={() => p.isConsulta ? setShowConsulta(true) : setPlanoSelecionado(p)}
                   className={`mt-auto block w-full rounded-xl border py-3 text-center text-sm font-bold backdrop-blur-sm transition hover:-translate-y-0.5 ${p.destaque ? "border-blue-500/40 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30" : "border-orange-500/40 bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"}`}>
-                  {p.isConsulta ? "Contatar" : "Contratar"}
+                  {p.isConsulta ? "Falar com Especialista" : "Contratar Agora"}
                 </button>
               </motion.div>
             ))}
