@@ -173,18 +173,32 @@ Retorne APENAS um objeto JSON válido, sem texto adicional, markdown ou blocos d
 TEXTO DO GOOGLE MEU NEGÓCIO:
 ${rawText}`;
 
-  try {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-      {
+  const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const geminiBody = JSON.stringify({
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: { responseMimeType: 'application/json', temperature: 0.1 },
+  });
+
+  async function callGemini(): Promise<Response> {
+    const r = await fetch(geminiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: geminiBody,
+    });
+    if (r.status === 503) {
+      console.warn('[gmn/extract] Gemini 503 — aguardando 2s e tentando novamente...');
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      return fetch(geminiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { responseMimeType: 'application/json', temperature: 0.1 },
-        }),
-      }
-    );
+        body: geminiBody,
+      });
+    }
+    return r;
+  }
+
+  try {
+    const res = await callGemini();
 
     if (!res.ok) {
       const errBody = await res.text();
