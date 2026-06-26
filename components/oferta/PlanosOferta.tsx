@@ -148,7 +148,7 @@ function PixModal({ plano, onClose }: PixModalProps) {
     const msg = encodeURIComponent(
       `Olá! Efetuei o pagamento do ${plano.label}. Meu código é ${codigo}. Nome: ${nome}. Empresa: ${empresa}. Segue em anexo o comprovante do pagamento PIX.`
     );
-    window.open(`https://wa.me/5561984202578?text=${msg}`, "_blank");
+    window.open(`https://wa.me/5561920043098?text=${msg}`, "_blank");
   }
 
   return (
@@ -267,7 +267,7 @@ function ConsultaModal({ onClose }: { onClose: () => void }) {
     const msg = encodeURIComponent(
       `Oi! Me chamo ${nome}, tenho interesse no plano personalizado da CSP Nexora para o meu negócio ${empresa}. Podem me passar mais detalhes?`
     );
-    window.open(`https://wa.me/5561984202578?text=${msg}`, "_blank");
+    window.open(`https://wa.me/5561920043098?text=${msg}`, "_blank");
 
     // Depois registra o lead
     try {

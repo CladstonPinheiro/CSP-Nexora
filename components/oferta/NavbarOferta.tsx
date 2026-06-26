@@ -33,7 +33,7 @@ function WhatsAppModal({ onClose }: { onClose: () => void }) {
       }),
     }).catch(() => {});
 
-    window.open(`https://wa.me/5561984202578?text=${msg}`, "_blank");
+    window.open(`https://wa.me/5561920043098?text=${msg}`, "_blank");
 
     onClose();
   }

@@ -209,8 +209,8 @@ export function LeadModal({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
                 <Field label="Website">
                   <input type="text" value={form.website} onChange={set('website')} placeholder="www.empresa.com.br" className={INPUT} />
                 </Field>
-                <Field label="Origem *">
-                  <select value={form.origem} onChange={set('origem')} required className={INPUT} style={{ backgroundColor: '#111' }}>
+                <Field label="Origem">
+                  <select value={form.origem} onChange={set('origem')} className={INPUT} style={{ backgroundColor: '#111' }}>
                     <option value="">Selecione...</option>
                     <option value="whatsapp">WhatsApp</option>
                     <option value="formulario">Formulário</option>
