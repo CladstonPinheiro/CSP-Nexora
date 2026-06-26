@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 import {
-  STAGE_ORDER,
+  FUNIL_GMN,
+  FUNIL_PADRAO,
   estagioConfig,
   origemConfig,
   nichoLabel,
@@ -77,14 +78,17 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
     return `https://wa.me/55${phoneDigits}?text=${mensagem}`;
   };
 
+  const isGMN = lead?.source === 'prospeccao_gmn';
+  const FUNIL = isGMN ? FUNIL_GMN : FUNIL_PADRAO;
+
   const currentStageIndex = lead?.stage
-    ? STAGE_ORDER.indexOf(lead.stage as Estagio)
+    ? FUNIL.indexOf(lead.stage as Estagio)
     : -1;
   const isTerminal = lead?.stage === 'fechado' || lead?.stage === 'perdido';
   const canAdvance =
-    lead && currentStageIndex >= 0 && currentStageIndex < STAGE_ORDER.length - 1;
+    lead && currentStageIndex >= 0 && currentStageIndex < FUNIL.length - 1;
   const canMarkLost = lead && !isTerminal;
-  const nextStage = canAdvance ? STAGE_ORDER[currentStageIndex + 1] : null;
+  const nextStage = canAdvance ? FUNIL[currentStageIndex + 1] : null;
 
   const handleAdvanceStage = async () => {
     if (!lead || !canAdvance || !nextStage) return;
@@ -177,7 +181,7 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                 </p>
 
                 <div className="space-y-0.5">
-                  {STAGE_ORDER.map((stage, i) => {
+                  {FUNIL.map((stage, i) => {
                     const isCurrent = lead.stage === stage;
                     const isPast = currentStageIndex > i;
                     const cfg = estagioConfig[stage];

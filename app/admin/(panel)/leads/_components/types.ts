@@ -3,6 +3,7 @@ export type Estagio =
   | 'briefing_agendado'
   | 'briefing_realizado'
   | 'proposta_enviada'
+  | 'em_atendimento'
   | 'em_retorno'
   | 'fechado'
   | 'perdido';
@@ -43,11 +44,31 @@ export type Lead = {
   site_demo?: string | null;
 };
 
+export const FUNIL_PADRAO: Estagio[] = [
+  'identificado',
+  'briefing_agendado',
+  'briefing_realizado',
+  'proposta_enviada',
+  'em_retorno',
+  'fechado',
+];
+
+export const FUNIL_GMN: Estagio[] = [
+  'identificado',
+  'proposta_enviada',
+  'em_atendimento',
+  'briefing_agendado',
+  'briefing_realizado',
+  'em_retorno',
+  'fechado',
+];
+
 export const STAGE_ORDER: Estagio[] = [
   'identificado',
   'briefing_agendado',
   'briefing_realizado',
   'proposta_enviada',
+  'em_atendimento',
   'em_retorno',
   'fechado',
 ];
@@ -57,9 +78,10 @@ export const estagioConfig: Record<string, { label: string; style: string }> = {
   briefing_agendado:  { label: 'Briefing Agendado',  style: 'bg-blue-500/15 text-blue-400 border-blue-500/20' },
   briefing_realizado: { label: 'Briefing Realizado', style: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/20' },
   proposta_enviada:   { label: 'Proposta Enviada',   style: 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20' },
-  em_retorno:         { label: 'Em Retorno',          style: 'bg-orange-500/15 text-orange-400 border-orange-500/20' },
-  fechado:            { label: 'Fechado',             style: 'bg-green-500/15 text-green-400 border-green-500/20' },
-  perdido:            { label: 'Perdido',             style: 'bg-red-500/15 text-red-400 border-red-500/20' },
+  em_atendimento:     { label: 'Em Atendimento',     style: 'bg-violet-500/15 text-violet-400 border-violet-500/20' },
+  em_retorno:         { label: 'Em Retorno',         style: 'bg-orange-500/15 text-orange-400 border-orange-500/20' },
+  fechado:            { label: 'Fechado',            style: 'bg-green-500/15 text-green-400 border-green-500/20' },
+  perdido:            { label: 'Perdido',            style: 'bg-red-500/15 text-red-400 border-red-500/20' },
 };
 
 export const origemConfig: Record<string, { label: string; style: string }> = {
