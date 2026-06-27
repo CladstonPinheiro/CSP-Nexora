@@ -304,7 +304,7 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                       href={buildReminderUrl()}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/15 border border-red-500/20 hover:border-red-500/30 text-red-400 text-[11px] font-black uppercase tracking-widest transition-all"
+                      className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-amber-400/10 hover:bg-amber-400/15 border border-amber-400/20 hover:border-amber-400/30 text-amber-400 text-[11px] font-black uppercase tracking-widest transition-all"
                     >
                       <Bell className="w-3.5 h-3.5" />
                       Enviar Lembrete de Expiração
