@@ -341,23 +341,19 @@ export default function LeadsPage() {
 
                     {/* Estágio */}
                     <td className="px-5 py-4">
-                      <div className="flex flex-col gap-1">
-                        {lead.stage ? (
-                          <EstagioBadge value={lead.stage} />
-                        ) : (
-                          <span className="text-sm text-gray-700">—</span>
-                        )}
-                        {getDemoStatus(lead) === 'expirado' && (
-                          <span className="inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap bg-red-500/15 border-red-500/20 text-red-400">
-                            Demo Expirado
-                          </span>
-                        )}
-                        {getDemoStatus(lead) === 'alerta' && (
-                          <span className="inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap bg-amber-400/15 border-amber-400/20 text-amber-400">
-                            ⚠️ 48H
-                          </span>
-                        )}
-                      </div>
+                      {getDemoStatus(lead) === 'expirado' ? (
+                        <span className="inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap bg-red-500/15 border-red-500/20 text-red-400">
+                          Demo Expirado
+                        </span>
+                      ) : getDemoStatus(lead) === 'alerta' && lead.stage ? (
+                        <span className="inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap bg-amber-400/15 border-amber-400/20 text-amber-400">
+                          {estagioConfig[lead.stage]?.label ?? lead.stage}
+                        </span>
+                      ) : lead.stage ? (
+                        <EstagioBadge value={lead.stage} />
+                      ) : (
+                        <span className="text-sm text-gray-700">—</span>
+                      )}
                     </td>
 
                     {/* Data */}
