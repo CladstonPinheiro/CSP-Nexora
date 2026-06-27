@@ -46,6 +46,15 @@ function formatDate(iso: string) {
   });
 }
 
+function getDemoStatus(lead: Lead): 'ok' | 'alerta' | 'expirado' {
+  if (!lead.site_demo) return 'ok';
+  if (lead.stage === 'fechado') return 'ok';
+  const horas = (Date.now() - new Date(lead.created_at).getTime()) / (1000 * 60 * 60);
+  if (horas > 72) return 'expirado';
+  if (horas > 48) return 'alerta';
+  return 'ok';
+}
+
 const SELECT_CLASS =
   'bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2 text-gray-400 text-xs font-bold focus:outline-none focus:border-white/20 transition-all cursor-pointer min-w-[170px]';
 
@@ -94,21 +103,12 @@ export default function LeadsPage() {
     }
   }, [leads]);
 
-  const leadsAguardandoLembrete = leads.filter(
-    (l) =>
-      l.source === 'prospeccao_gmn' &&
-      l.site_demo &&
-      (l.stage === 'identificado' || l.stage === 'proposta_enviada')
-  );
+  const leadsAlerta = leads.filter(l => getDemoStatus(l) === 'alerta');
+  const leadsExpirados = leads.filter(l => getDemoStatus(l) === 'expirado');
 
   const filteredLeads = leads.filter((l) => {
-    if (filterLembrete) {
-      return (
-        l.source === 'prospeccao_gmn' &&
-        l.site_demo &&
-        (l.stage === 'identificado' || l.stage === 'proposta_enviada')
-      );
-    }
+    if (filterEstagio === 'demo_expirado') return getDemoStatus(l) === 'expirado';
+    if (filterLembrete) return getDemoStatus(l) !== 'ok';
     if (filterEstagio && l.stage !== filterEstagio) return false;
     if (filterOrigem && l.source !== filterOrigem) return false;
     return true;
@@ -182,6 +182,7 @@ export default function LeadsPage() {
               {estagioConfig[s]?.label ?? s}
             </option>
           ))}
+          <option value="demo_expirado">Demo Expirado</option>
         </select>
         <select
           value={filterOrigem}
@@ -211,7 +212,7 @@ export default function LeadsPage() {
       </div>
 
       {/* Alerta lembrete de expiração */}
-      {leadsAguardandoLembrete.length > 0 && (
+      {(leadsAlerta.length > 0 || leadsExpirados.length > 0) && (
         <button
           onClick={() => {
             setFilterEstagio('');
@@ -220,16 +221,25 @@ export default function LeadsPage() {
           }}
           className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border mb-4 text-left transition-all ${
             filterLembrete
-              ? 'bg-amber-400/20 border-amber-400/40 text-amber-300'
-              : 'bg-amber-400/10 border-amber-400/20 text-amber-400 hover:bg-amber-400/15'
+              ? 'bg-amber-400/20 border-amber-400/40'
+              : 'bg-amber-400/10 border-amber-400/20 hover:bg-amber-400/15'
           }`}
         >
-          <Bell className="w-4 h-4 shrink-0" />
-          <span className="text-[11px] font-black uppercase tracking-widest">
-            {leadsAguardandoLembrete.length} lead{leadsAguardandoLembrete.length !== 1 ? 's' : ''} aguardando lembrete de expiração
+          <Bell className="w-4 h-4 shrink-0 text-amber-400" />
+          <span className="text-[11px] font-black uppercase tracking-widest flex items-center gap-3">
+            {leadsExpirados.length > 0 && (
+              <span className="text-red-400">
+                {leadsExpirados.length} demo{leadsExpirados.length !== 1 ? 's' : ''} expirado{leadsExpirados.length !== 1 ? 's' : ''}
+              </span>
+            )}
+            {leadsAlerta.length > 0 && (
+              <span className="text-amber-400">
+                {leadsAlerta.length} em alerta (48h)
+              </span>
+            )}
           </span>
           {filterLembrete && (
-            <span className="ml-auto text-[9px] font-black uppercase tracking-widest opacity-60">
+            <span className="ml-auto text-[9px] font-black uppercase tracking-widest text-amber-400/60">
               filtro ativo — clique para limpar
             </span>
           )}
@@ -331,11 +341,23 @@ export default function LeadsPage() {
 
                     {/* Estágio */}
                     <td className="px-5 py-4">
-                      {lead.stage ? (
-                        <EstagioBadge value={lead.stage} />
-                      ) : (
-                        <span className="text-sm text-gray-700">—</span>
-                      )}
+                      <div className="flex flex-col gap-1">
+                        {lead.stage ? (
+                          <EstagioBadge value={lead.stage} />
+                        ) : (
+                          <span className="text-sm text-gray-700">—</span>
+                        )}
+                        {getDemoStatus(lead) === 'expirado' && (
+                          <span className="inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap bg-red-500/15 border-red-500/20 text-red-400">
+                            Demo Expirado
+                          </span>
+                        )}
+                        {getDemoStatus(lead) === 'alerta' && (
+                          <span className="inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap bg-amber-400/15 border-amber-400/20 text-amber-400">
+                            ⚠️ 48H
+                          </span>
+                        )}
+                      </div>
                     </td>
 
                     {/* Data */}

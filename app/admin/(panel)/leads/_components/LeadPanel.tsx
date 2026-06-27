@@ -57,6 +57,15 @@ function Detail({
 
 type Notification = { type: 'success' | 'warning' | 'info'; message: string };
 
+function getDemoStatus(lead: Lead): 'ok' | 'alerta' | 'expirado' {
+  if (!lead.site_demo) return 'ok';
+  if (lead.stage === 'fechado') return 'ok';
+  const horas = (Date.now() - new Date(lead.created_at).getTime()) / (1000 * 60 * 60);
+  if (horas > 72) return 'expirado';
+  if (horas > 48) return 'alerta';
+  return 'ok';
+}
+
 export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
   const [updating, setUpdating] = useState(false);
   const [notification, setNotification] = useState<Notification | null>(null);
@@ -87,6 +96,7 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
     return `https://wa.me/55${phoneDigits}?text=${mensagem}`;
   };
 
+  const demoStatus = lead ? getDemoStatus(lead) : 'ok';
   const isGMN = lead?.source === 'prospeccao_gmn';
   const FUNIL = isGMN ? FUNIL_GMN : FUNIL_PADRAO;
 
@@ -183,6 +193,20 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
             </div>
 
             <div className="flex-1 overflow-y-auto">
+              {/* Badge de status do demo */}
+              {demoStatus === 'expirado' && (
+                <div className="mx-6 mt-4 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-[11px] font-black uppercase tracking-widest">
+                  <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                  Demo Expirado
+                </div>
+              )}
+              {demoStatus === 'alerta' && (
+                <div className="mx-6 mt-4 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-amber-400/10 border border-amber-400/20 text-amber-400 text-[11px] font-black uppercase tracking-widest">
+                  <Bell className="w-3.5 h-3.5 shrink-0" />
+                  ⚠️ Enviar lembrete hoje
+                </div>
+              )}
+
               {/* Funil */}
               <div className="px-6 py-5 border-b border-white/5">
                 <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-3">
