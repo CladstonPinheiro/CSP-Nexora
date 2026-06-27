@@ -226,8 +226,8 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                           <span className="ml-auto flex items-center gap-2">
                             {isGMN && lead.site_demo && (stage === 'identificado' || stage === 'proposta_enviada') && (
                               <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400" />
                               </span>
                             )}
                             <span className="text-[9px] font-black uppercase tracking-widest text-white/50">

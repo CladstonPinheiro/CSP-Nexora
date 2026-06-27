@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Plus, SlidersHorizontal, InboxIcon, Pencil, Trash2, AlertTriangle, Building2 } from 'lucide-react';
+import { Plus, SlidersHorizontal, InboxIcon, Pencil, Trash2, AlertTriangle, Building2, Bell } from 'lucide-react';
 import Link from 'next/link';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
 import { deleteLead } from './actions';
@@ -60,6 +60,7 @@ export default function LeadsPage() {
   const [deleting, setDeleting] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [convertedMap, setConvertedMap] = useState<Map<string, string>>(new Map());
+  const [filterLembrete, setFilterLembrete] = useState(false);
 
   const refreshConvertedMap = useCallback(async () => {
     const supabase = createSupabaseBrowserClient();
@@ -93,7 +94,21 @@ export default function LeadsPage() {
     }
   }, [leads]);
 
+  const leadsAguardandoLembrete = leads.filter(
+    (l) =>
+      l.source === 'prospeccao_gmn' &&
+      l.site_demo &&
+      (l.stage === 'identificado' || l.stage === 'proposta_enviada')
+  );
+
   const filteredLeads = leads.filter((l) => {
+    if (filterLembrete) {
+      return (
+        l.source === 'prospeccao_gmn' &&
+        l.site_demo &&
+        (l.stage === 'identificado' || l.stage === 'proposta_enviada')
+      );
+    }
     if (filterEstagio && l.stage !== filterEstagio) return false;
     if (filterOrigem && l.source !== filterOrigem) return false;
     return true;
@@ -128,7 +143,7 @@ export default function LeadsPage() {
     setDeleting(false);
   };
 
-  const hasFilters = filterEstagio || filterOrigem;
+  const hasFilters = filterEstagio || filterOrigem || filterLembrete;
 
   return (
     <div className="p-8 min-h-screen">
@@ -186,6 +201,7 @@ export default function LeadsPage() {
             onClick={() => {
               setFilterEstagio('');
               setFilterOrigem('');
+              setFilterLembrete(false);
             }}
             className="text-[11px] text-gray-600 hover:text-gray-400 transition-colors font-black uppercase tracking-widest"
           >
@@ -193,6 +209,32 @@ export default function LeadsPage() {
           </button>
         )}
       </div>
+
+      {/* Alerta lembrete de expiração */}
+      {leadsAguardandoLembrete.length > 0 && (
+        <button
+          onClick={() => {
+            setFilterEstagio('');
+            setFilterOrigem('');
+            setFilterLembrete((prev) => !prev);
+          }}
+          className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border mb-4 text-left transition-all ${
+            filterLembrete
+              ? 'bg-amber-400/20 border-amber-400/40 text-amber-300'
+              : 'bg-amber-400/10 border-amber-400/20 text-amber-400 hover:bg-amber-400/15'
+          }`}
+        >
+          <Bell className="w-4 h-4 shrink-0" />
+          <span className="text-[11px] font-black uppercase tracking-widest">
+            {leadsAguardandoLembrete.length} lead{leadsAguardandoLembrete.length !== 1 ? 's' : ''} aguardando lembrete de expiração
+          </span>
+          {filterLembrete && (
+            <span className="ml-auto text-[9px] font-black uppercase tracking-widest opacity-60">
+              filtro ativo — clique para limpar
+            </span>
+          )}
+        </button>
+      )}
 
       {/* Table */}
       <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden">
