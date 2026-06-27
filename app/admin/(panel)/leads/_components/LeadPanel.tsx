@@ -75,7 +75,7 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
 
   const buildReminderUrl = () => {
     const mensagem = encodeURIComponent(
-      `Oi, ${lead?.nome}! Tudo bem? 👋\n\nPassando para avisar que o site que criamos especialmente para ${lead?.nome} ficará disponível apenas até este domingo.\n\n👉 ${lead?.site_demo}\n\nDepois disso o endereço sai do ar e precisaríamos recriar tudo do zero caso queira seguir em frente.\n\nSe tiver interesse em garantir o site ou tirar qualquer dúvida antes disso, é só responder aqui — consigo encaixar um horário ainda essa semana. 😊\n\nQualquer coisa estou à disposição!\nCladston | CSP Nexora`
+      `Oi, ${lead?.company_name}! Tudo bem? 👋\n\nPassando para avisar que o site que criamos especialmente para ${lead?.company_name} ficará disponível apenas até este domingo.\n\n👉 ${lead?.site_demo}\n\nDepois disso o endereço sai do ar e precisaríamos recriar tudo do zero caso queira seguir em frente.\n\nSe tiver interesse em garantir o site ou tirar qualquer dúvida antes disso, é só responder aqui — consigo encaixar um horário ainda essa semana. 😊\n\nQualquer coisa estou à disposição!\nCladston | CSP Nexora`
     );
     return `https://wa.me/55${phoneDigits}?text=${mensagem}`;
   };
