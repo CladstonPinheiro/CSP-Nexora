@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, ChevronRight, AlertTriangle, ExternalLink, MessageCircle } from 'lucide-react';
+import { X, ChevronRight, AlertTriangle, ExternalLink, MessageCircle, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
@@ -71,9 +71,18 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
   const phoneDigits = rawPhone?.replace(/\D/g, '') ?? '';
   const canSendProposal = !!(phoneDigits && lead?.site_demo);
 
+  const canSendReminder = !!(phoneDigits && lead?.site_demo && lead?.stage !== 'fechado');
+
+  const buildReminderUrl = () => {
+    const mensagem = encodeURIComponent(
+      `Oi, ${lead?.nome}! Tudo bem? 👋\n\nPassando para avisar que o site que criamos especialmente para ${lead?.nome} ficará disponível apenas até este domingo.\n\n👉 ${lead?.site_demo}\n\nDepois disso o endereço sai do ar e precisaríamos recriar tudo do zero caso queira seguir em frente.\n\nSe tiver interesse em garantir o site ou tirar qualquer dúvida antes disso, é só responder aqui — consigo encaixar um horário ainda essa semana. 😊\n\nQualquer coisa estou à disposição!\nCladston | CSP Nexora`
+    );
+    return `https://wa.me/55${phoneDigits}?text=${mensagem}`;
+  };
+
   const buildWhatsAppUrl = () => {
     const mensagem = encodeURIComponent(
-      `Oi! Tudo bem? 👋\n\nVi o cadastro da *${lead?.company_name}* no Google Meu Negócio e criamos um lindo projeto, um site totalmente atualizado, moderno e com os dados reais do seu negócio.\n\nDá uma olhada: 👉 ${lead?.site_demo}\n\nEntregamos em 24h com domínio próprio (.com.br), 3 e-mails profissionais, hospedagem com certificado de segurança e suporte — tudo isso por apenas R$ 500 à vista ou 2x de R$ 350, sem mensalidade ou taxas.\n\nMais detalhes: cspnexora.com.br/oferta\n\nQualquer dúvida é só responder aqui. 😊`
+      `Oi! Tudo bem? 👋\n\nVi o cadastro da *${lead?.company_name}* no Google Meu Negócio e criamos um lindo projeto, um site totalmente atualizado, moderno e com os dados reais do seu negócio.\n\nDá uma olhada: 👉 ${lead?.site_demo}\n⚠️ Este site fica disponível por apenas 48 horas.\n\nEntregamos em 24h com domínio próprio (.com.br), 3 e-mails profissionais, hospedagem com certificado de segurança e suporte — tudo isso por apenas R$ 500 à vista ou 2x de R$ 350, sem mensalidade ou taxas.\n\nMais detalhes: cspnexora.com.br/oferta\n\nQualquer dúvida é só responder aqui. 😊`
     );
     return `https://wa.me/55${phoneDigits}?text=${mensagem}`;
   };
@@ -214,8 +223,16 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                           {cfg.label}
                         </span>
                         {isCurrent && (
-                          <span className="ml-auto text-[9px] font-black uppercase tracking-widest text-white/50">
-                            atual
+                          <span className="ml-auto flex items-center gap-2">
+                            {isGMN && lead.site_demo && (stage === 'identificado' || stage === 'proposta_enviada') && (
+                              <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+                              </span>
+                            )}
+                            <span className="text-[9px] font-black uppercase tracking-widest text-white/50">
+                              atual
+                            </span>
                           </span>
                         )}
                       </div>
@@ -280,6 +297,17 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                     >
                       <MessageCircle className="w-3.5 h-3.5" />
                       Enviar Proposta no WhatsApp
+                    </a>
+                  )}
+                  {canSendReminder && (
+                    <a
+                      href={buildReminderUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/15 border border-red-500/20 hover:border-red-500/30 text-red-400 text-[11px] font-black uppercase tracking-widest transition-all"
+                    >
+                      <Bell className="w-3.5 h-3.5" />
+                      Enviar Lembrete de Expiração
                     </a>
                   )}
                   {canMarkLost && (
