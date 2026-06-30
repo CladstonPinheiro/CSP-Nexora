@@ -293,7 +293,7 @@ ${rawText}`;
 
   try {
     const { res, model } = await callGeminiWithFallback(apiKey, geminiBody);
-    console.log(`[gmn/extract] usando modelo: ${model}`);
+    if (process.env.NODE_ENV !== 'production') console.log(`[gmn/extract] usando modelo: ${model}`);
 
     if (!res.ok) {
       const errBody = await res.text();
@@ -310,7 +310,7 @@ ${rawText}`;
     const geminiData = await res.json();
     const finishReason = geminiData?.candidates?.[0]?.finishReason;
     const raw = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-    console.log('[gmn/extract] Gemini finishReason:', finishReason, '| raw length:', raw.length);
+    if (process.env.NODE_ENV !== 'production') console.log('[gmn/extract] Gemini finishReason:', finishReason, '| raw length:', raw.length);
 
     let parsed: GmnExtracted;
     try {
@@ -326,9 +326,7 @@ ${rawText}`;
     if (logoUrl) {
       parsed.logo_url = logoUrl;
     }
-    console.log('[GMN] parsed.address:', parsed.address);
     const enriched = inferFields(parsed, rawText);
-    console.log('[GMN] enriched.neighborhood:', enriched.neighborhood, 'cep:', enriched.cep, 'state:', enriched.state, 'is_open_24h:', enriched.is_open_24h, 'description_short:', enriched.description_short?.slice(0, 50));
 
     const supabase = createAdminClient();
     const { data: prospect, error: dbError } = await supabase
