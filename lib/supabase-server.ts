@@ -15,6 +15,7 @@ export async function createSupabaseServerClient() {
           );
         },
       },
+      cookieOptions: { secure: process.env.NODE_ENV === 'production' },
     }
   );
 }

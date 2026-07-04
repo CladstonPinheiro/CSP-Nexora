@@ -16,11 +16,13 @@ export async function middleware(request: NextRequest) {
           );
         },
       },
+      cookieOptions: { secure: process.env.NODE_ENV === 'production' },
     }
   );
 
   const { data: { user } } = await supabase.auth.getUser();
   const isLoginPage = request.nextUrl.pathname === '/admin/login';
+  const isTrocarSenhaPage = request.nextUrl.pathname === '/admin/trocar-senha';
 
   if (!user && !isLoginPage) {
     return NextResponse.redirect(new URL('/admin/login', request.url));
@@ -28,6 +30,21 @@ export async function middleware(request: NextRequest) {
 
   if (user && isLoginPage) {
     return NextResponse.redirect(new URL('/admin', request.url));
+  }
+
+  if (user && !isLoginPage) {
+    const { data: perfil } = await supabase
+      .from('perfis')
+      .select('deve_trocar_senha')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (perfil?.deve_trocar_senha && !isTrocarSenhaPage) {
+      return NextResponse.redirect(new URL('/admin/trocar-senha', request.url));
+    }
+    if (!perfil?.deve_trocar_senha && isTrocarSenhaPage) {
+      return NextResponse.redirect(new URL('/admin', request.url));
+    }
   }
 
   return response;
