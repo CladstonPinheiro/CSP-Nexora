@@ -4,6 +4,7 @@ import ProblemsSection from '@/components/ProblemsSection';
 import About from '@/components/About';
 import Services from '@/components/Services';
 import Differentials from '@/components/Differentials';
+import CondoSpecialists from '@/components/CondoSpecialists';
 import Process from '@/components/Process';
 import Impact from '@/components/Impact';
 import CTAFinal from '@/components/CTAFinal';
@@ -106,6 +107,7 @@ export default function Home() {
         <About />
         <Services />
         <Differentials />
+        <CondoSpecialists />
         <Process />
         <Impact />
         <CTAFinal />

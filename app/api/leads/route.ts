@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const { nome, email, empresa, telefone, niche, source, notes, recaptchaToken } = await req.json();
+    const { nome, email, empresa, telefone, niche, source, notes, maior_desafio, recaptchaToken } = await req.json();
 
     const emailObrigatorio = source !== 'prospeccao_gmn';
     if (!nome || !empresa || !telefone || (emailObrigatorio && !email)) {
@@ -60,6 +60,7 @@ export async function POST(req: NextRequest) {
         source:       source || 'formulario',
         stage:        'identificado',
         notes:        notes || null,
+        maior_desafio: maior_desafio || null,
         created_at:   new Date().toISOString(),
       }])
       .select()

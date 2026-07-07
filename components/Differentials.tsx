@@ -6,14 +6,14 @@ import { Sparkles, Wrench, TrendingUp, HeartHandshake, Compass, RefreshCw, Unloc
 
 const Differentials = () => {
   const diffs = [
-    { title: 'Ecossistemas personalizados', icon: <Sparkles className="text-teal-400" /> },
-    { title: 'Desenvolvemos ferramentas próprias', icon: <Wrench className="text-green-400" /> },
-    { title: 'Escalabilidade', icon: <TrendingUp className="text-cyan-400" /> },
-    { title: 'Acompanhamento contínuo', icon: <HeartHandshake className="text-purple-400" /> },
-    { title: 'Implantação consultiva', icon: <Compass className="text-orange-400" /> },
-    { title: 'Evolução permanente', icon: <RefreshCw className="text-red-400" /> },
-    { title: 'Sem soluções engessadas', icon: <Unlock className="text-indigo-400" /> },
-    { title: 'Redução de Custos', icon: <BarChart3 className="text-blue-400" /> },
+    { title: 'Ecossistemas personalizados', description: 'Projetados conforme os processos da sua empresa, sem soluções genéricas.', icon: <Sparkles className="text-teal-400" /> },
+    { title: 'Desenvolvemos ferramentas próprias', description: 'Desenvolvidas para atender exatamente às necessidades da sua operação.', icon: <Wrench className="text-green-400" /> },
+    { title: 'Escalabilidade', description: 'Sua operação cresce sem precisar reconstruir processos.', icon: <TrendingUp className="text-cyan-400" /> },
+    { title: 'Acompanhamento contínuo', description: 'Evoluímos sua solução conforme o crescimento da sua empresa.', icon: <HeartHandshake className="text-purple-400" /> },
+    { title: 'Implantação consultiva', description: 'Implantação planejada para garantir segurança e eficiência.', icon: <Compass className="text-orange-400" /> },
+    { title: 'Evolução permanente', description: 'Seu ecossistema evolui junto com as necessidades do negócio.', icon: <RefreshCw className="text-red-400" /> },
+    { title: 'Sem soluções engessadas', description: 'Soluções flexíveis, adaptadas à realidade da sua operação.', icon: <Unlock className="text-indigo-400" /> },
+    { title: 'Redução de Custos', description: 'Automatize processos e reduza desperdícios operacionais.', icon: <BarChart3 className="text-blue-400" /> },
   ];
 
   return (
@@ -39,6 +39,7 @@ const Differentials = () => {
                 {React.cloneElement(diff.icon as React.ReactElement<any>, { className: "w-8 h-8" })}
               </div>
               <h4 className="text-white font-bold tracking-tight">{diff.title}</h4>
+              <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mt-2 group-hover:text-gray-400 transition-colors">{diff.description}</p>
             </motion.div>
           ))}
         </div>

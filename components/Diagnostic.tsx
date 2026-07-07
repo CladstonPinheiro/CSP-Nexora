@@ -27,6 +27,7 @@ const DiagnosticForm = () => {
     empresa: '',
     niche: '',
     telefone: '',
+    maior_desafio: '',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +50,7 @@ const DiagnosticForm = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -118,7 +119,7 @@ const DiagnosticForm = () => {
       }
       setIsSubmitted(true);
       setAlreadySubmitted(false);
-      setFormData({ nome: '', email: '', empresa: '', niche: '', telefone: '' });
+      setFormData({ nome: '', email: '', empresa: '', niche: '', telefone: '', maior_desafio: '' });
     } catch (error: any) {
       setErrorMessage(error.message || 'Ocorreu um erro ao enviar seus dados. Tente novamente.');
     } finally {
@@ -279,6 +280,22 @@ const DiagnosticForm = () => {
                             required
                           />
                         </div>
+                      </div>
+
+                      {/* Maior desafio field — optional, spans full width */}
+                      <div className="space-y-2 md:col-span-2">
+                        <label className="text-xs font-bold text-gray-700 block" htmlFor="diag-maior-desafio">
+                          Qual é o maior desafio da sua empresa hoje?
+                        </label>
+                        <textarea
+                          id="diag-maior-desafio"
+                          name="maior_desafio"
+                          value={formData.maior_desafio}
+                          onChange={handleInputChange}
+                          rows={3}
+                          className="w-full bg-[#f8fafc] border border-slate-200 text-black px-5 py-4 rounded-3xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all placeholder-gray-400 resize-none"
+                          placeholder="Conte um pouco sobre o desafio que você quer resolver"
+                        />
                       </div>
 
                     </div>

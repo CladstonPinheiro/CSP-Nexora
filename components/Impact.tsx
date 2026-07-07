@@ -6,7 +6,7 @@ import { Zap, TrendingUp, Users, Clock, Database } from 'lucide-react';
 
 const Impact = () => {
   const stats = [
-    { text: 'Até 95% menos tempo em tarefas repetitivas*', icon: <Zap className="text-orange-400" /> },
+    { text: 'Redução significativa do tempo gasto em tarefas repetitivas.', icon: <Zap className="text-orange-400" /> },
     { text: 'Atendimento disponível 24 horas', icon: <Clock className="text-green-400" /> },
     { text: 'Processos integrados', icon: <TrendingUp className="text-cyan-400" /> },
     { text: 'Redução do retrabalho', icon: <Users className="text-purple-400" /> },
