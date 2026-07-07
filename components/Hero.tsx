@@ -18,13 +18,13 @@ const Hero = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
         <div className="grid lg:grid-cols-12 gap-16 items-center">
           <div className="lg:col-span-7 space-y-8 flex flex-col items-center lg:items-start text-center lg:text-left">
-            <div className="flex flex-col items-center lg:items-start">
+            <div className="flex flex-col items-center lg:items-start w-full">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mb-6 text-center">
                 <span className="relative flex h-2 w-2 shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
                 </span>
-                Automação Inteligente de Próxima Geração
+                Ecossistemas Inteligentes para Administradoras
               </div>
               
               <h1 className="font-outfit text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white mb-6 leading-[1.05] lg:leading-[0.95] text-center lg:text-left">
@@ -59,11 +59,11 @@ const Hero = () => {
               </div>
 
               {/* Trust indicators */}
-              <div className="pt-12 flex flex-wrap justify-center lg:justify-start gap-6 sm:gap-8 opacity-40 grayscale group hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-                <div className="flex items-center gap-2 font-black text-lg sm:text-xl tracking-tighter">OPENAI</div>
-                <div className="flex items-center gap-2 font-black text-lg sm:text-xl tracking-tighter">STRIPE</div>
-                <div className="flex items-center gap-2 font-black text-lg sm:text-xl tracking-tighter">VERCEL</div>
-                <div className="flex items-center gap-2 font-black text-lg sm:text-xl tracking-tighter">NOTION</div>
+              <div className="pt-12 flex flex-wrap lg:flex-nowrap justify-between gap-6 sm:gap-8 lg:gap-3 xl:gap-6 w-full opacity-40 grayscale group hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+                <div className="flex items-center gap-2 font-black text-lg sm:text-xl lg:text-sm xl:text-lg tracking-tighter whitespace-nowrap">PROCESSOS AUTOMATIZADOS</div>
+                <div className="flex items-center gap-2 font-black text-lg sm:text-xl lg:text-sm xl:text-lg tracking-tighter whitespace-nowrap">SISTEMAS INTEGRADOS</div>
+                <div className="flex items-center gap-2 font-black text-lg sm:text-xl lg:text-sm xl:text-lg tracking-tighter whitespace-nowrap">ATENDIMENTO INTELIGENTE</div>
+                <div className="flex items-center gap-2 font-black text-lg sm:text-xl lg:text-sm xl:text-lg tracking-tighter whitespace-nowrap">OPERAÇÃO ESCALÁVEL</div>
               </div>
             </div>
           </div>

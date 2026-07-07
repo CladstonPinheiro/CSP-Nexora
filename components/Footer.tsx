@@ -15,7 +15,7 @@ const Footer = () => {
           <div className="space-y-8">
              <Image src="/logo.png" alt="CSP Nexora" width={207} height={113} className="w-[100px] h-auto object-contain" />
              <p className="text-gray-500 text-sm leading-relaxed max-w-xs italic">
-                Sua parceira estratégica na jornada da automação inteligente. Criamos o futuro da sua operação com IA.
+                Desenvolvemos ecossistemas inteligentes para automatizar processos, integrar sistemas e impulsionar o crescimento da sua empresa.
              </p>
              <div className="space-y-4">
                 <h4 className="font-bold uppercase text-[10px] tracking-[0.3em] text-cyan-500">Redes Sociais</h4>
