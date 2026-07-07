@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import ProblemsSection from '@/components/ProblemsSection';
 import About from '@/components/About';
 import Services from '@/components/Services';
 import Differentials from '@/components/Differentials';
@@ -101,6 +102,7 @@ export default function Home() {
       <main className="min-h-screen bg-[#050505] selection:bg-cyan-500 selection:text-white">
         <Navbar />
         <Hero />
+        <ProblemsSection />
         <About />
         <Services />
         <Differentials />

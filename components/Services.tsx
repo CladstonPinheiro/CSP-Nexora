@@ -15,14 +15,14 @@ const services = [
   {
     id: 'automacao-ia',
     title: 'Automação com IA',
-    description: 'Fluxos de trabalho inteligentes que aprendem e se adaptam.',
+    description: 'Elimine retrabalho e reduza o tempo gasto em processos operacionais.',
     icon: <Bot className="w-8 h-8" />,
     color: 'from-cyan-400 to-blue-500'
   },
   {
     id: 'agentes-inteligentes',
     title: 'Agentes Inteligentes',
-    description: 'Trabalhadores digitais autônomos para tarefas complexas.',
+    description: 'Sua equipe ganha tempo para atender melhor clientes e tomar decisões estratégicas.',
     icon: <Cpu className="w-8 h-8" />,
     color: 'from-blue-500 to-purple-600'
   },
@@ -36,14 +36,14 @@ const services = [
   {
     id: 'integracao-sistemas',
     title: 'Integração de Sistemas',
-    description: 'Conectamos todo o seu stack tecnológico em um ecossistema.',
+    description: 'Acabe com informações espalhadas e tenha uma visão completa da operação.',
     icon: <Workflow className="w-8 h-8" />,
     color: 'from-orange-500 to-red-500'
   },
   {
     id: 'automacao-whatsapp',
     title: 'Automação de WhatsApp',
-    description: 'Escalabilidade no canal de comunicação mais importante.',
+    description: 'Transforme o WhatsApp em um canal organizado de atendimento, vendas e relacionamento.',
     icon: <Zap className="w-8 h-8" />,
     color: 'from-green-400 to-cyan-500'
   },

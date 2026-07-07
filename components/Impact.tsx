@@ -2,14 +2,15 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { Zap, TrendingUp, Users, Clock } from 'lucide-react';
+import { Zap, TrendingUp, Users, Clock, Database } from 'lucide-react';
 
 const Impact = () => {
   const stats = [
-    { label: 'Eficiência Operacional', value: '+95%', icon: <Zap className="text-orange-400" /> },
-    { label: 'Redução de Custos Manuais', value: '+70%', icon: <TrendingUp className="text-cyan-400" /> },
-    { label: 'Atendimento Automatizado', value: '24h', icon: <Clock className="text-green-400" /> },
-    { label: 'Inteligência em Escala', value: 'Ready', icon: <Users className="text-purple-400" /> },
+    { text: 'Até 95% menos tempo em tarefas repetitivas*', icon: <Zap className="text-orange-400" /> },
+    { text: 'Atendimento disponível 24 horas', icon: <Clock className="text-green-400" /> },
+    { text: 'Processos integrados', icon: <TrendingUp className="text-cyan-400" /> },
+    { text: 'Redução do retrabalho', icon: <Users className="text-purple-400" /> },
+    { text: 'Informações centralizadas', icon: <Database className="text-blue-400" /> },
   ];
 
   return (
@@ -43,11 +44,10 @@ const Impact = () => {
                        initial={{ scale: 0.9 }}
                        whileInView={{ opacity: 1, scale: 1 }}
                        viewport={{ once: true }}
-                       className="bg-white/10 backdrop-blur-xl border border-white/10 p-5 sm:p-8 rounded-3xl flex flex-col items-center sm:items-start text-center sm:text-left"
+                       className={`bg-white/10 backdrop-blur-xl border border-white/10 p-5 sm:p-8 rounded-3xl flex flex-col items-center sm:items-start text-center sm:text-left ${idx === 4 ? 'col-span-2' : ''}`}
                     >
                        <div className="mb-3 sm:mb-4">{stat.icon}</div>
-                       <h3 className="text-2xl sm:text-4xl font-black text-white mb-1 sm:mb-2">{stat.value}</h3>
-                       <p className="text-[9px] sm:text-xs font-bold uppercase tracking-widest text-white/60">{stat.label}</p>
+                       <p className="text-sm sm:text-lg font-bold text-white leading-snug">{stat.text}</p>
                     </motion.div>
                  ))}
               </div>

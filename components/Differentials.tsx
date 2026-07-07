@@ -2,18 +2,18 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { ShieldCheck, Globe, BarChart3, Workflow, Cpu, Rocket, SearchCheck, TrendingUp } from 'lucide-react';
+import { Sparkles, Wrench, TrendingUp, HeartHandshake, Compass, RefreshCw, Unlock, BarChart3 } from 'lucide-react';
 
 const Differentials = () => {
   const diffs = [
-    { title: 'Ecossistema Integrado', icon: <Globe className="text-teal-400" /> },
+    { title: 'Ecossistemas personalizados', icon: <Sparkles className="text-teal-400" /> },
+    { title: 'Desenvolvemos ferramentas próprias', icon: <Wrench className="text-green-400" /> },
     { title: 'Escalabilidade', icon: <TrendingUp className="text-cyan-400" /> },
-    { title: 'Atendimento Inteligente', icon: <ShieldCheck className="text-green-400" /> },
-    { title: 'Integrações Avançadas', icon: <Cpu className="text-purple-400" /> },
+    { title: 'Acompanhamento contínuo', icon: <HeartHandshake className="text-purple-400" /> },
+    { title: 'Implantação consultiva', icon: <Compass className="text-orange-400" /> },
+    { title: 'Evolução permanente', icon: <RefreshCw className="text-red-400" /> },
+    { title: 'Sem soluções engessadas', icon: <Unlock className="text-indigo-400" /> },
     { title: 'Redução de Custos', icon: <BarChart3 className="text-blue-400" /> },
-    { title: 'Automação 24/7', icon: <Workflow className="text-red-400" /> },
-    { title: 'Inteligência Operacional', icon: <SearchCheck className="text-indigo-400" /> },
-    { title: 'Crescimento Acelerado', icon: <Rocket className="text-yellow-400" /> },
   ];
 
   return (

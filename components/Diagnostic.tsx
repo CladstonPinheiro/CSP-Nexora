@@ -5,6 +5,21 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
+const howItWorksSteps = [
+  {
+    title: 'Diagnóstico da Operação',
+    description: 'Entendemos como sua empresa funciona hoje: processos, gargalos e oportunidades.'
+  },
+  {
+    title: 'Apresentação da Solução',
+    description: 'Mostramos, com uma demonstração real, como o ecossistema CSP Nexora resolveria os problemas identificados.'
+  },
+  {
+    title: 'Proposta Personalizada',
+    description: 'Você recebe uma proposta sob medida, com investimento e prazo claros para implantação.'
+  }
+];
+
 const DiagnosticForm = () => {
   const [formData, setFormData] = useState({
     nome: '',
@@ -133,8 +148,22 @@ const DiagnosticForm = () => {
             </h2>
 
             <p className="text-gray-300 text-sm sm:text-base lg:text-xl font-normal leading-relaxed max-w-xl text-center lg:text-left mx-auto lg:mx-0">
-              Solicite agora uma conversa técnica com um de nossos especialistas em BPM e Automação.
+              Agende uma conversa com nossos especialistas para entender sua operação. É o primeiro passo de um processo personalizado, que termina com uma proposta sob medida para o seu negócio.
             </p>
+
+            <div className="space-y-5 w-full pt-2">
+              {howItWorksSteps.map((step, idx) => (
+                <div key={idx} className="flex items-start gap-4 text-left">
+                  <div className="shrink-0 w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#ff9100] font-black text-sm">
+                    {idx + 1}
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold text-sm sm:text-base mb-1">{step.title}</h4>
+                    <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Right Column - White Form Card */}
@@ -221,23 +250,9 @@ const DiagnosticForm = () => {
                             className="w-full appearance-none bg-[#f8fafc] border border-slate-200 text-black px-5 py-4 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all cursor-pointer"
                           >
                             <option value="">Selecione o nicho...</option>
-                            <option value="academia">Academia</option>
                             <option value="administradora_condominios">Administradora de Condomínios</option>
-                            <option value="administradora_imoveis">Administradora de Imóveis</option>
-                            <option value="advocacia">Advocacia</option>
-                            <option value="barbearia">Barbearia</option>
-                            <option value="clinica_estetica">Clínica de Estética</option>
-                            <option value="clinica_saude">Clínica de Saúde</option>
-                            <option value="clinica_transplante_capilar">Clínica de Transplante Capilar</option>
-                            <option value="clinica_odontologica">Clínica Odontológica</option>
-                            <option value="clinica_veterinaria">Clínica Veterinária</option>
-                            <option value="contabilidade">Contabilidade</option>
-                            <option value="corretora_consignados">Corretora de Consignados</option>
-                            <option value="corretora_planos_saude">Corretora de Planos de Saúde</option>
-                            <option value="escola">Escola</option>
-                            <option value="nutricionista">Nutricionista</option>
-                            <option value="psicologo">Psicólogo</option>
-                            <option value="outro">Outro</option>
+                            <option value="administradora_imoveis">Imobiliária - Adm de Imóveis</option>
+                            <option value="outro">Outros</option>
                           </select>
                           <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                         </div>
@@ -305,7 +320,7 @@ const DiagnosticForm = () => {
                             <span>Enviando Dados...</span>
                           </>
                         ) : (
-                          <span>FALAR COM UM ESPECIALISTA</span>
+                          <span>Receba um diagnóstico gratuito</span>
                         )}
                       </button>
                     </div>
@@ -339,7 +354,7 @@ const DiagnosticForm = () => {
                       <p className="text-gray-500 text-sm max-w-sm mx-auto leading-relaxed">
                         {alreadySubmitted
                           ? 'Você já solicitou o diagnóstico. Nossos especialistas receberam seus dados e estão analisando sua operação.'
-                          : 'Nossos especialistas receberam seus dados e entrarão em contato em breve para o diagnóstico estratégico.'}
+                          : 'Nossos especialistas receberam seus dados e entrarão em contato em breve para agendar o primeiro passo da sua jornada: o diagnóstico da sua operação.'}
                       </p>
                     </div>
                     <button

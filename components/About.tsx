@@ -58,15 +58,15 @@ const About = () => {
             </div>
             
             <h2 className="text-3xl sm:text-4xl lg:text-6xl font-black font-outfit tracking-tighter leading-[1.1] sm:leading-[0.95] text-center lg:text-left">
-              Uma Automação Resolve uma Tarefa. <span className="text-cyan-400 italic">Um Ecossistema Resolve uma Operação Inteira.</span>
+              Uma automação resolve uma tarefa. <span className="text-cyan-400 italic">Um ecossistema transforma toda a operação.</span>
             </h2>
-            
+
             <p className="text-sm sm:text-base lg:text-xl text-gray-400 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              A CSP Nexora não entrega automações avulsas. Construímos ecossistemas: conjuntos de ferramentas e sistemas conectados entre si, funcionando de forma integrada, entregando performance e resultado real para o seu negócio.
+              Imagine sua administradora funcionando com todos os setores conectados. Quando um morador solicita atendimento, a informação percorre automaticamente o atendimento, financeiro, cobrança e gestão. Sua equipe deixa de procurar informações em vários sistemas e passa a trabalhar com uma visão única da operação.
             </p>
-            
+
             <p className="text-xs sm:text-sm lg:text-lg text-gray-500 max-w-xl mx-auto lg:mx-0">
-              Desenvolvemos ferramentas próprias e personalizadas para cada empresa — com as informações que realmente importam para o seu negócio, totalmente integradas ao ecossistema que construímos para você.
+              Na CSP Nexora, não entregamos automações isoladas. Projetamos ecossistemas inteligentes que acompanham o crescimento da sua empresa.
             </p>
             
             <div className="pt-4 sm:pt-8 w-full flex justify-center lg:justify-start">

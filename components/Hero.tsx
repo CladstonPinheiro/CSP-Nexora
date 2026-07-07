@@ -28,15 +28,14 @@ const Hero = () => {
               </div>
               
               <h1 className="font-outfit text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white mb-6 leading-[1.05] lg:leading-[0.95] text-center lg:text-left">
-                Construímos a <br />
+                Sua administradora perde tempo com{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
-                  Infraestrutura
-                </span> <br />
-                de Operação do Seu Negócio com IA
+                  retrabalho, processos manuais e informações espalhadas
+                </span>?
               </h1>
-              
+
               <p className="text-sm sm:text-base lg:text-xl text-gray-400 mb-10 max-w-2xl leading-relaxed text-center lg:text-left mx-auto lg:mx-0">
-                Não vendemos ferramentas isoladas. Criamos ecossistemas completos — sistemas e automações conectados entre si, funcionando de forma integrada, para que sua operação inteira trabalhe sozinha.
+                A CSP Nexora cria um ecossistema inteligente que conecta atendimento, financeiro, cobrança, WhatsApp e gestão em uma única operação integrada.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center w-full sm:w-auto">

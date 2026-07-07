@@ -7,22 +7,22 @@ const steps = [
   {
     num: '01',
     title: 'Diagnóstico Estratégico',
-    description: 'Analisamos seus processos atuais para identificar gargalos e oportunidades de automação.'
+    description: 'Antes de desenvolver qualquer tecnologia, entendemos como sua empresa funciona, identificamos gargalos e desenhamos uma solução personalizada.'
   },
   {
     num: '02',
     title: 'Planejamento da Automação',
-    description: 'Desenhamos o ecossistema inteligente sob medida para seus objetivos de negócio.'
+    description: 'Criamos um ecossistema inteligente que acompanha a realidade do seu negócio.'
   },
   {
     num: '03',
     title: 'Desenvolvimento Inteligente',
-    description: 'Nossa equipe de especialistas constrói as integrações e treina os agentes de IA.'
+    description: 'Construímos ferramentas sob medida, integrando sistemas e automatizando processos essenciais.'
   },
   {
     num: '04',
     title: 'Implementação e Escala',
-    description: 'Colocamos os sistemas em operação e monitoramos o crescimento contínuo.'
+    description: 'Implantamos, treinamos sua equipe e acompanhamos continuamente a evolução da operação.'
   }
 ];
 

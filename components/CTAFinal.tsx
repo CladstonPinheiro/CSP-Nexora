@@ -17,12 +17,12 @@ const CTAFinal = () => {
            >
               <div className="absolute -inset-10 bg-cyan-500/10 rounded-full blur-[80px]"></div>
               <h2 className="text-3xl sm:text-5xl lg:text-8xl font-black font-outfit tracking-tighter text-white relative leading-[1.1] sm:leading-[0.95]">
-                 Seu Negócio Está <br /> Preparado para a <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">Nova Era da IA?</span>
+                 Sua empresa está preparada <br /> para crescer sem aumentar <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">a complexidade da operação?</span>
               </h2>
            </motion.div>
-           
+
            <p className="text-sm sm:text-lg lg:text-xl text-gray-500 max-w-2xl mx-auto italic">
-             Automatize processos, aumente produtividade e transforme sua empresa com inteligência artificial.
+             Descubra como um ecossistema inteligente pode reduzir retrabalho, organizar processos e aumentar a produtividade da sua equipe.
            </p>
 
            <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 items-center w-full max-w-md sm:max-w-none mx-auto">

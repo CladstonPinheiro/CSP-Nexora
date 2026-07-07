@@ -6,9 +6,65 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Diagnostic from '@/components/Diagnostic';
 import { motion } from 'motion/react';
-import { Bot, Cpu, MessageSquare, Workflow, Zap, ArrowLeft, ArrowRight, MessageCircle, Shield } from 'lucide-react';
+import { Bot, Cpu, MessageSquare, Workflow, Zap, ArrowLeft, ArrowRight, MessageCircle, Shield, Headset, ClipboardList, LayoutDashboard } from 'lucide-react';
 
 const serviceDetails = [
+  {
+    id: 'atendimento',
+    title: 'Atendimento',
+    subtitle: 'Suporte ágil e humanizado em todos os pontos de contato com o cliente.',
+    description: 'Estruturamos processos de atendimento organizados, com fluxos claros, tempos de resposta reduzidos e alinhamento entre equipe e ferramentas. A CSP Nexora ajuda sua empresa a oferecer uma experiência de atendimento consistente e profissional, do primeiro contato ao pós-venda.',
+    icon: <Headset className="w-12 h-12" />,
+    color: 'from-emerald-400 to-teal-500'
+  },
+  {
+    id: 'ia-atendimento',
+    title: 'IA para Atendimento',
+    subtitle: 'Redução drástica no tempo de resposta com precisão absoluta.',
+    description: 'Implemente soluções de Inteligência Artificial personalizadas para automatizar, qualificar e otimizar o atendimento ao cliente da sua empresa. A CSP Nexora desenvolve sistemas de atendimento que compreendem intenções, respondem a dúvidas frequentemente feitas de forma instantânea e humanizada e fazem a triagem inteligente de leads, operando 24/7 sem interrupções.',
+    icon: <Shield className="w-12 h-12" />,
+    color: 'from-cyan-500 to-indigo-500'
+  },
+  {
+    id: 'chatbots-avancados',
+    title: 'Chatbots Avançados',
+    subtitle: 'Atendimento automatizado que gera resultados reais.',
+    description: 'Ofereça atendimento rápido, inteligente e disponível 24 horas por dia. Os chatbots desenvolvidos pela CSP Nexora utilizam IA para create conversas naturais, melhorar a experiência do cliente e aumentar a geração de oportunidades para sua empresa.',
+    icon: <MessageSquare className="w-12 h-12" />,
+    color: 'from-purple-600 to-pink-500'
+  },
+  {
+    id: 'automacao-whatsapp',
+    title: 'Automação de WhatsApp',
+    subtitle: 'Mais agilidade no atendimento e mais oportunidades de negócio.',
+    description: 'Automatize o principal canal de comunicação da sua empresa com fluxos inteligentes, respostas automáticas, captação de leads e atendimento escalável. Transforme o WhatsApp em uma ferramenta estratégica de vendas, suporte e relacionamento.',
+    icon: <Zap className="w-12 h-12" />,
+    color: 'from-green-400 to-cyan-500'
+  },
+  {
+    id: 'gestao',
+    title: 'Gestão',
+    subtitle: 'Mais controle e clareza sobre a operação do seu negócio.',
+    description: 'Desenvolvemos soluções que organizam processos, centralizam informações e dão visibilidade real sobre a operação. Com a CSP Nexora, sua empresa ganha controle sobre tarefas, indicadores e fluxos de trabalho, tomando decisões mais rápidas e baseadas em dados.',
+    icon: <ClipboardList className="w-12 h-12" />,
+    color: 'from-indigo-500 to-violet-600'
+  },
+  {
+    id: 'integracao-sistemas',
+    title: 'Integração de Sistemas',
+    subtitle: 'Tecnologia conectada para empresas mais produtivas.',
+    description: 'Conectamos plataformas, ferramentas e processos para criar um ecossistema integrado e eficiente. A CSP Nexora elimina retrabalho, melhora o fluxo de informações e garante que seus sistemas operem de forma sincronizada e inteligente.',
+    icon: <Workflow className="w-12 h-12" />,
+    color: 'from-orange-500 to-red-500'
+  },
+  {
+    id: 'dashboard',
+    title: 'Dashboard',
+    subtitle: 'Indicadores em tempo real para decisões mais rápidas e precisas.',
+    description: 'Criamos painéis personalizados que reúnem os principais indicadores do seu negócio em um só lugar, com visual intuitivo e dados atualizados em tempo real. A CSP Nexora transforma informação dispersa em decisão estratégica.',
+    icon: <LayoutDashboard className="w-12 h-12" />,
+    color: 'from-amber-400 to-orange-500'
+  },
   {
     id: 'automacao-ia',
     title: 'Automação com IA',
@@ -24,38 +80,6 @@ const serviceDetails = [
     description: 'Implemente agentes de IA capazes de executar tarefas, interpretar informações e interagir de forma autônoma com clientes e equipes. Nossos agentes inteligentes ajudam empresas a reduzir tempo operacional, otimizar processos e ampliar a capacidade de atendimento sem aumentar a equipe.',
     icon: <Cpu className="w-12 h-12" />,
     color: 'from-blue-500 to-purple-600'
-  },
-  {
-    id: 'chatbots-avancados',
-    title: 'Chatbots Avançados',
-    subtitle: 'Atendimento automatizado que gera resultados reais.',
-    description: 'Ofereça atendimento rápido, inteligente e disponível 24 horas por dia. Os chatbots desenvolvidos pela CSP Nexora utilizam IA para create conversas naturais, melhorar a experiência do cliente e aumentar a geração de oportunidades para sua empresa.',
-    icon: <MessageSquare className="w-12 h-12" />,
-    color: 'from-purple-600 to-pink-500'
-  },
-  {
-    id: 'integracao-sistemas',
-    title: 'Integração de Sistemas',
-    subtitle: 'Tecnologia conectada para empresas mais produtivas.',
-    description: 'Conectamos plataformas, ferramentas e processos para criar um ecossistema integrado e eficiente. A CSP Nexora elimina retrabalho, melhora o fluxo de informações e garante que seus sistemas operem de forma sincronizada e inteligente.',
-    icon: <Workflow className="w-12 h-12" />,
-    color: 'from-orange-500 to-red-500'
-  },
-  {
-    id: 'automacao-whatsapp',
-    title: 'Automação de WhatsApp',
-    subtitle: 'Mais agilidade no atendimento e mais oportunidades de negócio.',
-    description: 'Automatize o principal canal de comunicação da sua empresa com fluxos inteligentes, respostas automáticas, captação de leads e atendimento escalável. Transforme o WhatsApp em uma ferramenta estratégica de vendas, suporte e relacionamento.',
-    icon: <Zap className="w-12 h-12" />,
-    color: 'from-green-400 to-cyan-500'
-  },
-  {
-    id: 'ia-atendimento',
-    title: 'IA para Atendimento',
-    subtitle: 'Redução drástica no tempo de resposta com precisão absoluta.',
-    description: 'Implemente soluções de Inteligência Artificial personalizadas para automatizar, qualificar e otimizar o atendimento ao cliente da sua empresa. A CSP Nexora desenvolve sistemas de atendimento que compreendem intenções, respondem a dúvidas frequentemente feitas de forma instantânea e humanizada e fazem a triagem inteligente de leads, operando 24/7 sem interrupções.',
-    icon: <Shield className="w-12 h-12" />,
-    color: 'from-cyan-500 to-indigo-500'
   }
 ];
 
