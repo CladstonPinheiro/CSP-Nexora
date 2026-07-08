@@ -12,7 +12,31 @@ https://cspnexora.com.br
 ## Supabase
 Região: São Paulo
 
-## Estado atual (atualizado em 07/07/2026)
+## Estado atual (atualizado em 08/07/2026)
+
+### ✅ Kátia Andrea respondendo no WhatsApp (08/07/2026)
+Automação validada com teste real no WhatsApp após corrigir duas causas raiz (ver seção abaixo). Pendência anterior de "Insufficient quota" **resolvida**.
+
+### Automação WhatsApp — Secretaria IA "Kátia Andrea" (n8n) (08/07/2026)
+Sessão de trabalho fora do repositório de código (n8n, Chatwoot, Supabase) — documentada aqui para contexto futuro.
+
+- Workflow duplicado a partir do template do curso ("1- Secretaria IA | Template Base")
+- Prompt completo do agente escrito e documentado em arquivo separado (`prompt-katia-andrea-csp-nexora.md`), com 9 seções: Identidade, Função, Tom de Voz, Fluxo de Atendimento (state machine com 10 estados), Regras de Atendimento, Memória e Contexto, Raciocínio Operacional, Tools Disponíveis, Data e Hora
+- Duas novas tools criadas como sub-workflows n8n, usando o nó Supabase nativo:
+  - "Verificar Lead Existente" — consulta a tabela `leads` pelo campo `phone`
+  - "Registrar Novo Lead" — insere novo lead (`contact_name`, `company_name`, `niche`, `phone`, `maior_desafio`, `porte`, `stage='identificado'`)
+- Nova coluna `leads.porte` (TEXT) adicionada ao banco para suportar a nova tool
+- Tools conectadas ao agente principal no n8n como "Call n8n Workflow Tool", seguindo o mesmo padrão de "servicoTool" e "Agendar" já existentes
+
+**Bugs corrigidos durante os testes:**
+- Chatwoot: atribuição automática de conversas estava ativada na caixa de entrada "cspnexora", fazendo com que toda conversa nova fosse atribuída a um humano e a IA nunca respondesse. Desativada em Configurações > Agentes > Atribuição de conversa
+- n8n (nó "If1"): a condição que filtra por número de telefone usava o campo `sender.identifier` (formato `556184202578@s.whatsapp.net`, sem o 9º dígito), mas o valor fixo configurado tinha o 9º dígito, causando falha silenciosa no match e nenhuma resposta. Corrigido o valor de comparação para bater com o formato real sem o 9
+
+**Correção crítica — Kátia Andrea finalmente respondendo:**
+- Causa raiz #1: credencial `openAI_cspnexora` do node do modelo (gpt-4.1-mini) estava salva com valor placeholder interno do n8n (`__n8n_BLANK_VALUE_...`) em vez da chave de API real. Corrigido: chave antiga revogada na OpenAI Platform, nova chave `agente_cspnexora_v2` gerada e colada no node
+- Causa raiz #2: node "Se1" (entre Webhook3 e Interruptor1, no workflow "1- Secretaria IA | Base de modelo") continha filtro hardcoded comparando o remetente com um número de teste pessoal do fundador — qualquer outro número caía no ramo falso sem conexão, interrompendo o fluxo antes de chegar à IA. Corrigido: "Se1" desconectado do fluxo principal (mantido no canvas sem conexão), Webhook3 conectado direto ao Interruptor1, workflow republicado
+- Resultado: teste real no WhatsApp confirmado, Kátia Andrea respondendo mensagens de clientes
+- Pendências: deletar formalmente o node "Se1" quando houver tempo; revisar se há outros filtros de teste esquecidos em outros nodes de roteamento (ex: Switch3)
 
 ### SEO / Indexação (07/07/2026)
 - Propriedade cspnexora.com.br verificada no Google Search Console (método: arquivo HTML em `public/`)

@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Bot, Zap, Shield, ChevronRight } from 'lucide-react';
+import { WHATSAPP_SITE_LINK } from '@/lib/whatsapp';
 
 const Hero = () => {
   return (
@@ -48,8 +49,8 @@ const Hero = () => {
                   </span>
                 </a>
                 
-                <a 
-                  href="https://wa.me/5561920043098"
+                <a
+                  href={WHATSAPP_SITE_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 rounded-full font-bold uppercase tracking-widest text-xs sm:text-sm border border-white/10 bg-white/5 hover:bg-white/10 transition-all flex items-center justify-center gap-3 text-white"

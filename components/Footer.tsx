@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Facebook, Instagram, Mail, Globe, Youtube, Lock } from 'lucide-react';
+import { WHATSAPP_SITE_LINK } from '@/lib/whatsapp';
 
 
 const Footer = () => {
@@ -51,9 +52,9 @@ const Footer = () => {
                       <Facebook className="w-4 h-4" />
                    </a>
                    <a 
-                      href="https://wa.me/5561920043098" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
+                      href={WHATSAPP_SITE_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-cyan-500 hover:text-black transition-all cursor-pointer"
                       title="WhatsApp"
                       id="footer-whatsapp"

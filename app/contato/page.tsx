@@ -6,6 +6,7 @@ import { CheckCircle2, AlertCircle, Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { WHATSAPP_SITE_LINK } from '@/lib/whatsapp';
 
 export default function ContatoPage() {
   const [formData, setFormData] = useState({ nome: '', email: '', assunto: '', mensagem: '' });
@@ -211,7 +212,7 @@ export default function ContatoPage() {
           <p className="text-center text-gray-600 text-xs mt-8">
             Prefere falar agora?{' '}
             <a
-              href="https://wa.me/5561920043098"
+              href={WHATSAPP_SITE_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors"

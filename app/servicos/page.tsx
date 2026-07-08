@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import Diagnostic from '@/components/Diagnostic';
 import { motion } from 'motion/react';
 import { Bot, Cpu, MessageSquare, Workflow, Zap, ArrowLeft, ArrowRight, MessageCircle, Shield, Headset, ClipboardList, LayoutDashboard } from 'lucide-react';
+import { WHATSAPP_SITE_LINK } from '@/lib/whatsapp';
 
 const serviceDetails = [
   {
@@ -189,8 +190,8 @@ export default function ServicesPage() {
                   >
                     FALE COM ESPECIALISTA <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </a>
-                  <a 
-                    href="https://wa.me/5561920043098"
+                  <a
+                    href={WHATSAPP_SITE_LINK}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs border border-white/10 bg-white/5 hover:bg-white/10 transition-all flex items-center justify-center gap-2 text-white"
