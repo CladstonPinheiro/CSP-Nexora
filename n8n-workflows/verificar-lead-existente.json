@@ -1,0 +1,193 @@
+{
+  "updatedAt": "2026-07-08T01:09:26.627Z",
+  "createdAt": "2026-07-08T00:57:15.261Z",
+  "id": "ASq75121g7gmSBFQ",
+  "name": "Verificar Lead Existente",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "telefone"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "36448f05-e3f7-48bd-b13d-55ca211f0225",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.telefone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "65e78fd7-7b4c-4bce-9603-2620680baeaf",
+      "name": "Get many rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "yNRi9WeuGdi3UzON",
+          "name": "supabase_cspnexora"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "pinData": {},
+  "versionId": "06a5cc4a-b19a-47dc-a4d3-35b8861223c2",
+  "activeVersionId": "06a5cc4a-b19a-47dc-a4d3-35b8861223c2",
+  "versionCounter": 10,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "shared": [
+    {
+      "updatedAt": "2026-07-08T00:57:15.261Z",
+      "createdAt": "2026-07-08T00:57:15.261Z",
+      "role": "workflow:owner",
+      "workflowId": "ASq75121g7gmSBFQ",
+      "projectId": "aq6TpjIETv0FyaRE",
+      "project": {
+        "updatedAt": "2026-07-02T11:51:25.238Z",
+        "createdAt": "2026-07-02T11:48:24.954Z",
+        "id": "aq6TpjIETv0FyaRE",
+        "name": "CSP Nexora <cspnexora@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "6b27285f-0a21-4f4d-bc94-0a76cc04a047"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-07-08T01:08:44.022Z",
+    "createdAt": "2026-07-08T01:05:27.183Z",
+    "versionId": "06a5cc4a-b19a-47dc-a4d3-35b8861223c2",
+    "workflowId": "ASq75121g7gmSBFQ",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "telefone"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "36448f05-e3f7-48bd-b13d-55ca211f0225",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "leads",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "phone",
+                "condition": "eq",
+                "keyValue": "={{ $json.telefone }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "65e78fd7-7b4c-4bce-9603-2620680baeaf",
+        "name": "Get many rows",
+        "credentials": {
+          "supabaseApi": {
+            "id": "yNRi9WeuGdi3UzON",
+            "name": "supabase_cspnexora"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Get many rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "CSP Nexora",
+    "name": "Version 06a5cc4a",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-07-08T01:08:44.021Z",
+        "id": 26,
+        "workflowId": "ASq75121g7gmSBFQ",
+        "versionId": "06a5cc4a-b19a-47dc-a4d3-35b8861223c2",
+        "event": "activated",
+        "userId": "6b27285f-0a21-4f4d-bc94-0a76cc04a047"
+      }
+    ]
+  }
+}

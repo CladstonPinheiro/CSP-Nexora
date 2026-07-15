@@ -1,0 +1,115 @@
+{
+  "updatedAt": "2026-07-15T19:24:20.039Z",
+  "createdAt": "2026-07-03T17:01:08.863Z",
+  "id": "JRaeTsdAbUtfFSJY",
+  "name": "0 - Integracao do UAZAPI com  CHATWOOT",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://csp-nexora.uazapi.com/chatwoot/config",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -240,
+        -32
+      ],
+      "id": "62b6d2fc-bafe-447e-a48b-210dc0d2b571",
+      "name": "obter_informacoes",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "tUR47AE9enDsefJf",
+          "name": "uazapi_token_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://csp-nexora.uazapi.com/chatwoot/config",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"enabled\": true,\n  \"url\": \"https://csp-nexora-chatwoot.4baehj.easypanel.host\",\n  \"account_id\": 1,\n  \"inbox_id\": 1,\n  \"ignore_groups\": false,\n  \"sign_messages\": false,\n  \"create_new_conversation\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        48,
+        -32
+      ],
+      "id": "453c44df-f411-4d94-8a34-1fd8dd4f6585",
+      "name": "atualizar_informacoes",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "tUR47AE9enDsefJf",
+          "name": "uazapi_token_cspnexora"
+        },
+        "httpCustomAuth": {
+          "id": "ZvzFxOSphZ6om7Tz",
+          "name": "chatwoot_access_token_body"
+        }
+      }
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "pinData": {},
+  "versionId": "2383ef46-5a3c-43e1-b167-0e384573e8bd",
+  "activeVersionId": null,
+  "versionCounter": 38,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "shared": [
+    {
+      "updatedAt": "2026-07-03T17:01:08.863Z",
+      "createdAt": "2026-07-03T17:01:08.863Z",
+      "role": "workflow:owner",
+      "workflowId": "JRaeTsdAbUtfFSJY",
+      "projectId": "aq6TpjIETv0FyaRE",
+      "project": {
+        "updatedAt": "2026-07-02T11:51:25.238Z",
+        "createdAt": "2026-07-02T11:48:24.954Z",
+        "id": "aq6TpjIETv0FyaRE",
+        "name": "CSP Nexora <cspnexora@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "6b27285f-0a21-4f4d-bc94-0a76cc04a047"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}

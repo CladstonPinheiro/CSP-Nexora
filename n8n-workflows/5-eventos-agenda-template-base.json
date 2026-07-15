@@ -1,0 +1,2911 @@
+{
+  "updatedAt": "2026-07-04T21:00:02.800Z",
+  "createdAt": "2026-07-04T15:29:48.115Z",
+  "id": "toRrh1FpDb8VRHUV",
+  "name": "5- Eventos Agenda | Template Base",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "86ff282a-3ede-4417-98c1-0d10858bc5dc",
+              "name": "response",
+              "value": "=Agendamento concluído para o dia: {{ $('setarInfo').item.json.data_formatada }}. Link do Google Meet: {{ $('setarInfo').item.json.link_meet }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "13f80008-530f-4fed-900e-232161039c0f",
+      "name": "response1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3360,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Agendamento",
+        "height": 1484,
+        "width": 3596,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "8cd465af-0e83-456b-92bc-85a68cb491f2",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "cspnexora@gmail.com",
+          "mode": "list",
+          "cachedResultName": "cspnexora@gmail.com"
+        },
+        "timeMin": "={{ $('setarInformacoes').item.json.inicio_reuniao }}",
+        "timeMax": "={{ $('setarInformacoes').item.json.final_reuniao }}",
+        "options": {}
+      },
+      "id": "fcc8d6ce-e0f9-45c3-a311-236cf1e636d8",
+      "name": "Disponibilidade",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        1408,
+        320
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "zAkUJIpBNfs4d2N1",
+          "name": "google_calendar_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "cspnexora@gmail.com",
+          "mode": "list",
+          "cachedResultName": "cspnexora@gmail.com"
+        },
+        "start": "={{ $('setarInformacoes').item.json.inicio_reuniao }}",
+        "end": "={{ $('setarInformacoes').item.json.final_reuniao }}",
+        "additionalFields": {
+          "attendees": [],
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "description": "=Nome do cliente: {{ $('setarInformacoes').item.json.nome_lead }}\nWhatsapp: {{ $('setarInformacoes').item.json.whatsapp_lead }}\nAssunto: {{ $('setarInformacoes').item.json.assunto }}\nTipo de consulta: {{ $('setarInformacoes').item.json.tipo_consulta }}\n",
+          "summary": "={{ $('setarInformacoes').item.json.nome_lead }} | {{ $('setarInformacoes').item.json.tipo_consulta }}"
+        }
+      },
+      "id": "a9fa1f83-673d-4265-8410-0a45c85106f4",
+      "name": "Marca",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        1936,
+        320
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "zAkUJIpBNfs4d2N1",
+          "name": "google_calendar_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "cspnexora@gmail.com",
+          "mode": "list",
+          "cachedResultName": "cspnexora@gmail.com"
+        },
+        "limit": 1,
+        "options": {}
+      },
+      "id": "fe2607d4-d486-444f-a806-7eff5b72e3a7",
+      "name": "Já tem um evento",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        976,
+        272
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "zAkUJIpBNfs4d2N1",
+          "name": "google_calendar_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "cspnexora@gmail.com",
+          "mode": "list",
+          "cachedResultName": "cspnexora@gmail.com"
+        },
+        "eventId": "={{ $('Verifica evento').item.json.id }}",
+        "options": {}
+      },
+      "id": "3ac54563-4eab-4199-9069-5c21164bad83",
+      "name": "Google Calendar1",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        1200,
+        640
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "zAkUJIpBNfs4d2N1",
+          "name": "google_calendar_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "cspnexora@gmail.com",
+          "mode": "list",
+          "cachedResultName": "cspnexora@gmail.com"
+        },
+        "eventId": "={{ $('setarInformacoes').item.json.id_agendamento }}",
+        "useDefaultReminders": false,
+        "updateFields": {
+          "end": "={{ $('setarInformacoes').item.json.final_reuniao }}",
+          "sendUpdates": "all",
+          "start": "={{ $('setarInformacoes').item.json.inicio_reuniao }}"
+        }
+      },
+      "id": "78873c96-572e-404d-aa4d-f82cae556829",
+      "name": "Google Calendar3",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        1856,
+        880
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "zAkUJIpBNfs4d2N1",
+          "name": "google_calendar_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "cspnexora@gmail.com",
+          "mode": "list",
+          "cachedResultName": "cspnexora@gmail.com"
+        },
+        "returnAll": true,
+        "options": {
+          "query": "={{ $('setarInformacoes').item.json.whatsapp_lead }}"
+        }
+      },
+      "id": "a5ea3641-d10e-43fd-b29c-635af8e42a5b",
+      "name": "Verifica evento",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        976,
+        640
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "zAkUJIpBNfs4d2N1",
+          "name": "google_calendar_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "cspnexora@gmail.com",
+          "mode": "list",
+          "cachedResultName": "cspnexora@gmail.com"
+        },
+        "returnAll": true,
+        "options": {
+          "query": "={{ $('setarInformacoes').item.json.whatsapp_lead }}"
+        }
+      },
+      "id": "80f749e4-3de8-4a03-bc8c-dd5edf7c120e",
+      "name": "Verifica evento1",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        1632,
+        880
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "zAkUJIpBNfs4d2N1",
+          "name": "google_calendar_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "be5649a9-7624-4621-bd2d-84c25577c0ce",
+              "leftValue": "={{ $json.available }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1ac02558-8e71-428c-a7ef-2b8c952fb1c2",
+      "name": "If6",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1280,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "cspnexora@gmail.com",
+          "mode": "list",
+          "cachedResultName": "cspnexora@gmail.com"
+        },
+        "timeMin": "={{ $json.inicio_reuniao }}",
+        "timeMax": "={{ $json.final_reuniao }}",
+        "options": {}
+      },
+      "id": "8ff35da3-235d-4762-a153-97473ba9f486",
+      "name": "Disponibilidade1",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        992,
+        880
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "zAkUJIpBNfs4d2N1",
+          "name": "google_calendar_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "86ff282a-3ede-4417-98c1-0d10858bc5dc",
+              "name": "response",
+              "value": "=Você já tem uma reunião agendada para o dia: {{(() => { \n    const data = new Date($json.start.dateTime);\n    const opcoes = { day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit' };\n    return `dia ${data.toLocaleDateString('pt-BR', opcoes).replace(' ', ' de ').replace(',', ' às')}`;\n})()}} gostaria de reagendar? ",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "411f85b1-c513-4fac-bc8f-63da56b66e2d",
+      "name": "Edit Fields6",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1408,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8d192ed0-aebd-404e-8339-daab0d29651f",
+              "leftValue": "={{ $item(\"0\").$node[\"Já tem um evento\"].json[\"attendees\"][\"0\"][\"email\"] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b8f05410-d189-4dce-8e87-a0416084e31e",
+      "name": "If5",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1168,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f842ffa-cd8f-40ab-a0a7-40dc173357a7",
+              "name": "response",
+              "value": "Informe o usuário que o agendamento foi cancelado e que estará sempre à disposição para um novo agendamento.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c7f175ab-efd4-4813-b6e2-b9342b12855d",
+      "name": "Edit Fields7",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1632,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "04c6ca35-7572-4699-bcb7-bbf2f2a6e6a4",
+              "name": "response",
+              "value": "horário não disponível, peça outro horário",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8612e160-849e-4f81-b6c6-2cd0122c53fd",
+      "name": "Edit Fields9",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1936,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.evento }}",
+                    "rightValue": "agendamento",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "f5b06620-94a8-41c3-b06c-64a1c9306317"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "agendamento"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7a57e8e8-5227-4cde-8d58-7b447cd55a17",
+                    "leftValue": "={{ $json.evento }}",
+                    "rightValue": "cancelamento",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "cancelamento"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d788021f-29ab-41f2-b355-2b18963d30f2",
+                    "leftValue": "={{ $json.evento }}",
+                    "rightValue": "reagendamento",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "reagendamento"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9fe78f3c-e37e-4408-b520-19e0f14e8824",
+                    "leftValue": "={{ $json.evento }}",
+                    "rightValue": "VerHorarios",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Ver Horarios"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b3eb5aaa-2a83-456d-92d9-fde4ddac6113",
+      "name": "Switch4",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        688,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "be5649a9-7624-4621-bd2d-84c25577c0ce",
+              "leftValue": "={{ $json.available }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4033721d-7189-47a8-8d82-5d84ca19c82f",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1664,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "80f81b7f-a588-4135-bbeb-c6a5f9cd2231",
+              "name": "whatsapp_lead",
+              "value": "={{ $json.whatsapp_lead }}",
+              "type": "string"
+            },
+            {
+              "id": "1fdd5696-40e0-4e48-96a0-51e6740a8688",
+              "name": "evento",
+              "value": "={{ $json.evento }}",
+              "type": "string"
+            },
+            {
+              "id": "155a68cc-7838-4753-b1a2-96841890c149",
+              "name": "inicio_reuniao",
+              "value": "={{ $json.inicio_reuniao }}",
+              "type": "string"
+            },
+            {
+              "id": "88453109-556e-4682-8dd6-a007faef0f85",
+              "name": "final_reuniao",
+              "value": "={{ $json.final_reuniao }}",
+              "type": "string"
+            },
+            {
+              "id": "3b3e2717-3de9-4731-94c2-2a4e617d75a2",
+              "name": "tipo_consulta",
+              "value": "={{ $json.tipo_consulta }}",
+              "type": "string"
+            },
+            {
+              "id": "c9886780-4afa-4bab-9b9b-0420ae8e9c5c",
+              "name": "assunto",
+              "value": "={{ $json.assunto }}",
+              "type": "string"
+            },
+            {
+              "id": "940d0d3c-0858-422e-be65-b81d69f9373e",
+              "name": "id_agendamento",
+              "value": "={{ $json.id_agendamento }}",
+              "type": "string"
+            },
+            {
+              "id": "a1047306-4df1-4dd7-967b-0889af97095b",
+              "name": "nome_lead",
+              "value": "={{ $json.nome_lead }}",
+              "type": "string"
+            },
+            {
+              "id": "49a3f631-bf1c-4004-ada4-be8d6a03b73c",
+              "name": "url_chatwoot",
+              "value": "={{ $json.url_chatwoot }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        656
+      ],
+      "id": "19a23656-0dd4-48d3-a72a-d05071b5dae6",
+      "name": "setarInformacoes"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f842ffa-cd8f-40ab-a0a7-40dc173357a7",
+              "name": "response",
+              "value": "=Reunião foi reagendada com sucesso!",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "678e7dbd-84a3-4d7a-bcee-8fcf7d9a84f3",
+      "name": "Edit Fields2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2320,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"timezone\": \"America/Sao_Paulo\",\n  \"timeBetweenMeetingsMinutes \": 30,\n  \"schedule\": [\n    {\n      \"day\": \"SEG\",\n      \"available\": true,\n      \"hours\": { \"after\": \"08:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"TER\",\n      \"available\": true,\n      \"hours\": { \"after\": \"08:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"QUA\",\n      \"available\": true,\n      \"hours\": { \"after\": \"08:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"QUI\",\n      \"available\": true,\n      \"hours\": { \"after\": \"08:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"SEX\",\n      \"available\": true,\n      \"hours\": { \"after\": \"08:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"SAB\",\n      \"available\": false,\n      \"hours\": { \"after\": \"09:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"DOM\",\n      \"available\": false,\n      \"hours\": { \"after\": \"\", \"before\": \"\" }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        864,
+        1232
+      ],
+      "id": "ad204c9c-7d43-4000-b5fe-062380952c69",
+      "name": "definir agenda"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "cspnexora@gmail.com",
+          "mode": "list",
+          "cachedResultName": "cspnexora@gmail.com"
+        },
+        "returnAll": true,
+        "timeMax": "={{ $now.plus({ week: 3 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1200,
+        1232
+      ],
+      "id": "60ca1a12-d553-46f3-a499-9d3a0a9a1b3c",
+      "name": "buscar eventos já reistrados",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "zAkUJIpBNfs4d2N1",
+          "name": "google_calendar_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        1232
+      ],
+      "id": "726ada32-d372-49de-b3b3-4e51c3cff7b0",
+      "name": "juntar eventos"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a366af35-ca99-40ab-bd55-e9304e117f80",
+              "name": "data",
+              "value": "={{ \n\n(() => {\n  const eventosAgendados = $json.data;\n  const disponibilidadeSemanal = $('definir agenda').first().json;\n\n  const intervaloSemanas = 12;\n  const intervaloMinutos = $('definir agenda').first().json['timeBetweenMeetingsMinutes ']; // Cuidado com o espaço no final!\n\n  const dayMap = {\n    0: \"DOM\", 1: \"SEG\", 2: \"TER\", 3: \"QUA\", 4: \"QUI\", 5: \"SEX\", 6: \"SAB\"\n  };\n\n  function getDateWithTime(date, timeStr) {\n    if (!timeStr) return null;\n    const [hour, minute] = timeStr.split(\":\").map(Number);\n    const newDate = new Date(date);\n    newDate.setHours(hour, minute, 0, 0);\n    return newDate;\n  }\n\n  function formatTime(date) {\n    const hours = date.getHours().toString().padStart(2, '0');\n    const minutes = date.getMinutes().toString().padStart(2, '0');\n    return `${hours}:${minutes}`;\n  }\n\n  function saoMesmoDia(data1, data2) {\n    return (\n      data1.getFullYear() === data2.getFullYear() &&\n      data1.getMonth() === data2.getMonth() &&\n      data1.getDate() === data2.getDate()\n    );\n  }\n\n  function gerarHorariosDisponiveis() {\n    const horariosDisponiveis = [];\n    const hoje = new Date();\n\n    // Verifica se existem eventos válidos\n    const eventosValidos = Array.isArray(eventosAgendados)\n      ? eventosAgendados.filter(e => e?.start?.dateTime && e?.end?.dateTime)\n      : [];\n\n    for (let i = 0; i < intervaloSemanas * 7; i++) {\n      const dataAtual = new Date(hoje);\n      dataAtual.setDate(hoje.getDate() + i);\n      dataAtual.setHours(0, 0, 0, 0);\n\n      const diaSemana = dayMap[dataAtual.getDay()];\n      const configDia = disponibilidadeSemanal.schedule.find(d => d.day === diaSemana);\n\n      if (!configDia || !configDia.available) continue;\n\n      const inicioJanela = getDateWithTime(dataAtual, configDia.hours.after);\n      const fimJanela = getDateWithTime(dataAtual, configDia.hours.before);\n      if (!inicioJanela || !fimJanela) continue;\n\n      const eventosDoDia = eventosValidos.filter(evento => {\n        const inicioEvento = new Date(evento.start.dateTime);\n        return saoMesmoDia(inicioEvento, dataAtual);\n      });\n\n      for (let slotInicio = new Date(inicioJanela); slotInicio < fimJanela; ) {\n        const slotFim = new Date(slotInicio.getTime() + intervaloMinutos * 60000);\n        if (slotFim > fimJanela) break;\n\n        let conflita = false;\n        if (eventosValidos.length > 0) {\n          conflita = eventosDoDia.some(evento => {\n            const inicioEvento = new Date(evento.start.dateTime);\n            const fimEvento = new Date(evento.end.dateTime);\n            return (slotInicio < fimEvento && slotFim > inicioEvento);\n          });\n        }\n\n        if (!conflita) {\n          horariosDisponiveis.push({\n            data: slotInicio.toISOString().split(\"T\")[0],\n            start: formatTime(slotInicio),\n            end: formatTime(slotFim)\n          });\n        }\n\n        slotInicio = new Date(slotFim);\n      }\n    }\n\n    return horariosDisponiveis;\n  }\n\n  try {\n    const resultado = gerarHorariosDisponiveis();\n    return JSON.stringify(resultado);\n  } catch (error) {\n    return JSON.stringify({ error: error.message, stack: error.stack });\n  }\n\n})()\n\n}}\n",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1680,
+        1232
+      ],
+      "id": "90481ddd-a0d9-4f74-be09-b7e9bb0b5a75",
+      "name": "definir disponibilidade"
+    },
+    {
+      "parameters": {
+        "content": "# Buscar Eventos já registrados",
+        "height": 360,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1152,
+        1072
+      ],
+      "typeVersion": 1,
+      "id": "849962a1-e6f7-4510-8fdb-c2724f09a7ee",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Verifica os horarios disponíveis",
+        "height": 360,
+        "width": 340
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1584,
+        1072
+      ],
+      "typeVersion": 1,
+      "id": "f41ed2fd-88db-4c90-b3d3-25f97e4b4010",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Seleciona dias/horários e retorna tudo em uma string formatada",
+        "height": 360,
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1968,
+        1072
+      ],
+      "typeVersion": 1,
+      "id": "518de75a-d2a7-4b22-8ab7-cbce9f404582",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae0721c6-ba73-46a9-aefd-a131a3051254",
+              "name": "response",
+              "value": "={{ $json.disponibilidade }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2384,
+        1232
+      ],
+      "id": "0ded4555-117f-4095-977e-0294ffa644c3",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: items[0].json.data = [{ data: \"YYYY-MM-DD\", start: \"HH:MM\" }, ...]\nconst inputData = items[0].json.data;\n\n// 1) Agrupar horários por dia\nconst agrupadoPorDia = {};\nfor (const slot of inputData) {\n  if (!agrupadoPorDia[slot.data]) {\n    agrupadoPorDia[slot.data] = [];\n  }\n  agrupadoPorDia[slot.data].push(slot.start);\n}\n\n// 2) Ordenar dias (YYYY-MM-DD já ordena corretamente como string)\nlet diasOrdenados = Object.keys(agrupadoPorDia).sort();\n\n// 2.1) Excluir a data de hoje\nconst hoje = new Date().toISOString().split(\"T\")[0]; // YYYY-MM-DD\ndiasOrdenados = diasOrdenados.filter(d => d !== hoje);\n\n// 3) Selecionar até 10 dias\nconst selecionados = [];\n\n// Função auxiliar para parse de HH:MM\nconst parseHM = (h) => {\n  const [hh, mm] = h.split(\":\").map(n => parseInt(n, 10));\n  return { hh, mm };\n};\n\nfor (const dia of diasOrdenados.slice(0, 10)) {\n  // Ordena todos os horários do dia (lexicográfico funciona para HH:MM)\n  const horariosOrdenados = agrupadoPorDia[dia].sort();\n\n  // 5) Selecionar horários por período\n  //    - Manhã: TODOS até meio-dia (inclui 12:00, mas NÃO 12:01+)\n  //    - Tarde: a partir das 13:00 (pega até 10 horários)\n  const manha = horariosOrdenados.filter(h => {\n    const { hh, mm } = parseHM(h);\n    return hh < 12 || (hh === 12 && mm === 0);\n  });\n\n  const tarde = horariosOrdenados\n    .filter(h => {\n      const { hh } = parseHM(h);\n      return hh >= 13;\n    })\n    .slice(0, 10); // até 10 horários da tarde\n\n  // Formata dd/mm às HH:MM\n  const escolhidosFormatados = [...manha, ...tarde].map(h => {\n    const [year, month, day] = dia.split(\"-\");\n    return `${day}/${month} às ${h}`;\n  });\n\n  selecionados.push(...escolhidosFormatados);\n}\n\n// 4) Juntar tudo em uma única string (ex.: \"15/09 às 09:00, 15/09 às 10:00, ...\")\nconst resultado = selecionados.join(\", \");\n\n// 5) Retorno no formato do n8n\nreturn [\n  {\n    json: {\n      disponibilidade: resultado\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        1232
+      ],
+      "id": "99b87253-49b7-4ec6-ae3d-4b9ab1334cde",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "46b6b089-568c-4915-83fc-a18c8e581d96",
+              "name": "data_agendada",
+              "value": "={{ $json.start.dateTime }}",
+              "type": "string"
+            },
+            {
+              "id": "2bd0543a-fe5d-441c-b907-174439207bb7",
+              "name": "id_agendamento",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "e3ec8276-2871-4d23-91b5-e0cdc9b77e0c",
+              "name": "link_meet",
+              "value": "={{ $json.hangoutLink }}",
+              "type": "string"
+            },
+            {
+              "id": "ebd02732-7230-404f-a422-a21a2a875fbb",
+              "name": "data_formatada",
+              "value": "={{ DateTime.fromISO($json.start.dateTime).toFormat(\"dd/MM 'às' HH:mm\") }}",
+              "type": "string"
+            },
+            {
+              "id": "35993c15-5c7e-46b8-9b93-c441307be9fe",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2144,
+        320
+      ],
+      "id": "adf94870-f840-4990-9c7b-0a35cf846644",
+      "name": "setarInfo"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "whatsapp_lead"
+            },
+            {
+              "name": "evento"
+            },
+            {
+              "name": "inicio_reuniao"
+            },
+            {
+              "name": "final_reuniao"
+            },
+            {
+              "name": "tipo_consulta"
+            },
+            {
+              "name": "assunto"
+            },
+            {
+              "name": "id_agendamento"
+            },
+            {
+              "name": "nome_lead"
+            },
+            {
+              "name": "url_chatwoot"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        256,
+        656
+      ],
+      "id": "3f8aba08-fd50-4968-a87e-4ceea68c43c2",
+      "name": "exec workflow"
+    },
+    {
+      "parameters": {
+        "content": "# Etiquetar a conversa como \"agendamento\"",
+        "height": 336,
+        "width": 464
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2800,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "3a085109-4714-42d3-bb8d-a0c24c84880c",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "# Marcar data da consulta no banco de dados\n",
+        "height": 336,
+        "width": 432,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2304,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "b348e3ee-31fc-43e5-8d99-e432dbf9428b",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "crm_leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "whatsapp_lead",
+              "condition": "eq",
+              "keyValue": "={{ $('setarInformacoes').item.json.whatsapp_lead }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "data_agendamento",
+              "fieldValue": "={{ $json.data_agendada }}"
+            },
+            {
+              "fieldId": "id_agendamento",
+              "fieldValue": "={{ $json.id_agendamento }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2448,
+        320
+      ],
+      "id": "7efb6d21-9617-42c3-91d6-25d0b2718d02",
+      "name": "status_agendado",
+      "credentials": {
+        "supabaseApi": {
+          "id": "yNRi9WeuGdi3UzON",
+          "name": "supabase_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "crm_leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "whatsapp_lead",
+              "condition": "eq",
+              "keyValue": "={{ $('setarInformacoes').item.json.whatsapp_lead }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "data_agendamento",
+              "fieldValue": "={{ $json.start.dateTime }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        880
+      ],
+      "id": "66cc1983-ed8f-43cc-aa5a-deb9db03a85f",
+      "name": "atualizar_data",
+      "credentials": {
+        "supabaseApi": {
+          "id": "yNRi9WeuGdi3UzON",
+          "name": "supabase_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "crm_leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "whatsapp_lead",
+              "condition": "eq",
+              "keyValue": "={{ $('setarInformacoes').item.json.whatsapp_lead }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "data_agendamento",
+              "fieldValue": "={{ null }}"
+            },
+            {
+              "fieldId": "id_agendamento",
+              "fieldValue": "={{ null }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        640
+      ],
+      "id": "0c185dc5-3a84-46bf-8bee-d545237efe7e",
+      "name": "tirar_data_agendamento",
+      "credentials": {
+        "supabaseApi": {
+          "id": "yNRi9WeuGdi3UzON",
+          "name": "supabase_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Definir agenda\n## Esse node você precisa verificar se agenda esta correta",
+        "height": 352,
+        "width": 608,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        512,
+        1072
+      ],
+      "typeVersion": 1,
+      "id": "56b96494-fd9b-42cb-959a-0e4747442523",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('setarInformacoes').item.json.url_chatwoot }}api/v1/accounts/{{ $json['id_conta_chatwoot'] }}/conversations/{{ $json['id_conversa_chatwoot'] }}/labels",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"labels\": [\n    \"agendamento\"\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2976,
+        320
+      ],
+      "id": "adc7985a-9673-4637-9d8f-0ca400d40260",
+      "name": "agendamento",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wh1g2OYZ76hIr8Ic",
+          "name": "chatwoot_cspnexora"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Disponibilidade": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marca": {
+      "main": [
+        [
+          {
+            "node": "setarInfo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Já tem um evento": {
+      "main": [
+        [
+          {
+            "node": "If5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar1": {
+      "main": [
+        [
+          {
+            "node": "tirar_data_agendamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar3": {
+      "main": [
+        [
+          {
+            "node": "atualizar_data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica evento": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica evento1": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If6": {
+      "main": [
+        [
+          {
+            "node": "Verifica evento1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Disponibilidade1": {
+      "main": [
+        [
+          {
+            "node": "If6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If5": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Disponibilidade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch4": {
+      "main": [
+        [
+          {
+            "node": "Já tem um evento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verifica evento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Disponibilidade1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "definir agenda",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Marca",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setarInformacoes": {
+      "main": [
+        [
+          {
+            "node": "Switch4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "definir agenda": {
+      "main": [
+        [
+          {
+            "node": "buscar eventos já reistrados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar eventos já reistrados": {
+      "main": [
+        [
+          {
+            "node": "juntar eventos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "juntar eventos": {
+      "main": [
+        [
+          {
+            "node": "definir disponibilidade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "definir disponibilidade": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setarInfo": {
+      "main": [
+        [
+          {
+            "node": "status_agendado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "exec workflow": {
+      "main": [
+        [
+          {
+            "node": "setarInformacoes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "status_agendado": {
+      "main": [
+        [
+          {
+            "node": "agendamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualizar_data": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "tirar_data_agendamento": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "agendamento": {
+      "main": [
+        [
+          {
+            "node": "response1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "pinData": {},
+  "versionId": "ac8c9ac3-b2a3-4a2d-aa4f-263ec124fac7",
+  "activeVersionId": "ac8c9ac3-b2a3-4a2d-aa4f-263ec124fac7",
+  "versionCounter": 15,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "shared": [
+    {
+      "updatedAt": "2026-07-04T15:29:48.115Z",
+      "createdAt": "2026-07-04T15:29:48.115Z",
+      "role": "workflow:owner",
+      "workflowId": "toRrh1FpDb8VRHUV",
+      "projectId": "aq6TpjIETv0FyaRE",
+      "project": {
+        "updatedAt": "2026-07-02T11:51:25.238Z",
+        "createdAt": "2026-07-02T11:48:24.954Z",
+        "id": "aq6TpjIETv0FyaRE",
+        "name": "CSP Nexora <cspnexora@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "6b27285f-0a21-4f4d-bc94-0a76cc04a047"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2026-07-04T15:22:50.184Z",
+      "createdAt": "2026-07-04T15:22:50.184Z",
+      "id": "SzKx4vYLGfJyY8QT",
+      "name": "templatebase"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-07-04T21:00:55.938Z",
+    "createdAt": "2026-07-04T21:00:02.801Z",
+    "versionId": "ac8c9ac3-b2a3-4a2d-aa4f-263ec124fac7",
+    "workflowId": "toRrh1FpDb8VRHUV",
+    "nodes": [
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "86ff282a-3ede-4417-98c1-0d10858bc5dc",
+                "name": "response",
+                "value": "=Agendamento concluído para o dia: {{ $('setarInfo').item.json.data_formatada }}. Link do Google Meet: {{ $('setarInfo').item.json.link_meet }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "13f80008-530f-4fed-900e-232161039c0f",
+        "name": "response1",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3360,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "content": "# Agendamento",
+          "height": 1484,
+          "width": 3596,
+          "color": 6
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "8cd465af-0e83-456b-92bc-85a68cb491f2",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "resource": "calendar",
+          "calendar": {
+            "__rl": true,
+            "value": "cspnexora@gmail.com",
+            "mode": "list",
+            "cachedResultName": "cspnexora@gmail.com"
+          },
+          "timeMin": "={{ $('setarInformacoes').item.json.inicio_reuniao }}",
+          "timeMax": "={{ $('setarInformacoes').item.json.final_reuniao }}",
+          "options": {}
+        },
+        "id": "fcc8d6ce-e0f9-45c3-a311-236cf1e636d8",
+        "name": "Disponibilidade",
+        "type": "n8n-nodes-base.googleCalendar",
+        "typeVersion": 1.1,
+        "position": [
+          1408,
+          320
+        ],
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "zAkUJIpBNfs4d2N1",
+            "name": "google_calendar_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "calendar": {
+            "__rl": true,
+            "value": "cspnexora@gmail.com",
+            "mode": "list",
+            "cachedResultName": "cspnexora@gmail.com"
+          },
+          "start": "={{ $('setarInformacoes').item.json.inicio_reuniao }}",
+          "end": "={{ $('setarInformacoes').item.json.final_reuniao }}",
+          "additionalFields": {
+            "attendees": [],
+            "conferenceDataUi": {
+              "conferenceDataValues": {
+                "conferenceSolution": "hangoutsMeet"
+              }
+            },
+            "description": "=Nome do cliente: {{ $('setarInformacoes').item.json.nome_lead }}\nWhatsapp: {{ $('setarInformacoes').item.json.whatsapp_lead }}\nAssunto: {{ $('setarInformacoes').item.json.assunto }}\nTipo de consulta: {{ $('setarInformacoes').item.json.tipo_consulta }}\n",
+            "summary": "={{ $('setarInformacoes').item.json.nome_lead }} | {{ $('setarInformacoes').item.json.tipo_consulta }}"
+          }
+        },
+        "id": "a9fa1f83-673d-4265-8410-0a45c85106f4",
+        "name": "Marca",
+        "type": "n8n-nodes-base.googleCalendar",
+        "typeVersion": 1.1,
+        "position": [
+          1936,
+          320
+        ],
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "zAkUJIpBNfs4d2N1",
+            "name": "google_calendar_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "cspnexora@gmail.com",
+            "mode": "list",
+            "cachedResultName": "cspnexora@gmail.com"
+          },
+          "limit": 1,
+          "options": {}
+        },
+        "id": "fe2607d4-d486-444f-a806-7eff5b72e3a7",
+        "name": "Já tem um evento",
+        "type": "n8n-nodes-base.googleCalendar",
+        "typeVersion": 1.1,
+        "position": [
+          976,
+          272
+        ],
+        "alwaysOutputData": true,
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "zAkUJIpBNfs4d2N1",
+            "name": "google_calendar_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "calendar": {
+            "__rl": true,
+            "value": "cspnexora@gmail.com",
+            "mode": "list",
+            "cachedResultName": "cspnexora@gmail.com"
+          },
+          "eventId": "={{ $('Verifica evento').item.json.id }}",
+          "options": {}
+        },
+        "id": "3ac54563-4eab-4199-9069-5c21164bad83",
+        "name": "Google Calendar1",
+        "type": "n8n-nodes-base.googleCalendar",
+        "typeVersion": 1.1,
+        "position": [
+          1200,
+          640
+        ],
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "zAkUJIpBNfs4d2N1",
+            "name": "google_calendar_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "calendar": {
+            "__rl": true,
+            "value": "cspnexora@gmail.com",
+            "mode": "list",
+            "cachedResultName": "cspnexora@gmail.com"
+          },
+          "eventId": "={{ $('setarInformacoes').item.json.id_agendamento }}",
+          "useDefaultReminders": false,
+          "updateFields": {
+            "end": "={{ $('setarInformacoes').item.json.final_reuniao }}",
+            "sendUpdates": "all",
+            "start": "={{ $('setarInformacoes').item.json.inicio_reuniao }}"
+          }
+        },
+        "id": "78873c96-572e-404d-aa4d-f82cae556829",
+        "name": "Google Calendar3",
+        "type": "n8n-nodes-base.googleCalendar",
+        "typeVersion": 1.1,
+        "position": [
+          1856,
+          880
+        ],
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "zAkUJIpBNfs4d2N1",
+            "name": "google_calendar_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "cspnexora@gmail.com",
+            "mode": "list",
+            "cachedResultName": "cspnexora@gmail.com"
+          },
+          "returnAll": true,
+          "options": {
+            "query": "={{ $('setarInformacoes').item.json.whatsapp_lead }}"
+          }
+        },
+        "id": "a5ea3641-d10e-43fd-b29c-635af8e42a5b",
+        "name": "Verifica evento",
+        "type": "n8n-nodes-base.googleCalendar",
+        "typeVersion": 1.1,
+        "position": [
+          976,
+          640
+        ],
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "zAkUJIpBNfs4d2N1",
+            "name": "google_calendar_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "cspnexora@gmail.com",
+            "mode": "list",
+            "cachedResultName": "cspnexora@gmail.com"
+          },
+          "returnAll": true,
+          "options": {
+            "query": "={{ $('setarInformacoes').item.json.whatsapp_lead }}"
+          }
+        },
+        "id": "80f749e4-3de8-4a03-bc8c-dd5edf7c120e",
+        "name": "Verifica evento1",
+        "type": "n8n-nodes-base.googleCalendar",
+        "typeVersion": 1.1,
+        "position": [
+          1632,
+          880
+        ],
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "zAkUJIpBNfs4d2N1",
+            "name": "google_calendar_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "be5649a9-7624-4621-bd2d-84c25577c0ce",
+                "leftValue": "={{ $json.available }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "1ac02558-8e71-428c-a7ef-2b8c952fb1c2",
+        "name": "If6",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1280,
+          880
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "calendar",
+          "calendar": {
+            "__rl": true,
+            "value": "cspnexora@gmail.com",
+            "mode": "list",
+            "cachedResultName": "cspnexora@gmail.com"
+          },
+          "timeMin": "={{ $json.inicio_reuniao }}",
+          "timeMax": "={{ $json.final_reuniao }}",
+          "options": {}
+        },
+        "id": "8ff35da3-235d-4762-a153-97473ba9f486",
+        "name": "Disponibilidade1",
+        "type": "n8n-nodes-base.googleCalendar",
+        "typeVersion": 1.1,
+        "position": [
+          992,
+          880
+        ],
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "zAkUJIpBNfs4d2N1",
+            "name": "google_calendar_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "86ff282a-3ede-4417-98c1-0d10858bc5dc",
+                "name": "response",
+                "value": "=Você já tem uma reunião agendada para o dia: {{(() => { \n    const data = new Date($json.start.dateTime);\n    const opcoes = { day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit' };\n    return `dia ${data.toLocaleDateString('pt-BR', opcoes).replace(' ', ' de ').replace(',', ' às')}`;\n})()}} gostaria de reagendar? ",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "411f85b1-c513-4fac-bc8f-63da56b66e2d",
+        "name": "Edit Fields6",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1408,
+          32
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "8d192ed0-aebd-404e-8339-daab0d29651f",
+                "leftValue": "={{ $item(\"0\").$node[\"Já tem um evento\"].json[\"attendees\"][\"0\"][\"email\"] }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "b8f05410-d189-4dce-8e87-a0416084e31e",
+        "name": "If5",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1168,
+          272
+        ]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "7f842ffa-cd8f-40ab-a0a7-40dc173357a7",
+                "name": "response",
+                "value": "Informe o usuário que o agendamento foi cancelado e que estará sempre à disposição para um novo agendamento.",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "c7f175ab-efd4-4813-b6e2-b9342b12855d",
+        "name": "Edit Fields7",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1632,
+          640
+        ]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "04c6ca35-7572-4699-bcb7-bbf2f2a6e6a4",
+                "name": "response",
+                "value": "horário não disponível, peça outro horário",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "8612e160-849e-4f81-b6c6-2cd0122c53fd",
+        "name": "Edit Fields9",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1936,
+          640
+        ]
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.evento }}",
+                      "rightValue": "agendamento",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "f5b06620-94a8-41c3-b06c-64a1c9306317"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "agendamento"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "7a57e8e8-5227-4cde-8d58-7b447cd55a17",
+                      "leftValue": "={{ $json.evento }}",
+                      "rightValue": "cancelamento",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "cancelamento"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "d788021f-29ab-41f2-b355-2b18963d30f2",
+                      "leftValue": "={{ $json.evento }}",
+                      "rightValue": "reagendamento",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "reagendamento"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "9fe78f3c-e37e-4408-b520-19e0f14e8824",
+                      "leftValue": "={{ $json.evento }}",
+                      "rightValue": "VerHorarios",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Ver Horarios"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "b3eb5aaa-2a83-456d-92d9-fde4ddac6113",
+        "name": "Switch4",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          688,
+          624
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "be5649a9-7624-4621-bd2d-84c25577c0ce",
+                "leftValue": "={{ $json.available }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "4033721d-7189-47a8-8d82-5d84ca19c82f",
+        "name": "If",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1664,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "80f81b7f-a588-4135-bbeb-c6a5f9cd2231",
+                "name": "whatsapp_lead",
+                "value": "={{ $json.whatsapp_lead }}",
+                "type": "string"
+              },
+              {
+                "id": "1fdd5696-40e0-4e48-96a0-51e6740a8688",
+                "name": "evento",
+                "value": "={{ $json.evento }}",
+                "type": "string"
+              },
+              {
+                "id": "155a68cc-7838-4753-b1a2-96841890c149",
+                "name": "inicio_reuniao",
+                "value": "={{ $json.inicio_reuniao }}",
+                "type": "string"
+              },
+              {
+                "id": "88453109-556e-4682-8dd6-a007faef0f85",
+                "name": "final_reuniao",
+                "value": "={{ $json.final_reuniao }}",
+                "type": "string"
+              },
+              {
+                "id": "3b3e2717-3de9-4731-94c2-2a4e617d75a2",
+                "name": "tipo_consulta",
+                "value": "={{ $json.tipo_consulta }}",
+                "type": "string"
+              },
+              {
+                "id": "c9886780-4afa-4bab-9b9b-0420ae8e9c5c",
+                "name": "assunto",
+                "value": "={{ $json.assunto }}",
+                "type": "string"
+              },
+              {
+                "id": "940d0d3c-0858-422e-be65-b81d69f9373e",
+                "name": "id_agendamento",
+                "value": "={{ $json.id_agendamento }}",
+                "type": "string"
+              },
+              {
+                "id": "a1047306-4df1-4dd7-967b-0889af97095b",
+                "name": "nome_lead",
+                "value": "={{ $json.nome_lead }}",
+                "type": "string"
+              },
+              {
+                "id": "49a3f631-bf1c-4004-ada4-be8d6a03b73c",
+                "name": "url_chatwoot",
+                "value": "={{ $json.url_chatwoot }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          448,
+          656
+        ],
+        "id": "19a23656-0dd4-48d3-a72a-d05071b5dae6",
+        "name": "setarInformacoes"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "7f842ffa-cd8f-40ab-a0a7-40dc173357a7",
+                "name": "response",
+                "value": "=Reunião foi reagendada com sucesso!",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "678e7dbd-84a3-4d7a-bcee-8fcf7d9a84f3",
+        "name": "Edit Fields2",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2320,
+          880
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "{\n  \"timezone\": \"America/Sao_Paulo\",\n  \"timeBetweenMeetingsMinutes \": 30,\n  \"schedule\": [\n    {\n      \"day\": \"SEG\",\n      \"available\": true,\n      \"hours\": { \"after\": \"08:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"TER\",\n      \"available\": true,\n      \"hours\": { \"after\": \"08:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"QUA\",\n      \"available\": true,\n      \"hours\": { \"after\": \"08:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"QUI\",\n      \"available\": true,\n      \"hours\": { \"after\": \"08:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"SEX\",\n      \"available\": true,\n      \"hours\": { \"after\": \"08:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"SAB\",\n      \"available\": false,\n      \"hours\": { \"after\": \"09:00\", \"before\": \"19:00\" }\n    },\n    {\n      \"day\": \"DOM\",\n      \"available\": false,\n      \"hours\": { \"after\": \"\", \"before\": \"\" }\n    }\n  ]\n}\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          864,
+          1232
+        ],
+        "id": "ad204c9c-7d43-4000-b5fe-062380952c69",
+        "name": "definir agenda"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "cspnexora@gmail.com",
+            "mode": "list",
+            "cachedResultName": "cspnexora@gmail.com"
+          },
+          "returnAll": true,
+          "timeMax": "={{ $now.plus({ week: 3 }) }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendar",
+        "typeVersion": 1.3,
+        "position": [
+          1200,
+          1232
+        ],
+        "id": "60ca1a12-d553-46f3-a499-9d3a0a9a1b3c",
+        "name": "buscar eventos já reistrados",
+        "alwaysOutputData": true,
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "zAkUJIpBNfs4d2N1",
+            "name": "google_calendar_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          1408,
+          1232
+        ],
+        "id": "726ada32-d372-49de-b3b3-4e51c3cff7b0",
+        "name": "juntar eventos"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "a366af35-ca99-40ab-bd55-e9304e117f80",
+                "name": "data",
+                "value": "={{ \n\n(() => {\n  const eventosAgendados = $json.data;\n  const disponibilidadeSemanal = $('definir agenda').first().json;\n\n  const intervaloSemanas = 12;\n  const intervaloMinutos = $('definir agenda').first().json['timeBetweenMeetingsMinutes ']; // Cuidado com o espaço no final!\n\n  const dayMap = {\n    0: \"DOM\", 1: \"SEG\", 2: \"TER\", 3: \"QUA\", 4: \"QUI\", 5: \"SEX\", 6: \"SAB\"\n  };\n\n  function getDateWithTime(date, timeStr) {\n    if (!timeStr) return null;\n    const [hour, minute] = timeStr.split(\":\").map(Number);\n    const newDate = new Date(date);\n    newDate.setHours(hour, minute, 0, 0);\n    return newDate;\n  }\n\n  function formatTime(date) {\n    const hours = date.getHours().toString().padStart(2, '0');\n    const minutes = date.getMinutes().toString().padStart(2, '0');\n    return `${hours}:${minutes}`;\n  }\n\n  function saoMesmoDia(data1, data2) {\n    return (\n      data1.getFullYear() === data2.getFullYear() &&\n      data1.getMonth() === data2.getMonth() &&\n      data1.getDate() === data2.getDate()\n    );\n  }\n\n  function gerarHorariosDisponiveis() {\n    const horariosDisponiveis = [];\n    const hoje = new Date();\n\n    // Verifica se existem eventos válidos\n    const eventosValidos = Array.isArray(eventosAgendados)\n      ? eventosAgendados.filter(e => e?.start?.dateTime && e?.end?.dateTime)\n      : [];\n\n    for (let i = 0; i < intervaloSemanas * 7; i++) {\n      const dataAtual = new Date(hoje);\n      dataAtual.setDate(hoje.getDate() + i);\n      dataAtual.setHours(0, 0, 0, 0);\n\n      const diaSemana = dayMap[dataAtual.getDay()];\n      const configDia = disponibilidadeSemanal.schedule.find(d => d.day === diaSemana);\n\n      if (!configDia || !configDia.available) continue;\n\n      const inicioJanela = getDateWithTime(dataAtual, configDia.hours.after);\n      const fimJanela = getDateWithTime(dataAtual, configDia.hours.before);\n      if (!inicioJanela || !fimJanela) continue;\n\n      const eventosDoDia = eventosValidos.filter(evento => {\n        const inicioEvento = new Date(evento.start.dateTime);\n        return saoMesmoDia(inicioEvento, dataAtual);\n      });\n\n      for (let slotInicio = new Date(inicioJanela); slotInicio < fimJanela; ) {\n        const slotFim = new Date(slotInicio.getTime() + intervaloMinutos * 60000);\n        if (slotFim > fimJanela) break;\n\n        let conflita = false;\n        if (eventosValidos.length > 0) {\n          conflita = eventosDoDia.some(evento => {\n            const inicioEvento = new Date(evento.start.dateTime);\n            const fimEvento = new Date(evento.end.dateTime);\n            return (slotInicio < fimEvento && slotFim > inicioEvento);\n          });\n        }\n\n        if (!conflita) {\n          horariosDisponiveis.push({\n            data: slotInicio.toISOString().split(\"T\")[0],\n            start: formatTime(slotInicio),\n            end: formatTime(slotFim)\n          });\n        }\n\n        slotInicio = new Date(slotFim);\n      }\n    }\n\n    return horariosDisponiveis;\n  }\n\n  try {\n    const resultado = gerarHorariosDisponiveis();\n    return JSON.stringify(resultado);\n  } catch (error) {\n    return JSON.stringify({ error: error.message, stack: error.stack });\n  }\n\n})()\n\n}}\n",
+                "type": "array"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1680,
+          1232
+        ],
+        "id": "90481ddd-a0d9-4f74-be09-b7e9bb0b5a75",
+        "name": "definir disponibilidade"
+      },
+      {
+        "parameters": {
+          "content": "# Buscar Eventos já registrados",
+          "height": 360,
+          "width": 400
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1152,
+          1072
+        ],
+        "typeVersion": 1,
+        "id": "849962a1-e6f7-4510-8fdb-c2724f09a7ee",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "content": "# Verifica os horarios disponíveis",
+          "height": 360,
+          "width": 340
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1584,
+          1072
+        ],
+        "typeVersion": 1,
+        "id": "f41ed2fd-88db-4c90-b3d3-25f97e4b4010",
+        "name": "Sticky Note3"
+      },
+      {
+        "parameters": {
+          "content": "## Seleciona dias/horários e retorna tudo em uma string formatada",
+          "height": 360,
+          "width": 360
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1968,
+          1072
+        ],
+        "typeVersion": 1,
+        "id": "518de75a-d2a7-4b22-8ab7-cbce9f404582",
+        "name": "Sticky Note4"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "ae0721c6-ba73-46a9-aefd-a131a3051254",
+                "name": "response",
+                "value": "={{ $json.disponibilidade }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2384,
+          1232
+        ],
+        "id": "0ded4555-117f-4095-977e-0294ffa644c3",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Entrada: items[0].json.data = [{ data: \"YYYY-MM-DD\", start: \"HH:MM\" }, ...]\nconst inputData = items[0].json.data;\n\n// 1) Agrupar horários por dia\nconst agrupadoPorDia = {};\nfor (const slot of inputData) {\n  if (!agrupadoPorDia[slot.data]) {\n    agrupadoPorDia[slot.data] = [];\n  }\n  agrupadoPorDia[slot.data].push(slot.start);\n}\n\n// 2) Ordenar dias (YYYY-MM-DD já ordena corretamente como string)\nlet diasOrdenados = Object.keys(agrupadoPorDia).sort();\n\n// 2.1) Excluir a data de hoje\nconst hoje = new Date().toISOString().split(\"T\")[0]; // YYYY-MM-DD\ndiasOrdenados = diasOrdenados.filter(d => d !== hoje);\n\n// 3) Selecionar até 10 dias\nconst selecionados = [];\n\n// Função auxiliar para parse de HH:MM\nconst parseHM = (h) => {\n  const [hh, mm] = h.split(\":\").map(n => parseInt(n, 10));\n  return { hh, mm };\n};\n\nfor (const dia of diasOrdenados.slice(0, 10)) {\n  // Ordena todos os horários do dia (lexicográfico funciona para HH:MM)\n  const horariosOrdenados = agrupadoPorDia[dia].sort();\n\n  // 5) Selecionar horários por período\n  //    - Manhã: TODOS até meio-dia (inclui 12:00, mas NÃO 12:01+)\n  //    - Tarde: a partir das 13:00 (pega até 10 horários)\n  const manha = horariosOrdenados.filter(h => {\n    const { hh, mm } = parseHM(h);\n    return hh < 12 || (hh === 12 && mm === 0);\n  });\n\n  const tarde = horariosOrdenados\n    .filter(h => {\n      const { hh } = parseHM(h);\n      return hh >= 13;\n    })\n    .slice(0, 10); // até 10 horários da tarde\n\n  // Formata dd/mm às HH:MM\n  const escolhidosFormatados = [...manha, ...tarde].map(h => {\n    const [year, month, day] = dia.split(\"-\");\n    return `${day}/${month} às ${h}`;\n  });\n\n  selecionados.push(...escolhidosFormatados);\n}\n\n// 4) Juntar tudo em uma única string (ex.: \"15/09 às 09:00, 15/09 às 10:00, ...\")\nconst resultado = selecionados.join(\", \");\n\n// 5) Retorno no formato do n8n\nreturn [\n  {\n    json: {\n      disponibilidade: resultado\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2080,
+          1232
+        ],
+        "id": "99b87253-49b7-4ec6-ae3d-4b9ab1334cde",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "46b6b089-568c-4915-83fc-a18c8e581d96",
+                "name": "data_agendada",
+                "value": "={{ $json.start.dateTime }}",
+                "type": "string"
+              },
+              {
+                "id": "2bd0543a-fe5d-441c-b907-174439207bb7",
+                "name": "id_agendamento",
+                "value": "={{ $json.id }}",
+                "type": "string"
+              },
+              {
+                "id": "e3ec8276-2871-4d23-91b5-e0cdc9b77e0c",
+                "name": "link_meet",
+                "value": "={{ $json.hangoutLink }}",
+                "type": "string"
+              },
+              {
+                "id": "ebd02732-7230-404f-a422-a21a2a875fbb",
+                "name": "data_formatada",
+                "value": "={{ DateTime.fromISO($json.start.dateTime).toFormat(\"dd/MM 'às' HH:mm\") }}",
+                "type": "string"
+              },
+              {
+                "id": "35993c15-5c7e-46b8-9b93-c441307be9fe",
+                "name": "",
+                "value": "",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2144,
+          320
+        ],
+        "id": "adf94870-f840-4990-9c7b-0a35cf846644",
+        "name": "setarInfo"
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "whatsapp_lead"
+              },
+              {
+                "name": "evento"
+              },
+              {
+                "name": "inicio_reuniao"
+              },
+              {
+                "name": "final_reuniao"
+              },
+              {
+                "name": "tipo_consulta"
+              },
+              {
+                "name": "assunto"
+              },
+              {
+                "name": "id_agendamento"
+              },
+              {
+                "name": "nome_lead"
+              },
+              {
+                "name": "url_chatwoot"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          256,
+          656
+        ],
+        "id": "3f8aba08-fd50-4968-a87e-4ceea68c43c2",
+        "name": "exec workflow"
+      },
+      {
+        "parameters": {
+          "content": "# Etiquetar a conversa como \"agendamento\"",
+          "height": 336,
+          "width": 464
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          2800,
+          160
+        ],
+        "typeVersion": 1,
+        "id": "3a085109-4714-42d3-bb8d-a0c24c84880c",
+        "name": "Sticky Note7"
+      },
+      {
+        "parameters": {
+          "content": "# Marcar data da consulta no banco de dados\n",
+          "height": 336,
+          "width": 432,
+          "color": 2
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          2304,
+          160
+        ],
+        "typeVersion": 1,
+        "id": "b348e3ee-31fc-43e5-8d99-e432dbf9428b",
+        "name": "Sticky Note6"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "crm_leads",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "whatsapp_lead",
+                "condition": "eq",
+                "keyValue": "={{ $('setarInformacoes').item.json.whatsapp_lead }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "data_agendamento",
+                "fieldValue": "={{ $json.data_agendada }}"
+              },
+              {
+                "fieldId": "id_agendamento",
+                "fieldValue": "={{ $json.id_agendamento }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          2448,
+          320
+        ],
+        "id": "7efb6d21-9617-42c3-91d6-25d0b2718d02",
+        "name": "status_agendado",
+        "credentials": {
+          "supabaseApi": {
+            "id": "yNRi9WeuGdi3UzON",
+            "name": "supabase_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "crm_leads",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "whatsapp_lead",
+                "condition": "eq",
+                "keyValue": "={{ $('setarInformacoes').item.json.whatsapp_lead }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "data_agendamento",
+                "fieldValue": "={{ $json.start.dateTime }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          2080,
+          880
+        ],
+        "id": "66cc1983-ed8f-43cc-aa5a-deb9db03a85f",
+        "name": "atualizar_data",
+        "credentials": {
+          "supabaseApi": {
+            "id": "yNRi9WeuGdi3UzON",
+            "name": "supabase_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "crm_leads",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "whatsapp_lead",
+                "condition": "eq",
+                "keyValue": "={{ $('setarInformacoes').item.json.whatsapp_lead }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "data_agendamento",
+                "fieldValue": "={{ null }}"
+              },
+              {
+                "fieldId": "id_agendamento",
+                "fieldValue": "={{ null }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          1408,
+          640
+        ],
+        "id": "0c185dc5-3a84-46bf-8bee-d545237efe7e",
+        "name": "tirar_data_agendamento",
+        "credentials": {
+          "supabaseApi": {
+            "id": "yNRi9WeuGdi3UzON",
+            "name": "supabase_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "# Definir agenda\n## Esse node você precisa verificar se agenda esta correta",
+          "height": 352,
+          "width": 608,
+          "color": 3
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          512,
+          1072
+        ],
+        "typeVersion": 1,
+        "id": "56b96494-fd9b-42cb-959a-0e4747442523",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $('setarInformacoes').item.json.url_chatwoot }}api/v1/accounts/{{ $json['id_conta_chatwoot'] }}/conversations/{{ $json['id_conversa_chatwoot'] }}/labels",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {}
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "{\n  \"labels\": [\n    \"agendamento\"\n  ]\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2976,
+          320
+        ],
+        "id": "adc7985a-9673-4637-9d8f-0ca400d40260",
+        "name": "agendamento",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "wh1g2OYZ76hIr8Ic",
+            "name": "chatwoot_cspnexora"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Disponibilidade": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Marca": {
+        "main": [
+          [
+            {
+              "node": "setarInfo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Já tem um evento": {
+        "main": [
+          [
+            {
+              "node": "If5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Calendar1": {
+        "main": [
+          [
+            {
+              "node": "tirar_data_agendamento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Calendar3": {
+        "main": [
+          [
+            {
+              "node": "atualizar_data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Verifica evento": {
+        "main": [
+          [
+            {
+              "node": "Google Calendar1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Verifica evento1": {
+        "main": [
+          [
+            {
+              "node": "Google Calendar3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If6": {
+        "main": [
+          [
+            {
+              "node": "Verifica evento1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Edit Fields9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Disponibilidade1": {
+        "main": [
+          [
+            {
+              "node": "If6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If5": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields6",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Disponibilidade",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch4": {
+        "main": [
+          [
+            {
+              "node": "Já tem um evento",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Verifica evento",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Disponibilidade1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "definir agenda",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Marca",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Edit Fields9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "setarInformacoes": {
+        "main": [
+          [
+            {
+              "node": "Switch4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "definir agenda": {
+        "main": [
+          [
+            {
+              "node": "buscar eventos já reistrados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "buscar eventos já reistrados": {
+        "main": [
+          [
+            {
+              "node": "juntar eventos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "juntar eventos": {
+        "main": [
+          [
+            {
+              "node": "definir disponibilidade",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "definir disponibilidade": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "setarInfo": {
+        "main": [
+          [
+            {
+              "node": "status_agendado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "exec workflow": {
+        "main": [
+          [
+            {
+              "node": "setarInformacoes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "status_agendado": {
+        "main": [
+          [
+            {
+              "node": "agendamento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "atualizar_data": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "tirar_data_agendamento": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "agendamento": {
+        "main": [
+          [
+            {
+              "node": "response1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "CSP Nexora",
+    "name": "Version ac8c9ac3",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-07-04T21:00:55.932Z",
+        "id": 15,
+        "workflowId": "toRrh1FpDb8VRHUV",
+        "versionId": "ac8c9ac3-b2a3-4a2d-aa4f-263ec124fac7",
+        "event": "activated",
+        "userId": "6b27285f-0a21-4f4d-bc94-0a76cc04a047"
+      }
+    ]
+  }
+}

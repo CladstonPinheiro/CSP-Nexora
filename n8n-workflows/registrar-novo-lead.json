@@ -1,0 +1,267 @@
+{
+  "updatedAt": "2026-07-08T01:50:28.370Z",
+  "createdAt": "2026-07-08T01:10:35.242Z",
+  "id": "qVn1MbBO4rRgWRDE",
+  "name": "Registrar Novo Lead",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "nome"
+            },
+            {
+              "name": "empresa"
+            },
+            {
+              "name": "nicho"
+            },
+            {
+              "name": "telefone"
+            },
+            {
+              "name": "maior_desafio"
+            },
+            {
+              "name": "porte"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "39404821-501a-4b8d-a458-86f5fafe7def",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "tableId": "leads",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "contact_name",
+              "fieldValue": "={{ $json.nome }}"
+            },
+            {
+              "fieldId": "company_name",
+              "fieldValue": "={{ $json.empresa }}"
+            },
+            {
+              "fieldId": "niche",
+              "fieldValue": "={{ $json.nicho }}"
+            },
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $json.telefone }}"
+            },
+            {
+              "fieldId": "maior_desafio",
+              "fieldValue": "={{ $json.maior_desafio }}"
+            },
+            {
+              "fieldId": "stage",
+              "fieldValue": "identificado"
+            },
+            {
+              "fieldId": "porte",
+              "fieldValue": "={{ $json.porte }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "0685ecc8-9abd-4db7-a3c5-53414863fd81",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "yNRi9WeuGdi3UzON",
+          "name": "supabase_cspnexora"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "pinData": {},
+  "versionId": "61b0bb30-d877-45de-83c9-99476d60b7df",
+  "activeVersionId": "61b0bb30-d877-45de-83c9-99476d60b7df",
+  "versionCounter": 37,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "shared": [
+    {
+      "updatedAt": "2026-07-08T01:10:35.242Z",
+      "createdAt": "2026-07-08T01:10:35.242Z",
+      "role": "workflow:owner",
+      "workflowId": "qVn1MbBO4rRgWRDE",
+      "projectId": "aq6TpjIETv0FyaRE",
+      "project": {
+        "updatedAt": "2026-07-02T11:51:25.238Z",
+        "createdAt": "2026-07-02T11:48:24.954Z",
+        "id": "aq6TpjIETv0FyaRE",
+        "name": "CSP Nexora <cspnexora@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "6b27285f-0a21-4f4d-bc94-0a76cc04a047"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-07-08T01:50:31.674Z",
+    "createdAt": "2026-07-08T01:50:28.372Z",
+    "versionId": "61b0bb30-d877-45de-83c9-99476d60b7df",
+    "workflowId": "qVn1MbBO4rRgWRDE",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "nome"
+              },
+              {
+                "name": "empresa"
+              },
+              {
+                "name": "nicho"
+              },
+              {
+                "name": "telefone"
+              },
+              {
+                "name": "maior_desafio"
+              },
+              {
+                "name": "porte"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "39404821-501a-4b8d-a458-86f5fafe7def",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "tableId": "leads",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "contact_name",
+                "fieldValue": "={{ $json.nome }}"
+              },
+              {
+                "fieldId": "company_name",
+                "fieldValue": "={{ $json.empresa }}"
+              },
+              {
+                "fieldId": "niche",
+                "fieldValue": "={{ $json.nicho }}"
+              },
+              {
+                "fieldId": "phone",
+                "fieldValue": "={{ $json.telefone }}"
+              },
+              {
+                "fieldId": "maior_desafio",
+                "fieldValue": "={{ $json.maior_desafio }}"
+              },
+              {
+                "fieldId": "stage",
+                "fieldValue": "identificado"
+              },
+              {
+                "fieldId": "porte",
+                "fieldValue": "={{ $json.porte }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "0685ecc8-9abd-4db7-a3c5-53414863fd81",
+        "name": "Create a row",
+        "credentials": {
+          "supabaseApi": {
+            "id": "yNRi9WeuGdi3UzON",
+            "name": "supabase_cspnexora"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Create a row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "CSP Nexora",
+    "name": "Version 61b0bb30",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-07-08T01:50:31.672Z",
+        "id": 33,
+        "workflowId": "qVn1MbBO4rRgWRDE",
+        "versionId": "61b0bb30-d877-45de-83c9-99476d60b7df",
+        "event": "activated",
+        "userId": "6b27285f-0a21-4f4d-bc94-0a76cc04a047"
+      }
+    ]
+  }
+}

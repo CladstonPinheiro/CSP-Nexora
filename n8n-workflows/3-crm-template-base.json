@@ -1,0 +1,1511 @@
+{
+  "updatedAt": "2026-07-15T13:06:45.848Z",
+  "createdAt": "2026-07-04T15:25:47.536Z",
+  "id": "w6dIDYDivqsxbq4p",
+  "name": "3- CRM | Template Base",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "mensagem_lead"
+            },
+            {
+              "name": "whatsapp_lead"
+            },
+            {
+              "name": "id_conta_chatwoot"
+            },
+            {
+              "name": "id_conversa_chatwoot"
+            },
+            {
+              "name": "id_Lead_chatwoot"
+            },
+            {
+              "name": "inbox_id_chatwoot"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        208
+      ],
+      "id": "159d5560-f7b2-4d67-977f-64a966c0590c",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        2800,
+        112
+      ],
+      "id": "9c94ff56-bd3e-4007-a697-65e0d8b896d2",
+      "name": "Chat Memory Manager1"
+    },
+    {
+      "parameters": {
+        "content": "# Puxar Histórico da conversa",
+        "height": 480,
+        "width": 518,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2656,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "3531ae1b-5bca-4cc5-b384-1e09637dde21",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "crm_leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "whatsapp_lead",
+              "condition": "eq",
+              "keyValue": "={{ $('setar_informacoes').item.json.whatsapp_lead }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "ultima_mensagem_lead",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "follow_up_1",
+              "fieldValue": "={{ null }}"
+            },
+            {
+              "fieldId": "follow_up_2",
+              "fieldValue": "={{ null }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        192
+      ],
+      "id": "21cdbb02-9145-4b38-a049-42d361c540a5",
+      "name": "atualizaFollowUP",
+      "credentials": {
+        "supabaseApi": {
+          "id": "yNRi9WeuGdi3UzON",
+          "name": "supabase_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Gatilho vem do SDR",
+        "height": 500,
+        "width": 360,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "5cfe58aa-75d7-40b2-aa47-0027e5117ae9",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Setar ID e Whatsapp do lead",
+        "height": 500,
+        "width": 300,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "ce9b48fc-4926-462a-8def-5992f88e5054",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Resumo da Conversa",
+        "height": 500,
+        "width": 740,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3200,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "c724c8a0-ea34-4fcf-8a9f-126fd8de3956",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3296,
+        352
+      ],
+      "id": "203a89b4-e645-4b6a-b996-7b26745c9f94",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "ljYbL5381Q7ESWwB",
+          "name": "openAI_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $('setar_informacoes').item.json.whatsapp_lead }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "resumo_conversa_ia",
+              "fieldValue": "={{ $json.resumo_conversa }}"
+            },
+            {
+              "fieldId": "motivo_contato_ia",
+              "fieldValue": "={{ $json.motivo_contato }}"
+            },
+            {
+              "fieldId": "resumo_atualizado_em",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4160,
+        224
+      ],
+      "id": "a97c2da2-c4c2-4438-9b39-260b2cec67cc",
+      "name": "atualizarCRM",
+      "credentials": {
+        "supabaseApi": {
+          "id": "yNRi9WeuGdi3UzON",
+          "name": "supabase_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.messages.map(m => `Usuário: ${m.human}\\nIA: ${m.ai}`).join('\\n\\n') }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Dia e hora atual: {{ $now }}\n\n## IDENTIDADE\n\nVocê é um agente IA responsável por atualizar o CRM da clínica de nutrição da **Dra. Juliana Prado**, nutricionista especializada em **emagrecimento adulto e infantil**.\n\nSua função é ler toda a conversa entre **a secretária Alice e o paciente**, e gerar um resumo claro, objetivo e estratégico.  \n\nVocê nunca inventa informações — registra **apenas** o que o paciente realmente disse.\n\n## FUNÇÃO\n\n-   Registrar corretamente os dados dos atendimentos no CRM da clínica.\n-   Ler com atenção toda a conversa antes de preencher qualquer campo.\n-   Sempre priorizar clareza, objetividade e fidelidade ao que foi falado.\n\n## CAMPOS OBRIGATÓRIOS\n### 1. nome\n\n-   Registre **exatamente o nome informado pelo lead**.\n-   Se ele passar nome completo, salve completo.\n-   Se for apenas o primeiro nome, salve só o primeiro nome.\n-   Nunca invente sobrenomes ou complete por conta própria.\n\n### 2. objetivo_lead\n\n-   Identifique e registre **o pq o paciente entrou em contato**.\n    \n-   Exemplos:\n    -   “Perder peso com saúde.”\n    -   “Ajudar meu filho a emagrecer sem pressão.”\n    -   “Montar uma rotina alimentar sustentável.”\n    -   “Acabar com compulsão e descontrole.”\n-   Só registre o motivo do contato mencionados pelo próprio paciente.\n-   Se não ficou claro, deixe em branco.\n\n### 3. resumo_conversa\n\n-   Escreva um resumo claro, natural e contínuo, sem listas.\n-   Inclua apenas o que o **paciente disse**, nunca o que a secretária falou.\n-   Sempre incluir:\n    -   Nome do paciente (quando ele informar).\n    -   Contexto da situação.\n    -   Queixas, dores ou dificuldades citadas.\n    -   Objetivo que ele deseja alcançar.\n    -   O que ele perguntou ou demonstrou interesse (consulta, horário, atendimento online, etc).\n-   Não mencione valores.\n-   Não adicione informações que não apareceram.\n\n## EXEMPLOS DE RESUMO\n\n### Exemplo 1 – Adulto\n\nA paciente Camila Souza entrou em contato dizendo que quer emagrecer porque sente descontrole com a alimentação, principalmente à noite. Relatou ansiedade, rotina corrida e dificuldade em manter dieta. Perguntou como funciona a consulta inicial e demonstrou interesse em atendimento online.\n\n### Exemplo 2 – Infantil\n\nA mãe Priscila Fernandes buscou atendimento para o filho de 11 anos, relatando sobrepeso e seletividade alimentar. Comentou que a rotina da família é corrida e quer ajuda para organizar a alimentação do filho de forma leve. Perguntou sobre consulta presencial.\n\n### Exemplo 3 – Reeducação / Fome Emocional\n\nO paciente João Lima disse que come por ansiedade, principalmente doces à noite. Relatou dificuldade em manter rotina alimentar e quer mudar hábitos para emagrecer. Perguntou se pode fazer consulta online.\n\n# FORMATO DE SAÍDA (OBRIGATÓRIO)  \n  \n{\n  \"nome\": \"\",\n  \"motivo_contato\": \"\",\n  \"resumo_conversa\": \"\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        3392,
+        112
+      ],
+      "id": "86be9123-2465-414a-970b-661e538174f5",
+      "name": "CRM"
+    },
+    {
+      "parameters": {
+        "content": "# Verifica se o usuário existe no Banco de dados.",
+        "height": 504,
+        "width": 560,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        720,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "eda5adc1-bd71-4ae3-9123-45615fc93be9",
+      "name": "Sticky Note23"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "32a5f010-2252-4057-acb7-a085648e3a14",
+                    "leftValue": "={{ $json.whatsapp_lead }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Existe"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.whatsapp_lead }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "c71b31fe-c16a-4e57-a5b5-7d115351d0ee"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Não existe"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1088,
+        208
+      ],
+      "id": "ee9ca900-d252-4f6d-8118-1453e32fdc92",
+      "name": "Switch4"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "crm_leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "whatsapp_lead",
+              "keyValue": "={{ $json.whatsapp_lead }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        832,
+        208
+      ],
+      "id": "b79b2122-2662-48b3-b71b-e4fbf0952761",
+      "name": "PuxarNumeroLead",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "yNRi9WeuGdi3UzON",
+          "name": "supabase_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('setar_informacoes').item.json.whatsapp_lead }}",
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2880,
+        336
+      ],
+      "id": "4180c7a5-4e6d-4cd8-bccc-14f2f8956c3b",
+      "name": "memoria",
+      "credentials": {
+        "postgres": {
+          "id": "6fDv2f4OIb0C2Gew",
+          "name": "postgres_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "81f77c84-480b-4cee-8b43-3036b3e09c92",
+              "name": "mensagem_lead",
+              "value": "={{ $json.mensagem_lead }}",
+              "type": "string"
+            },
+            {
+              "id": "057e52dc-d925-48b6-8aab-5a07fc3f2a1f",
+              "name": "whatsapp_lead",
+              "value": "={{ $json.whatsapp_lead }}",
+              "type": "string"
+            },
+            {
+              "id": "bdcd7a15-0587-4d8c-9f95-a38fc8bfe158",
+              "name": "id_conta_chatwoot",
+              "value": "={{ $json.id_conta_chatwoot }}",
+              "type": "string"
+            },
+            {
+              "id": "d3b7244f-fcbd-4000-8b5b-7bdabdcabb28",
+              "name": "id_conversa_chatwoot",
+              "value": "={{ $json.id_conversa_chatwoot }}",
+              "type": "string"
+            },
+            {
+              "id": "d0d69d2a-ca24-4ddd-a095-5616cdc98909",
+              "name": "id_Lead_chatwoot",
+              "value": "={{ $json.id_Lead_chatwoot }}",
+              "type": "string"
+            },
+            {
+              "id": "10e779ea-1b65-48f0-a661-6b59c984c010",
+              "name": "inbox_id_chatwoot",
+              "value": "={{ $json.inbox_id_chatwoot }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        208
+      ],
+      "id": "8a585ff8-934e-4b14-806c-637274ea189b",
+      "name": "setar_informacoes"
+    },
+    {
+      "parameters": {
+        "content": "# Atualiza tabela CRM",
+        "height": 496,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3984,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "4220ae35-69df-459d-940f-4135058883ef",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2b42478d-2f8d-4639-80ed-da32b489ed72",
+              "name": "nome",
+              "value": "={{ JSON.parse($('CRM').item.json.output).nome }}",
+              "type": "string"
+            },
+            {
+              "id": "355cb805-740d-429c-9082-a1c145be40fb",
+              "name": "motivo_contato",
+              "value": "={{ JSON.parse($('CRM').item.json.output).motivo_contato }}",
+              "type": "string"
+            },
+            {
+              "id": "a92d4d0b-7b05-46ab-b163-b8bd46d9f510",
+              "name": "resumo_conversa",
+              "value": "={{ JSON.parse($('CRM').item.json.output).resumo_conversa }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3744,
+        112
+      ],
+      "id": "ef2801cb-fef8-4f74-a1cf-354b0dc22fdf",
+      "name": "separa_as_respostas"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2400,
+        208
+      ],
+      "id": "bf7e1322-3d63-45b4-905c-bbe1b8d5bf0c",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "content": "# Cadastra o lead no banco de dados",
+        "height": 392,
+        "width": 448,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1328,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "c5b6c0ad-fd6a-49ae-b9d6-a3a242f61981",
+      "name": "Sticky Note24"
+    },
+    {
+      "parameters": {
+        "content": "# Zera os campos do Follow UP e coloca a data e hora da ultima mensagem do lead",
+        "height": 480,
+        "width": 808,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1808,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "4c505ed6-7f64-4be2-aa25-b1195fe45df5",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "tableId": "crm_leads",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "whatsapp_lead",
+              "fieldValue": "={{ $('setar_informacoes').item.json.whatsapp_lead }}"
+            },
+            {
+              "fieldId": "inicio_atendimento",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "id_conta_chatwoot",
+              "fieldValue": "={{ $('setar_informacoes').item.json.id_conta_chatwoot }}"
+            },
+            {
+              "fieldId": "id_conversa_chatwoot",
+              "fieldValue": "={{ $('setar_informacoes').item.json.id_conversa_chatwoot }}"
+            },
+            {
+              "fieldId": "id_lead_chatwoot",
+              "fieldValue": "={{ $('setar_informacoes').item.json.id_Lead_chatwoot }}"
+            },
+            {
+              "fieldId": "inbox_id_chatwoot",
+              "fieldValue": "={{ $('setar_informacoes').item.json.inbox_id_chatwoot }}"
+            },
+            {
+              "fieldId": "ultima_mensagem_lead",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        528
+      ],
+      "id": "a67fb391-8874-4855-bd02-de016baff45d",
+      "name": "cadastrar_lead",
+      "credentials": {
+        "supabaseApi": {
+          "id": "yNRi9WeuGdi3UzON",
+          "name": "supabase_cspnexora"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "setar_informacoes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory Manager1": {
+      "main": [
+        [
+          {
+            "node": "CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualizaFollowUP": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "CRM",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM": {
+      "main": [
+        [
+          {
+            "node": "separa_as_respostas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch4": {
+      "main": [
+        [
+          {
+            "node": "atualizaFollowUP",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "cadastrar_lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PuxarNumeroLead": {
+      "main": [
+        [
+          {
+            "node": "Switch4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "memoria": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chat Memory Manager1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setar_informacoes": {
+      "main": [
+        [
+          {
+            "node": "PuxarNumeroLead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "separa_as_respostas": {
+      "main": [
+        [
+          {
+            "node": "atualizarCRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cadastrar_lead": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "pinData": {},
+  "versionId": "7fa4ecdd-407c-422d-a2cb-1445ae491bff",
+  "activeVersionId": "7fa4ecdd-407c-422d-a2cb-1445ae491bff",
+  "versionCounter": 17,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "shared": [
+    {
+      "updatedAt": "2026-07-04T15:25:47.536Z",
+      "createdAt": "2026-07-04T15:25:47.536Z",
+      "role": "workflow:owner",
+      "workflowId": "w6dIDYDivqsxbq4p",
+      "projectId": "aq6TpjIETv0FyaRE",
+      "project": {
+        "updatedAt": "2026-07-02T11:51:25.238Z",
+        "createdAt": "2026-07-02T11:48:24.954Z",
+        "id": "aq6TpjIETv0FyaRE",
+        "name": "CSP Nexora <cspnexora@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "6b27285f-0a21-4f4d-bc94-0a76cc04a047"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2026-07-04T15:22:50.184Z",
+      "createdAt": "2026-07-04T15:22:50.184Z",
+      "id": "SzKx4vYLGfJyY8QT",
+      "name": "templatebase"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-07-15T13:07:28.416Z",
+    "createdAt": "2026-07-15T13:06:45.850Z",
+    "versionId": "7fa4ecdd-407c-422d-a2cb-1445ae491bff",
+    "workflowId": "w6dIDYDivqsxbq4p",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "mensagem_lead"
+              },
+              {
+                "name": "whatsapp_lead"
+              },
+              {
+                "name": "id_conta_chatwoot"
+              },
+              {
+                "name": "id_conversa_chatwoot"
+              },
+              {
+                "name": "id_Lead_chatwoot"
+              },
+              {
+                "name": "inbox_id_chatwoot"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          144,
+          208
+        ],
+        "id": "159d5560-f7b2-4d67-977f-64a966c0590c",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryManager",
+        "typeVersion": 1.1,
+        "position": [
+          2800,
+          112
+        ],
+        "id": "9c94ff56-bd3e-4007-a697-65e0d8b896d2",
+        "name": "Chat Memory Manager1"
+      },
+      {
+        "parameters": {
+          "content": "# Puxar Histórico da conversa",
+          "height": 480,
+          "width": 518,
+          "color": 4
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          2656,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "3531ae1b-5bca-4cc5-b384-1e09637dde21",
+        "name": "Sticky Note9"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "crm_leads",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "whatsapp_lead",
+                "condition": "eq",
+                "keyValue": "={{ $('setar_informacoes').item.json.whatsapp_lead }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "ultima_mensagem_lead",
+                "fieldValue": "={{ $now }}"
+              },
+              {
+                "fieldId": "follow_up_1",
+                "fieldValue": "={{ null }}"
+              },
+              {
+                "fieldId": "follow_up_2",
+                "fieldValue": "={{ null }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          1920,
+          192
+        ],
+        "id": "21cdbb02-9145-4b38-a049-42d361c540a5",
+        "name": "atualizaFollowUP",
+        "credentials": {
+          "supabaseApi": {
+            "id": "yNRi9WeuGdi3UzON",
+            "name": "supabase_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "# Gatilho vem do SDR",
+          "height": 500,
+          "width": 360,
+          "color": 7
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "5cfe58aa-75d7-40b2-aa47-0027e5117ae9",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "content": "# Setar ID e Whatsapp do lead",
+          "height": 500,
+          "width": 300,
+          "color": 3
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          384,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "ce9b48fc-4926-462a-8def-5992f88e5054",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "content": "# Resumo da Conversa",
+          "height": 500,
+          "width": 740,
+          "color": 2
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          3200,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "c724c8a0-ea34-4fcf-8a9f-126fd8de3956",
+        "name": "Sticky Note10"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4.1-mini",
+            "mode": "list",
+            "cachedResultName": "gpt-4.1-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          3296,
+          352
+        ],
+        "id": "203a89b4-e645-4b6a-b996-7b26745c9f94",
+        "name": "OpenAI Chat Model3",
+        "credentials": {
+          "openAiApi": {
+            "id": "ljYbL5381Q7ESWwB",
+            "name": "openAI_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "leads",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "phone",
+                "condition": "eq",
+                "keyValue": "={{ $('setar_informacoes').item.json.whatsapp_lead }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "resumo_conversa_ia",
+                "fieldValue": "={{ $json.resumo_conversa }}"
+              },
+              {
+                "fieldId": "motivo_contato_ia",
+                "fieldValue": "={{ $json.motivo_contato }}"
+              },
+              {
+                "fieldId": "resumo_atualizado_em",
+                "fieldValue": "={{ $now }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          4160,
+          224
+        ],
+        "id": "a97c2da2-c4c2-4438-9b39-260b2cec67cc",
+        "name": "atualizarCRM",
+        "credentials": {
+          "supabaseApi": {
+            "id": "yNRi9WeuGdi3UzON",
+            "name": "supabase_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.messages.map(m => `Usuário: ${m.human}\\nIA: ${m.ai}`).join('\\n\\n') }}",
+          "hasOutputParser": true,
+          "options": {
+            "systemMessage": "=Dia e hora atual: {{ $now }}\n\n## IDENTIDADE\n\nVocê é um agente IA responsável por atualizar o CRM da clínica de nutrição da **Dra. Juliana Prado**, nutricionista especializada em **emagrecimento adulto e infantil**.\n\nSua função é ler toda a conversa entre **a secretária Alice e o paciente**, e gerar um resumo claro, objetivo e estratégico.  \n\nVocê nunca inventa informações — registra **apenas** o que o paciente realmente disse.\n\n## FUNÇÃO\n\n-   Registrar corretamente os dados dos atendimentos no CRM da clínica.\n-   Ler com atenção toda a conversa antes de preencher qualquer campo.\n-   Sempre priorizar clareza, objetividade e fidelidade ao que foi falado.\n\n## CAMPOS OBRIGATÓRIOS\n### 1. nome\n\n-   Registre **exatamente o nome informado pelo lead**.\n-   Se ele passar nome completo, salve completo.\n-   Se for apenas o primeiro nome, salve só o primeiro nome.\n-   Nunca invente sobrenomes ou complete por conta própria.\n\n### 2. objetivo_lead\n\n-   Identifique e registre **o pq o paciente entrou em contato**.\n    \n-   Exemplos:\n    -   “Perder peso com saúde.”\n    -   “Ajudar meu filho a emagrecer sem pressão.”\n    -   “Montar uma rotina alimentar sustentável.”\n    -   “Acabar com compulsão e descontrole.”\n-   Só registre o motivo do contato mencionados pelo próprio paciente.\n-   Se não ficou claro, deixe em branco.\n\n### 3. resumo_conversa\n\n-   Escreva um resumo claro, natural e contínuo, sem listas.\n-   Inclua apenas o que o **paciente disse**, nunca o que a secretária falou.\n-   Sempre incluir:\n    -   Nome do paciente (quando ele informar).\n    -   Contexto da situação.\n    -   Queixas, dores ou dificuldades citadas.\n    -   Objetivo que ele deseja alcançar.\n    -   O que ele perguntou ou demonstrou interesse (consulta, horário, atendimento online, etc).\n-   Não mencione valores.\n-   Não adicione informações que não apareceram.\n\n## EXEMPLOS DE RESUMO\n\n### Exemplo 1 – Adulto\n\nA paciente Camila Souza entrou em contato dizendo que quer emagrecer porque sente descontrole com a alimentação, principalmente à noite. Relatou ansiedade, rotina corrida e dificuldade em manter dieta. Perguntou como funciona a consulta inicial e demonstrou interesse em atendimento online.\n\n### Exemplo 2 – Infantil\n\nA mãe Priscila Fernandes buscou atendimento para o filho de 11 anos, relatando sobrepeso e seletividade alimentar. Comentou que a rotina da família é corrida e quer ajuda para organizar a alimentação do filho de forma leve. Perguntou sobre consulta presencial.\n\n### Exemplo 3 – Reeducação / Fome Emocional\n\nO paciente João Lima disse que come por ansiedade, principalmente doces à noite. Relatou dificuldade em manter rotina alimentar e quer mudar hábitos para emagrecer. Perguntou se pode fazer consulta online.\n\n# FORMATO DE SAÍDA (OBRIGATÓRIO)  \n  \n{\n  \"nome\": \"\",\n  \"motivo_contato\": \"\",\n  \"resumo_conversa\": \"\"\n}"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.8,
+        "position": [
+          3392,
+          112
+        ],
+        "id": "86be9123-2465-414a-970b-661e538174f5",
+        "name": "CRM"
+      },
+      {
+        "parameters": {
+          "content": "# Verifica se o usuário existe no Banco de dados.",
+          "height": 504,
+          "width": 560,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          720,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "eda5adc1-bd71-4ae3-9123-45615fc93be9",
+        "name": "Sticky Note23"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "32a5f010-2252-4057-acb7-a085648e3a14",
+                      "leftValue": "={{ $json.whatsapp_lead }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "string",
+                        "operation": "notEmpty",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Existe"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.whatsapp_lead }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "string",
+                        "operation": "empty",
+                        "singleValue": true
+                      },
+                      "id": "c71b31fe-c16a-4e57-a5b5-7d115351d0ee"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Não existe"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1088,
+          208
+        ],
+        "id": "ee9ca900-d252-4f6d-8118-1453e32fdc92",
+        "name": "Switch4"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "tableId": "crm_leads",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "whatsapp_lead",
+                "keyValue": "={{ $json.whatsapp_lead }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          832,
+          208
+        ],
+        "id": "b79b2122-2662-48b3-b71b-e4fbf0952761",
+        "name": "PuxarNumeroLead",
+        "alwaysOutputData": true,
+        "credentials": {
+          "supabaseApi": {
+            "id": "yNRi9WeuGdi3UzON",
+            "name": "supabase_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $('setar_informacoes').item.json.whatsapp_lead }}",
+          "contextWindowLength": 30
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.3,
+        "position": [
+          2880,
+          336
+        ],
+        "id": "4180c7a5-4e6d-4cd8-bccc-14f2f8956c3b",
+        "name": "memoria",
+        "credentials": {
+          "postgres": {
+            "id": "6fDv2f4OIb0C2Gew",
+            "name": "postgres_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "81f77c84-480b-4cee-8b43-3036b3e09c92",
+                "name": "mensagem_lead",
+                "value": "={{ $json.mensagem_lead }}",
+                "type": "string"
+              },
+              {
+                "id": "057e52dc-d925-48b6-8aab-5a07fc3f2a1f",
+                "name": "whatsapp_lead",
+                "value": "={{ $json.whatsapp_lead }}",
+                "type": "string"
+              },
+              {
+                "id": "bdcd7a15-0587-4d8c-9f95-a38fc8bfe158",
+                "name": "id_conta_chatwoot",
+                "value": "={{ $json.id_conta_chatwoot }}",
+                "type": "string"
+              },
+              {
+                "id": "d3b7244f-fcbd-4000-8b5b-7bdabdcabb28",
+                "name": "id_conversa_chatwoot",
+                "value": "={{ $json.id_conversa_chatwoot }}",
+                "type": "string"
+              },
+              {
+                "id": "d0d69d2a-ca24-4ddd-a095-5616cdc98909",
+                "name": "id_Lead_chatwoot",
+                "value": "={{ $json.id_Lead_chatwoot }}",
+                "type": "string"
+              },
+              {
+                "id": "10e779ea-1b65-48f0-a661-6b59c984c010",
+                "name": "inbox_id_chatwoot",
+                "value": "={{ $json.inbox_id_chatwoot }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          480,
+          208
+        ],
+        "id": "8a585ff8-934e-4b14-806c-637274ea189b",
+        "name": "setar_informacoes"
+      },
+      {
+        "parameters": {
+          "content": "# Atualiza tabela CRM",
+          "height": 496,
+          "width": 448
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          3984,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "4220ae35-69df-459d-940f-4135058883ef",
+        "name": "Sticky Note3"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "2b42478d-2f8d-4639-80ed-da32b489ed72",
+                "name": "nome",
+                "value": "={{ JSON.parse($('CRM').item.json.output).nome }}",
+                "type": "string"
+              },
+              {
+                "id": "355cb805-740d-429c-9082-a1c145be40fb",
+                "name": "motivo_contato",
+                "value": "={{ JSON.parse($('CRM').item.json.output).motivo_contato }}",
+                "type": "string"
+              },
+              {
+                "id": "a92d4d0b-7b05-46ab-b163-b8bd46d9f510",
+                "name": "resumo_conversa",
+                "value": "={{ JSON.parse($('CRM').item.json.output).resumo_conversa }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3744,
+          112
+        ],
+        "id": "ef2801cb-fef8-4f74-a1cf-354b0dc22fdf",
+        "name": "separa_as_respostas"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          2400,
+          208
+        ],
+        "id": "bf7e1322-3d63-45b4-905c-bbe1b8d5bf0c",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "content": "# Cadastra o lead no banco de dados",
+          "height": 392,
+          "width": 448,
+          "color": 6
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1328,
+          320
+        ],
+        "typeVersion": 1,
+        "id": "c5b6c0ad-fd6a-49ae-b9d6-a3a242f61981",
+        "name": "Sticky Note24"
+      },
+      {
+        "parameters": {
+          "content": "# Zera os campos do Follow UP e coloca a data e hora da ultima mensagem do lead",
+          "height": 480,
+          "width": 808,
+          "color": 2
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1808,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "4c505ed6-7f64-4be2-aa25-b1195fe45df5",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "tableId": "crm_leads",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "whatsapp_lead",
+                "fieldValue": "={{ $('setar_informacoes').item.json.whatsapp_lead }}"
+              },
+              {
+                "fieldId": "inicio_atendimento",
+                "fieldValue": "={{ $now }}"
+              },
+              {
+                "fieldId": "id_conta_chatwoot",
+                "fieldValue": "={{ $('setar_informacoes').item.json.id_conta_chatwoot }}"
+              },
+              {
+                "fieldId": "id_conversa_chatwoot",
+                "fieldValue": "={{ $('setar_informacoes').item.json.id_conversa_chatwoot }}"
+              },
+              {
+                "fieldId": "id_lead_chatwoot",
+                "fieldValue": "={{ $('setar_informacoes').item.json.id_Lead_chatwoot }}"
+              },
+              {
+                "fieldId": "inbox_id_chatwoot",
+                "fieldValue": "={{ $('setar_informacoes').item.json.inbox_id_chatwoot }}"
+              },
+              {
+                "fieldId": "ultima_mensagem_lead",
+                "fieldValue": "={{ $now }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          1488,
+          528
+        ],
+        "id": "a67fb391-8874-4855-bd02-de016baff45d",
+        "name": "cadastrar_lead",
+        "credentials": {
+          "supabaseApi": {
+            "id": "yNRi9WeuGdi3UzON",
+            "name": "supabase_cspnexora"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "setar_informacoes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Chat Memory Manager1": {
+        "main": [
+          [
+            {
+              "node": "CRM",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "atualizaFollowUP": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model3": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "CRM",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CRM": {
+        "main": [
+          [
+            {
+              "node": "separa_as_respostas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch4": {
+        "main": [
+          [
+            {
+              "node": "atualizaFollowUP",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "cadastrar_lead",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PuxarNumeroLead": {
+        "main": [
+          [
+            {
+              "node": "Switch4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "memoria": {
+        "ai_memory": [
+          [
+            {
+              "node": "Chat Memory Manager1",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "setar_informacoes": {
+        "main": [
+          [
+            {
+              "node": "PuxarNumeroLead",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "separa_as_respostas": {
+        "main": [
+          [
+            {
+              "node": "atualizarCRM",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Chat Memory Manager1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "cadastrar_lead": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "CSP Nexora",
+    "name": "Version 7fa4ecdd",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-07-15T13:07:28.408Z",
+        "id": 113,
+        "workflowId": "w6dIDYDivqsxbq4p",
+        "versionId": "7fa4ecdd-407c-422d-a2cb-1445ae491bff",
+        "event": "activated",
+        "userId": "6b27285f-0a21-4f4d-bc94-0a76cc04a047"
+      }
+    ]
+  }
+}

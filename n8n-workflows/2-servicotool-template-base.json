@@ -1,0 +1,631 @@
+{
+  "updatedAt": "2026-07-09T21:13:25.327Z",
+  "createdAt": "2026-07-04T15:23:31.707Z",
+  "id": "rzYJt8wYSQQxlmbD",
+  "name": "2- servicoTool | Template Base",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "# Agente IA de serviços",
+        "height": 536,
+        "width": 1484,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "c1a71290-7b1d-48fe-ba30-981f4dcafd37",
+      "name": "Sticky Note24"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "67752c6a-09ad-430f-a14a-e800543efc8b",
+              "name": "NomeLead",
+              "value": "=Nome do lead: {{ $('When Executed by Another Workflow').item.json.NomeLead }}",
+              "type": "string"
+            },
+            {
+              "id": "3058e999-b1bf-43f3-b95c-bf1d71157c51",
+              "name": "msgLead",
+              "value": "={{ $('When Executed by Another Workflow').item.json.Duvida }}",
+              "type": "string"
+            },
+            {
+              "id": "c6e2e733-5bb4-4b3d-9a79-cf43a9e56458",
+              "name": "whatsaapp_lead",
+              "value": "={{ $('When Executed by Another Workflow').item.json.whatsaapp_lead }}",
+              "type": "string"
+            },
+            {
+              "id": "de41c67a-c3a9-4667-a1b1-29a90cf54fb0",
+              "name": "proximosDias",
+              "value": "={{ $json.resultado }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        544,
+        160
+      ],
+      "id": "45a5fe3b-328e-43f9-84dc-f798a2bc8411",
+      "name": "setarInfo5"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "NomeLead"
+            },
+            {
+              "name": "Duvida"
+            },
+            {
+              "name": "whatsaapp_lead"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        128,
+        160
+      ],
+      "id": "e04e4e30-67d7-4b61-97f9-0f9927308110",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.whatsaapp_lead }}",
+        "contextWindowLength": 40
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        848,
+        368
+      ],
+      "id": "3bf4bbb4-598d-4d1a-888c-5a5cdb488c3c",
+      "name": "Memoria 1",
+      "credentials": {
+        "postgres": {
+          "id": "6fDv2f4OIb0C2Gew",
+          "name": "postgres_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const days = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];\nconst now = new Date();\nconst pad = (n) => String(n).padStart(2, '0');\n\nlet result = `Hoje é ${days[now.getDay()]} ${pad(now.getDate())}/${pad(now.getMonth()+1)}/${String(now.getFullYear()).slice(2)} às ${pad(now.getHours())}:${pad(now.getMinutes())}\\n`;\n\nfor (let i = 1; i <= 6; i++) {\n  const future = new Date(now);\n  future.setDate(now.getDate() + i);\n\n  let label = '';\n\n  if (i === 1) {\n    label = `Amanhã é ${days[future.getDay()]} ${pad(future.getDate())}/${pad(future.getMonth()+1)}/${String(future.getFullYear()).slice(2)}`;\n  } else if (i === 2) {\n    label = `Depois de amanhã é ${days[future.getDay()]} ${pad(future.getDate())}/${pad(future.getMonth()+1)}/${String(future.getFullYear()).slice(2)}`;\n  } else {\n    label = `A próxima ${days[future.getDay()]} será dia ${pad(future.getDate())}/${pad(future.getMonth()+1)}/${String(future.getFullYear()).slice(2)}`;\n  }\n\n  result += `${label}\\n`;\n}\n\nreturn [\n  {\n    json: {\n      resultado: result.trim()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        160
+      ],
+      "id": "fce8a504-ea7c-41cc-ab94-a607fce31ff2",
+      "name": "proximos_dias"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        704,
+        368
+      ],
+      "id": "5fdd0f62-2bae-411d-a4b4-fa3f59d8379d",
+      "name": "2.5 flash",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "f5NRGswVcmy2Wpbf",
+          "name": "gemini_cspnexora"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51bd4896-17e9-484b-b08a-b6854225ccb3",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1184,
+        160
+      ],
+      "id": "a428a218-cc71-4057-92db-25a0efb3a9bc",
+      "name": "response"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.msgLead }}\n\n{{ $json.NomeLead }}",
+        "options": {
+          "systemMessage": "=## IDENTIDADE\n\n- Você é um **agente interno de suporte à secretária Kátia Andrea**, responsável por fornecer informações sobre os serviços de automação B2B oferecidos pela **CSP Nexora**, empresa de tecnologia com sede em Brasília/DF.\n- Você **não interage diretamente com o cliente final**; todas as solicitações chegam por meio da secretária Kátia.\n- Seu papel é exclusivamente **informativo e interno**, auxiliando a Kátia a responder dúvidas sobre os serviços, processo comercial e diferenciais da empresa.\n\n## SUA FUNÇÃO\n\n- Fornecer informações **claras e precisas** sobre os serviços de automação oferecidos pela CSP Nexora, com base nos dados retornados pela tool `servicosTool`.\n- Responder apenas o que for solicitado pela Kátia, sem incluir informações adicionais, preços fechados ou promessas comerciais fora do que a tool retornar.\n- Você **não fala com o cliente final** e **não realiza agendamentos** — apenas auxilia internamente a secretária.\n\n## SOBRE A CSP NEXORA\n\n- Empresa de tecnologia e automação B2B com sede em Brasília/DF, atuação em todo o Brasil.\n- Atende principalmente administradoras de condomínios e imobiliárias, ajudando a automatizar atendimento, comunicação e processos operacionais.\n- O processo comercial começa sempre por uma reunião de Briefing, onde um especialista faz o levantamento completo das necessidades do cliente — não venda ou diagnóstico é feito pelo WhatsApp.\n\n## REGRAS DE ATENDIMENTO\n\n- Responda **somente o que for solicitado** pela Kátia.\n- **Nunca** inicie conversas, faça perguntas, convites ou sugestões.\n- Respostas curtas, objetivas e sem rodeios.\n- **Jamais** fale diretamente com o cliente final — todas as respostas são direcionadas exclusivamente à Kátia.\n- Evite textos longos — priorize respostas de até 50 palavras.\n- Nunca invente serviços, preços ou prazos que não estejam nos dados retornados pela tool.\n- Caso a tool `servicosTool` não retorne nenhum serviço cadastrado, informe isso claramente à Kátia (ex: \"Nenhum serviço cadastrado no momento\") em vez de improvisar uma resposta.\n\n## TOOLS DISPONÍVEIS\n\n### Tool: `servicosTool`\n**Quando usar:**\n- Quando o cliente quiser entender melhor como funciona algum serviço específico da CSP Nexora.\n- Sempre que a Kátia precisar de uma descrição clara e objetiva dos serviços oferecidos.\n\n## DATA E HORA ATUALIZADOS\n\nUse estas informações como contexto de data e hora:\n{{ $json.proximosDias }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        784,
+        160
+      ],
+      "id": "5379e4dd-8282-4704-8783-968911b6e72e",
+      "name": "Agente IA"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "servicos",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        992,
+        368
+      ],
+      "id": "db093940-3806-4b61-b422-b3e2bb67f8a6",
+      "name": "servicosTool1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "yNRi9WeuGdi3UzON",
+          "name": "supabase_cspnexora"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "setarInfo5": {
+      "main": [
+        [
+          {
+            "node": "Agente IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "proximos_dias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memoria 1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente IA",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "proximos_dias": {
+      "main": [
+        [
+          {
+            "node": "setarInfo5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2.5 flash": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente IA",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente IA": {
+      "main": [
+        [
+          {
+            "node": "response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "servicosTool1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente IA",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "pinData": {},
+  "versionId": "8a2dce16-de6e-41de-8ecb-3196c5fe218c",
+  "activeVersionId": "8a2dce16-de6e-41de-8ecb-3196c5fe218c",
+  "versionCounter": 23,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "shared": [
+    {
+      "updatedAt": "2026-07-04T15:23:31.707Z",
+      "createdAt": "2026-07-04T15:23:31.707Z",
+      "role": "workflow:owner",
+      "workflowId": "rzYJt8wYSQQxlmbD",
+      "projectId": "aq6TpjIETv0FyaRE",
+      "project": {
+        "updatedAt": "2026-07-02T11:51:25.238Z",
+        "createdAt": "2026-07-02T11:48:24.954Z",
+        "id": "aq6TpjIETv0FyaRE",
+        "name": "CSP Nexora <cspnexora@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "6b27285f-0a21-4f4d-bc94-0a76cc04a047"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2026-07-04T15:22:50.184Z",
+      "createdAt": "2026-07-04T15:22:50.184Z",
+      "id": "SzKx4vYLGfJyY8QT",
+      "name": "templatebase"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-07-09T21:13:29.080Z",
+    "createdAt": "2026-07-09T21:13:25.329Z",
+    "versionId": "8a2dce16-de6e-41de-8ecb-3196c5fe218c",
+    "workflowId": "rzYJt8wYSQQxlmbD",
+    "nodes": [
+      {
+        "parameters": {
+          "content": "# Agente IA de serviços",
+          "height": 536,
+          "width": 1484,
+          "color": 6
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "c1a71290-7b1d-48fe-ba30-981f4dcafd37",
+        "name": "Sticky Note24"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "67752c6a-09ad-430f-a14a-e800543efc8b",
+                "name": "NomeLead",
+                "value": "=Nome do lead: {{ $('When Executed by Another Workflow').item.json.NomeLead }}",
+                "type": "string"
+              },
+              {
+                "id": "3058e999-b1bf-43f3-b95c-bf1d71157c51",
+                "name": "msgLead",
+                "value": "={{ $('When Executed by Another Workflow').item.json.Duvida }}",
+                "type": "string"
+              },
+              {
+                "id": "c6e2e733-5bb4-4b3d-9a79-cf43a9e56458",
+                "name": "whatsaapp_lead",
+                "value": "={{ $('When Executed by Another Workflow').item.json.whatsaapp_lead }}",
+                "type": "string"
+              },
+              {
+                "id": "de41c67a-c3a9-4667-a1b1-29a90cf54fb0",
+                "name": "proximosDias",
+                "value": "={{ $json.resultado }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          544,
+          160
+        ],
+        "id": "45a5fe3b-328e-43f9-84dc-f798a2bc8411",
+        "name": "setarInfo5"
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "NomeLead"
+              },
+              {
+                "name": "Duvida"
+              },
+              {
+                "name": "whatsaapp_lead"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          128,
+          160
+        ],
+        "id": "e04e4e30-67d7-4b61-97f9-0f9927308110",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $json.whatsaapp_lead }}",
+          "contextWindowLength": 40
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.3,
+        "position": [
+          848,
+          368
+        ],
+        "id": "3bf4bbb4-598d-4d1a-888c-5a5cdb488c3c",
+        "name": "Memoria 1",
+        "credentials": {
+          "postgres": {
+            "id": "6fDv2f4OIb0C2Gew",
+            "name": "postgres_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const days = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];\nconst now = new Date();\nconst pad = (n) => String(n).padStart(2, '0');\n\nlet result = `Hoje é ${days[now.getDay()]} ${pad(now.getDate())}/${pad(now.getMonth()+1)}/${String(now.getFullYear()).slice(2)} às ${pad(now.getHours())}:${pad(now.getMinutes())}\\n`;\n\nfor (let i = 1; i <= 6; i++) {\n  const future = new Date(now);\n  future.setDate(now.getDate() + i);\n\n  let label = '';\n\n  if (i === 1) {\n    label = `Amanhã é ${days[future.getDay()]} ${pad(future.getDate())}/${pad(future.getMonth()+1)}/${String(future.getFullYear()).slice(2)}`;\n  } else if (i === 2) {\n    label = `Depois de amanhã é ${days[future.getDay()]} ${pad(future.getDate())}/${pad(future.getMonth()+1)}/${String(future.getFullYear()).slice(2)}`;\n  } else {\n    label = `A próxima ${days[future.getDay()]} será dia ${pad(future.getDate())}/${pad(future.getMonth()+1)}/${String(future.getFullYear()).slice(2)}`;\n  }\n\n  result += `${label}\\n`;\n}\n\nreturn [\n  {\n    json: {\n      resultado: result.trim()\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          336,
+          160
+        ],
+        "id": "fce8a504-ea7c-41cc-ab94-a607fce31ff2",
+        "name": "proximos_dias"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          704,
+          368
+        ],
+        "id": "5fdd0f62-2bae-411d-a4b4-fa3f59d8379d",
+        "name": "2.5 flash",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "f5NRGswVcmy2Wpbf",
+            "name": "gemini_cspnexora"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "51bd4896-17e9-484b-b08a-b6854225ccb3",
+                "name": "response",
+                "value": "={{ $json.output }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1184,
+          160
+        ],
+        "id": "a428a218-cc71-4057-92db-25a0efb3a9bc",
+        "name": "response"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.msgLead }}\n\n{{ $json.NomeLead }}",
+          "options": {
+            "systemMessage": "=## IDENTIDADE\n\n- Você é um **agente interno de suporte à secretária Kátia Andrea**, responsável por fornecer informações sobre os serviços de automação B2B oferecidos pela **CSP Nexora**, empresa de tecnologia com sede em Brasília/DF.\n- Você **não interage diretamente com o cliente final**; todas as solicitações chegam por meio da secretária Kátia.\n- Seu papel é exclusivamente **informativo e interno**, auxiliando a Kátia a responder dúvidas sobre os serviços, processo comercial e diferenciais da empresa.\n\n## SUA FUNÇÃO\n\n- Fornecer informações **claras e precisas** sobre os serviços de automação oferecidos pela CSP Nexora, com base nos dados retornados pela tool `servicosTool`.\n- Responder apenas o que for solicitado pela Kátia, sem incluir informações adicionais, preços fechados ou promessas comerciais fora do que a tool retornar.\n- Você **não fala com o cliente final** e **não realiza agendamentos** — apenas auxilia internamente a secretária.\n\n## SOBRE A CSP NEXORA\n\n- Empresa de tecnologia e automação B2B com sede em Brasília/DF, atuação em todo o Brasil.\n- Atende principalmente administradoras de condomínios e imobiliárias, ajudando a automatizar atendimento, comunicação e processos operacionais.\n- O processo comercial começa sempre por uma reunião de Briefing, onde um especialista faz o levantamento completo das necessidades do cliente — não venda ou diagnóstico é feito pelo WhatsApp.\n\n## REGRAS DE ATENDIMENTO\n\n- Responda **somente o que for solicitado** pela Kátia.\n- **Nunca** inicie conversas, faça perguntas, convites ou sugestões.\n- Respostas curtas, objetivas e sem rodeios.\n- **Jamais** fale diretamente com o cliente final — todas as respostas são direcionadas exclusivamente à Kátia.\n- Evite textos longos — priorize respostas de até 50 palavras.\n- Nunca invente serviços, preços ou prazos que não estejam nos dados retornados pela tool.\n- Caso a tool `servicosTool` não retorne nenhum serviço cadastrado, informe isso claramente à Kátia (ex: \"Nenhum serviço cadastrado no momento\") em vez de improvisar uma resposta.\n\n## TOOLS DISPONÍVEIS\n\n### Tool: `servicosTool`\n**Quando usar:**\n- Quando o cliente quiser entender melhor como funciona algum serviço específico da CSP Nexora.\n- Sempre que a Kátia precisar de uma descrição clara e objetiva dos serviços oferecidos.\n\n## DATA E HORA ATUALIZADOS\n\nUse estas informações como contexto de data e hora:\n{{ $json.proximosDias }}"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.8,
+        "position": [
+          784,
+          160
+        ],
+        "id": "5379e4dd-8282-4704-8783-968911b6e72e",
+        "name": "Agente IA"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "servicos",
+          "returnAll": true
+        },
+        "type": "n8n-nodes-base.supabaseTool",
+        "typeVersion": 1,
+        "position": [
+          992,
+          368
+        ],
+        "id": "db093940-3806-4b61-b422-b3e2bb67f8a6",
+        "name": "servicosTool1",
+        "credentials": {
+          "supabaseApi": {
+            "id": "yNRi9WeuGdi3UzON",
+            "name": "supabase_cspnexora"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "setarInfo5": {
+        "main": [
+          [
+            {
+              "node": "Agente IA",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "proximos_dias",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Memoria 1": {
+        "ai_memory": [
+          [
+            {
+              "node": "Agente IA",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "proximos_dias": {
+        "main": [
+          [
+            {
+              "node": "setarInfo5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "2.5 flash": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Agente IA",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Agente IA": {
+        "main": [
+          [
+            {
+              "node": "response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "servicosTool1": {
+        "ai_tool": [
+          [
+            {
+              "node": "Agente IA",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "CSP Nexora",
+    "name": "Version 8a2dce16",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-07-09T21:13:29.078Z",
+        "id": 57,
+        "workflowId": "rzYJt8wYSQQxlmbD",
+        "versionId": "8a2dce16-de6e-41de-8ecb-3196c5fe218c",
+        "event": "activated",
+        "userId": "6b27285f-0a21-4f4d-bc94-0a76cc04a047"
+      }
+    ]
+  }
+}
