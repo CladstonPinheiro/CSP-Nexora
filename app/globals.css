@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 html {
   scroll-behavior: smooth;
 }
@@ -8,6 +10,48 @@ html {
   --color-brand-blue: #00D1FF;
   --color-brand-cyan: #00F0FF;
   --color-deep-black: #050505;
+
+  /* Tokens semânticos do painel admin (tema claro/escuro via next-themes,
+     classe .dark/.light em <html>). Só o admin consome esses tokens — o
+     site público continua com as cores fixas acima, sem alteração. */
+  --color-page: var(--admin-page);
+  --color-surface: var(--admin-surface);
+  --color-inset: var(--admin-inset);
+  --color-border: var(--admin-border);
+  --color-border-strong: var(--admin-border-strong);
+  --color-primary: var(--admin-primary);
+  --color-secondary: var(--admin-secondary);
+  --color-muted: var(--admin-muted);
+  --color-brand-navy: #060B24;
+  --color-brand-orange: #F5821F;
+}
+
+/* Tema escuro do admin — mantém a aparência atual do painel (é o default,
+   nada muda visualmente até o usuário alternar para o tema claro). */
+:root,
+.dark {
+  --admin-page: #050505;
+  --admin-surface: #0A0A0A;
+  --admin-inset: #0D0D0D;
+  --admin-border: rgba(255, 255, 255, 0.1);
+  --admin-border-strong: rgba(255, 255, 255, 0.2);
+  --admin-primary: #FFFFFF;
+  --admin-secondary: #D1D5DB;
+  --admin-muted: #6B7280;
+}
+
+/* Tema claro do admin — reprojetado para contraste, não é o escuro invertido:
+   fundo levemente acinzentado (não branco puro), texto com leve matiz navy
+   (não preto puro), tons de cinza recalibrados para legibilidade sobre claro. */
+.light {
+  --admin-page: #F3F4F7;
+  --admin-surface: #FFFFFF;
+  --admin-inset: #EEF0F4;
+  --admin-border: rgba(6, 11, 36, 0.1);
+  --admin-border-strong: rgba(6, 11, 36, 0.2);
+  --admin-primary: #0B0F1A;
+  --admin-secondary: #4B5568;
+  --admin-muted: #6B7280;
 }
 
 body {

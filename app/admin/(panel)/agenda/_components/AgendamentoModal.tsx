@@ -16,8 +16,8 @@ interface AgendamentoModalProps {
 }
 
 const INPUT =
-  'w-full bg-[#111] border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-700 focus:outline-none focus:border-white/20 transition-all disabled:opacity-50';
-const LABEL = 'block text-[10px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5';
+  'w-full bg-inset border border-border rounded-xl px-4 py-2.5 text-primary text-sm placeholder-gray-700 focus:outline-none focus:border-border-strong transition-all disabled:opacity-50';
+const LABEL = 'block text-[10px] font-black uppercase tracking-widest text-secondary mb-1.5';
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -124,12 +124,12 @@ export function AgendamentoModal({ isOpen, onClose, onSuccess, dataInicial, hora
             transition={{ duration: 0.15 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
           >
-            <div className="w-full max-w-md bg-[#0C0C0C] border border-white/10 rounded-2xl shadow-2xl pointer-events-auto max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
-                <h3 className="font-outfit text-lg font-black text-white">Novo Agendamento</h3>
+            <div className="w-full max-w-md bg-surface border border-border rounded-2xl shadow-2xl pointer-events-auto max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between px-6 py-5 border-b border-border">
+                <h3 className="font-outfit text-lg font-black text-primary">Novo Agendamento</h3>
                 <button
                   onClick={onClose}
-                  className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all"
+                  className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-border flex items-center justify-center text-muted hover:text-primary transition-all"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -202,7 +202,7 @@ export function AgendamentoModal({ isOpen, onClose, onSuccess, dataInicial, hora
                     type="button"
                     onClick={onClose}
                     disabled={loading}
-                    className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60"
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-border text-secondary text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-primary transition-all disabled:opacity-60"
                   >
                     Cancelar
                   </button>

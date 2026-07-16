@@ -56,7 +56,7 @@ function formatarHora(iso: string) {
 }
 
 const SELECT_CLASS =
-  'bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2 text-gray-400 text-xs font-bold focus:outline-none focus:border-white/20 transition-all cursor-pointer min-w-[150px]';
+  'bg-inset border border-border rounded-xl px-3 py-2 text-secondary text-xs font-bold focus:outline-none focus:border-border-strong transition-all cursor-pointer min-w-[150px]';
 
 export default function AgendaPage() {
   const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
@@ -181,8 +181,8 @@ export default function AgendaPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6 flex-wrap gap-4">
         <div>
-          <h1 className="font-outfit text-3xl font-black tracking-tight text-white">Agenda</h1>
-          <p className="text-gray-600 text-sm mt-1">
+          <h1 className="font-outfit text-3xl font-black tracking-tight text-primary">Agenda</h1>
+          <p className="text-muted text-sm mt-1">
             {loading
               ? 'Carregando...'
               : `${filtrados.length}${hasFilters ? ` de ${agendamentos.length}` : ''} agendamento${agendamentos.length !== 1 ? 's' : ''}`}
@@ -190,12 +190,12 @@ export default function AgendaPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="inline-flex bg-[#0A0A0A] border border-white/10 rounded-xl p-1">
+          <div className="inline-flex bg-surface border border-border rounded-xl p-1">
             <button
               onClick={() => setVisao('lista')}
               className={cn(
                 'px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-1.5',
-                visao === 'lista' ? 'bg-white/10 text-white' : 'text-gray-600 hover:text-gray-400'
+                visao === 'lista' ? 'bg-white/10 text-primary' : 'text-muted hover:text-secondary'
               )}
             >
               <List className="w-3.5 h-3.5" />
@@ -205,7 +205,7 @@ export default function AgendaPage() {
               onClick={() => setVisao('calendario')}
               className={cn(
                 'px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-1.5',
-                visao === 'calendario' ? 'bg-white/10 text-white' : 'text-gray-600 hover:text-gray-400'
+                visao === 'calendario' ? 'bg-white/10 text-primary' : 'text-muted hover:text-secondary'
               )}
             >
               <CalendarDays className="w-3.5 h-3.5" />
@@ -227,12 +227,12 @@ export default function AgendaPage() {
         <>
           {/* Filtros */}
           <div className="flex items-center gap-3 mb-5 flex-wrap">
-            <SlidersHorizontal className="w-4 h-4 text-gray-700 shrink-0" />
+            <SlidersHorizontal className="w-4 h-4 text-muted shrink-0" />
             <select
               value={filtroStatus}
               onChange={(e) => setFiltroStatus(e.target.value as StatusFiltro)}
               className={SELECT_CLASS}
-              style={{ backgroundColor: '#0D0D0D' }}
+              style={{ backgroundColor: 'var(--color-inset)' }}
             >
               <option value="todos">Todos os status</option>
               {(Object.keys(statusGrupoConfig) as StatusGrupo[]).map((g) => (
@@ -245,7 +245,7 @@ export default function AgendaPage() {
               value={filtroPeriodo}
               onChange={(e) => setFiltroPeriodo(e.target.value as PeriodoFiltro)}
               className={SELECT_CLASS}
-              style={{ backgroundColor: '#0D0D0D' }}
+              style={{ backgroundColor: 'var(--color-inset)' }}
             >
               <option value="todos">Todo o período</option>
               <option value="hoje">Hoje</option>
@@ -257,7 +257,7 @@ export default function AgendaPage() {
                   setFiltroStatus('todos');
                   setFiltroPeriodo('todos');
                 }}
-                className="text-[11px] text-gray-600 hover:text-gray-400 transition-colors font-black uppercase tracking-widest"
+                className="text-[11px] text-muted hover:text-secondary transition-colors font-black uppercase tracking-widest"
               >
                 Limpar filtros
               </button>
@@ -265,15 +265,15 @@ export default function AgendaPage() {
           </div>
 
           {/* Tabela */}
-          <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden">
+          <div className="bg-surface border border-border rounded-2xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[820px]">
                 <thead>
-                  <tr className="border-b border-white/5 bg-white/[0.015]">
+                  <tr className="border-b border-border bg-white/[0.015]">
                     {['Data', 'Horário', 'Lead', 'Assunto', 'Status', 'Ações'].map((h) => (
                       <th
                         key={h}
-                        className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-gray-600"
+                        className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-muted"
                       >
                         {h}
                       </th>
@@ -283,7 +283,7 @@ export default function AgendaPage() {
                 <tbody>
                   {loading ? (
                     Array.from({ length: 5 }).map((_, i) => (
-                      <tr key={i} className="border-b border-white/5">
+                      <tr key={i} className="border-b border-border">
                         {Array.from({ length: 6 }).map((_, j) => (
                           <td key={j} className="px-5 py-4">
                             <div
@@ -298,11 +298,11 @@ export default function AgendaPage() {
                     <tr>
                       <td colSpan={6} className="py-20">
                         <div className="flex flex-col items-center justify-center text-center">
-                          <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
-                            <InboxIcon className="w-6 h-6 text-gray-700" />
+                          <div className="w-14 h-14 rounded-2xl bg-white/5 border border-border flex items-center justify-center mb-4">
+                            <InboxIcon className="w-6 h-6 text-muted" />
                           </div>
-                          <p className="text-sm font-bold text-gray-600">Nenhum agendamento encontrado</p>
-                          <p className="text-xs text-gray-700 mt-1">
+                          <p className="text-sm font-bold text-muted">Nenhum agendamento encontrado</p>
+                          <p className="text-xs text-muted mt-1">
                             {hasFilters ? 'Tente ajustar os filtros' : 'Crie o primeiro agendamento pelo botão acima'}
                           </p>
                         </div>
@@ -316,23 +316,23 @@ export default function AgendaPage() {
                           key={ag.id}
                           onClick={() => setSelecionado(ag)}
                           className={cn(
-                            'border-b border-white/5 last:border-0 cursor-pointer transition-colors',
+                            'border-b border-border last:border-0 cursor-pointer transition-colors',
                             selecionado?.id === ag.id ? 'bg-cyan-500/[0.04]' : 'hover:bg-white/[0.025]'
                           )}
                         >
-                          <td className="px-5 py-4 text-sm text-gray-300 whitespace-nowrap">
+                          <td className="px-5 py-4 text-sm text-secondary whitespace-nowrap">
                             {formatarData(ag.data_hora_inicio)}
                           </td>
-                          <td className="px-5 py-4 text-sm text-gray-300 whitespace-nowrap">
+                          <td className="px-5 py-4 text-sm text-secondary whitespace-nowrap">
                             {formatarHora(ag.data_hora_inicio)}
                           </td>
                           <td className="px-5 py-4">
-                            <p className="text-sm font-bold text-white truncate max-w-[180px]">
+                            <p className="text-sm font-bold text-primary truncate max-w-[180px]">
                               {ag.leads?.company_name || '—'}
                             </p>
-                            <p className="text-xs text-gray-600 truncate max-w-[180px]">{ag.leads?.contact_name || '—'}</p>
+                            <p className="text-xs text-muted truncate max-w-[180px]">{ag.leads?.contact_name || '—'}</p>
                           </td>
-                          <td className="px-5 py-4 text-sm text-gray-500 truncate max-w-[200px]">
+                          <td className="px-5 py-4 text-sm text-muted truncate max-w-[200px]">
                             {ag.assunto || '—'}
                           </td>
                           <td className="px-5 py-4">
@@ -347,7 +347,7 @@ export default function AgendaPage() {
                               <button
                                 onClick={() => setReagendarTarget(ag)}
                                 disabled={bloqueado}
-                                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 flex items-center justify-center text-gray-600 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/5"
+                                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 border border-border hover:border-border-strong flex items-center justify-center text-muted hover:text-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/5"
                                 title="Reagendar"
                               >
                                 <CalendarClock className="w-3 h-3" />
@@ -355,7 +355,7 @@ export default function AgendaPage() {
                               <button
                                 onClick={() => setCancelarTarget(ag)}
                                 disabled={bloqueado}
-                                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 flex items-center justify-center text-gray-600 hover:text-red-400 transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/5"
+                                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-border hover:border-red-500/20 flex items-center justify-center text-muted hover:text-red-400 transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/5"
                                 title="Cancelar"
                               >
                                 <Ban className="w-3 h-3" />
@@ -403,20 +403,20 @@ export default function AgendaPage() {
       {/* Confirmação de cancelamento */}
       {cancelarTarget && (
         <div className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-sm bg-[#0C0C0C] border border-white/10 rounded-2xl p-6 shadow-2xl">
+          <div className="w-full max-w-sm bg-surface border border-border rounded-2xl p-6 shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-5 h-5 text-red-400" />
               </div>
               <div>
-                <h3 className="font-outfit text-base font-black text-white">Cancelar Agendamento</h3>
-                <p className="text-xs text-gray-600 mt-0.5">Esta ação não pode ser desfeita</p>
+                <h3 className="font-outfit text-base font-black text-primary">Cancelar Agendamento</h3>
+                <p className="text-xs text-muted mt-0.5">Esta ação não pode ser desfeita</p>
               </div>
             </div>
-            <p className="text-sm text-gray-400 mb-6">
+            <p className="text-sm text-secondary mb-6">
               Tem certeza que deseja cancelar o agendamento de{' '}
-              <span className="font-bold text-white">{cancelarTarget.leads?.company_name || 'lead'}</span> em{' '}
-              <span className="font-bold text-white">
+              <span className="font-bold text-primary">{cancelarTarget.leads?.company_name || 'lead'}</span> em{' '}
+              <span className="font-bold text-primary">
                 {formatarData(cancelarTarget.data_hora_inicio)} às {formatarHora(cancelarTarget.data_hora_inicio)}
               </span>
               ?
@@ -425,7 +425,7 @@ export default function AgendaPage() {
               <button
                 onClick={() => setCancelarTarget(null)}
                 disabled={cancelando}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-border text-secondary text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-primary transition-all disabled:opacity-60"
               >
                 Voltar
               </button>

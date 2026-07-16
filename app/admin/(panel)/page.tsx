@@ -117,7 +117,7 @@ const accentStyles: Record<string, string> = {
   amber:  'bg-amber-500/10 text-amber-400 border-amber-500/20',
 };
 
-const CARD = 'bg-[#0A0A0A] border border-white/10 rounded-2xl p-6';
+const CARD = 'bg-surface border border-border rounded-2xl p-6';
 
 export default async function AdminDashboardPage() {
   const metrics = await getMetrics();
@@ -165,8 +165,8 @@ export default async function AdminDashboardPage() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="font-outfit text-3xl font-black tracking-tight text-white">Dashboard</h1>
-        <p className="text-gray-600 text-sm mt-1">Visão geral do negócio</p>
+        <h1 className="font-outfit text-3xl font-black tracking-tight text-primary">Dashboard</h1>
+        <p className="text-muted text-sm mt-1">Visão geral do negócio</p>
       </div>
 
       {/* Cards existentes */}
@@ -174,7 +174,7 @@ export default async function AdminDashboardPage() {
         {cards.map((card) => (
           <div
             key={card.label}
-            className={`${CARD} hover:border-white/20 transition-all group`}
+            className={`${CARD} hover:border-border-strong transition-all group`}
           >
             <div className="flex items-start justify-between mb-5">
               <div
@@ -182,81 +182,81 @@ export default async function AdminDashboardPage() {
               >
                 <card.icon className="w-5 h-5" />
               </div>
-              <ArrowUpRight className="w-4 h-4 text-gray-800 group-hover:text-gray-500 transition-colors" />
+              <ArrowUpRight className="w-4 h-4 text-gray-800 group-hover:text-muted transition-colors" />
             </div>
-            <p className="font-outfit text-4xl font-black text-white tracking-tight">{card.value}</p>
-            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mt-1">{card.label}</p>
-            <p className="text-xs text-gray-700 mt-1">{card.sub}</p>
+            <p className="font-outfit text-4xl font-black text-primary tracking-tight">{card.value}</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-muted mt-1">{card.label}</p>
+            <p className="text-xs text-muted mt-1">{card.sub}</p>
           </div>
         ))}
       </div>
 
       {/* Origem dos Leads */}
       <div className="mt-6">
-        <h2 className="font-outfit text-lg font-black tracking-tight text-white mb-4">
+        <h2 className="font-outfit text-lg font-black tracking-tight text-primary mb-4">
           Origem dos Leads
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className={`${CARD} hover:border-white/20 transition-all`}>
+          <div className={`${CARD} hover:border-border-strong transition-all`}>
             <div className="flex items-start justify-between mb-5">
               <div className="w-10 h-10 rounded-xl border flex items-center justify-center bg-blue-500/10 text-blue-400 border-blue-500/20 text-lg">
                 🌐
               </div>
             </div>
             <p className="font-outfit text-4xl font-black text-blue-400 tracking-tight">{metrics.leadsSite}</p>
-            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mt-1">Site Público</p>
-            <p className="text-xs text-gray-700 mt-1">formulário, contato, redes sociais, WhatsApp, indicação</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-muted mt-1">Site Público</p>
+            <p className="text-xs text-muted mt-1">formulário, contato, redes sociais, WhatsApp, indicação</p>
           </div>
 
-          <div className={`${CARD} hover:border-white/20 transition-all`}>
+          <div className={`${CARD} hover:border-border-strong transition-all`}>
             <div className="flex items-start justify-between mb-5">
               <div className="w-10 h-10 rounded-xl border flex items-center justify-center bg-cyan-500/10 text-cyan-400 border-cyan-500/20 text-lg">
                 📍
               </div>
             </div>
             <p className="font-outfit text-4xl font-black text-cyan-400 tracking-tight">{metrics.leadsGmn}</p>
-            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mt-1">Prospecção GMN</p>
-            <p className="text-xs text-gray-700 mt-1">leads captados pela landing page de oferta GMN</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-muted mt-1">Prospecção GMN</p>
+            <p className="text-xs text-muted mt-1">leads captados pela landing page de oferta GMN</p>
           </div>
         </div>
       </div>
 
       {/* Inteligência Comercial */}
       <div className="mt-10">
-        <h2 className="font-outfit text-lg font-black tracking-tight text-white mb-4">
+        <h2 className="font-outfit text-lg font-black tracking-tight text-primary mb-4">
           Inteligência Comercial
         </h2>
 
         {/* 3 métricas em linha */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
           <div className={CARD}>
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-3">
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">
               Taxa de Conversão
             </p>
-            <p className="font-outfit text-4xl font-black text-white tracking-tight">
+            <p className="font-outfit text-4xl font-black text-primary tracking-tight">
               {metrics.taxaConversao}
             </p>
-            <p className="text-xs text-gray-700 mt-1">leads fechados ÷ total</p>
+            <p className="text-xs text-muted mt-1">leads fechados ÷ total</p>
           </div>
 
           <div className={CARD}>
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-3">
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">
               Ticket Médio
             </p>
-            <p className="font-outfit text-3xl font-black text-white tracking-tight break-all">
+            <p className="font-outfit text-3xl font-black text-primary tracking-tight break-all">
               {metrics.ticketMedio}
             </p>
-            <p className="text-xs text-gray-700 mt-1">setup + mensalidade por projeto</p>
+            <p className="text-xs text-muted mt-1">setup + mensalidade por projeto</p>
           </div>
 
           <div className={CARD}>
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-3">
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">
               Tempo Médio para Fechar
             </p>
-            <p className="font-outfit text-4xl font-black text-white tracking-tight">
+            <p className="font-outfit text-4xl font-black text-primary tracking-tight">
               {metrics.tempoMedio}
             </p>
-            <p className="text-xs text-gray-700 mt-1">da entrada até qualificação IA</p>
+            <p className="text-xs text-muted mt-1">da entrada até qualificação IA</p>
           </div>
         </div>
 
@@ -264,7 +264,7 @@ export default async function AdminDashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Funil de Leads */}
           <div className={`lg:col-span-2 ${CARD}`}>
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-5">
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-5">
               Funil de Leads
             </p>
             <div className="space-y-3">
@@ -274,10 +274,10 @@ export default async function AdminDashboardPage() {
                 return (
                   <div key={stage}>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-muted">
                         {estagioConfig[stage]?.label ?? stage}
                       </span>
-                      <span className="text-xs text-gray-400 font-bold tabular-nums">{count}</span>
+                      <span className="text-xs text-secondary font-bold tabular-nums">{count}</span>
                     </div>
                     <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                       <div
@@ -293,14 +293,14 @@ export default async function AdminDashboardPage() {
 
           {/* Distribuição Score IA */}
           <div className={CARD}>
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-5">
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-5">
               Distribuição Score IA
             </p>
             <div className="space-y-3">
               {scoreEntries.map(({ key, label, count }) => (
                 <div key={key} className="flex items-center justify-between">
                   {key === 'sem_score' ? (
-                    <span className="inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest bg-white/5 text-gray-600 border-white/10">
+                    <span className="inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest bg-white/5 text-muted border-border">
                       Sem score
                     </span>
                   ) : (
@@ -310,7 +310,7 @@ export default async function AdminDashboardPage() {
                       {label}
                     </span>
                   )}
-                  <span className="text-sm text-gray-400 font-bold tabular-nums">{count}</span>
+                  <span className="text-sm text-secondary font-bold tabular-nums">{count}</span>
                 </div>
               ))}
             </div>

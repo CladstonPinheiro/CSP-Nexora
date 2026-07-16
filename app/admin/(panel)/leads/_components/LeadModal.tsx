@@ -31,8 +31,8 @@ const EMPTY_FORM = {
 };
 
 const INPUT =
-  'w-full bg-[#111] border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-700 focus:outline-none focus:border-white/20 transition-all';
-const LABEL = 'block text-[10px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5';
+  'w-full bg-inset border border-border rounded-xl px-4 py-2.5 text-primary text-sm placeholder-gray-700 focus:outline-none focus:border-border-strong transition-all';
+const LABEL = 'block text-[10px] font-black uppercase tracking-widest text-secondary mb-1.5';
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -136,22 +136,22 @@ export function LeadModal({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 16 }}
             transition={{ duration: 0.2 }}
-            className="w-full max-w-2xl bg-[#0C0C0C] border border-white/10 rounded-2xl p-8 mb-8 shadow-2xl"
+            className="w-full max-w-2xl bg-surface border border-border rounded-2xl p-8 mb-8 shadow-2xl"
           >
             {/* Header */}
             <div className="flex items-start justify-between mb-7">
               <div>
-                <h2 className="font-outfit text-xl font-black tracking-tight text-white">
+                <h2 className="font-outfit text-xl font-black tracking-tight text-primary">
                   {lead ? 'Editar Lead' : 'Novo Lead'}
                 </h2>
-                <p className="text-gray-600 text-xs mt-1">
+                <p className="text-muted text-xs mt-1">
                   {lead ? `Editando ${lead.company_name ?? 'lead'}` : 'Preencha os dados do novo lead'}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={handleClose}
-                className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all"
+                className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-border flex items-center justify-center text-muted hover:text-primary transition-all"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -269,7 +269,7 @@ export function LeadModal({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="flex-1 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all"
+                  className="flex-1 px-5 py-2.5 rounded-xl bg-white/5 border border-border text-secondary text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-primary transition-all"
                 >
                   Cancelar
                 </button>

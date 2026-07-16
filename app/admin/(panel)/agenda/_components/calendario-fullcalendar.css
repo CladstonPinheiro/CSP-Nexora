@@ -1,27 +1,39 @@
 .csp-fullcalendar {
-  --fc-border-color: rgba(255, 255, 255, 0.08);
+  --fc-border-color: var(--color-border);
   --fc-page-bg-color: transparent;
   --fc-neutral-bg-color: #0b1130;
-  --fc-neutral-text-color: #6b7280;
+  --fc-neutral-text-color: var(--color-muted);
+  /* Laranja em opacidade baixa: precisa de valor por tema, não só por token
+     de cor — o mesmo alfa fica sutil sobre fundo escuro e chamativo sobre
+     fundo claro (branco não "absorve" a tinta como o quase-preto absorve). */
   --fc-today-bg-color: rgba(245, 130, 31, 0.08);
-  --fc-now-indicator-color: #f5821f;
-  --fc-button-text-color: #d1d5db;
-  --fc-button-bg-color: #060b24;
-  --fc-button-border-color: rgba(255, 255, 255, 0.1);
+  --fc-now-indicator-color: var(--color-brand-orange);
+  --fc-button-text-color: var(--color-secondary);
+  --fc-button-bg-color: var(--color-brand-navy);
+  --fc-button-border-color: var(--color-border);
   --fc-button-hover-bg-color: #0a1030;
-  --fc-button-hover-border-color: rgba(255, 255, 255, 0.18);
-  --fc-button-active-bg-color: #f5821f;
-  --fc-button-active-border-color: #f5821f;
-  --fc-event-bg-color: #f5821f;
-  --fc-event-border-color: #f5821f;
-  --fc-event-text-color: #060b24;
+  --fc-button-hover-border-color: var(--color-border-strong);
+  --fc-button-active-bg-color: var(--color-brand-orange);
+  --fc-button-active-border-color: var(--color-brand-orange);
+  --fc-event-bg-color: var(--color-brand-orange);
+  --fc-event-border-color: var(--color-brand-orange);
+  --fc-event-text-color: var(--color-brand-navy);
   --fc-list-event-hover-bg-color: rgba(245, 130, 31, 0.08);
   --fc-highlight-color: rgba(245, 130, 31, 0.12);
 
-  background: #0a0a0a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 1rem;
   padding: 1.25rem;
+}
+
+/* Tema claro: mesmos realces, opacidade recalibrada para equivaler
+   visualmente ao sutil que já existe no tema escuro (branco puro deixa
+   qualquer tinta muito mais visível que o quase-preto do tema escuro). */
+.light .csp-fullcalendar {
+  --fc-today-bg-color: rgba(245, 130, 31, 0.035);
+  --fc-list-event-hover-bg-color: rgba(245, 130, 31, 0.035);
+  --fc-highlight-color: rgba(245, 130, 31, 0.05);
 }
 
 .csp-fullcalendar .fc {
@@ -31,7 +43,7 @@
 .csp-fullcalendar .fc-toolbar-title {
   font-weight: 900;
   font-size: 1.15rem;
-  color: #fff;
+  color: var(--color-primary);
   letter-spacing: -0.01em;
 }
 
@@ -50,11 +62,11 @@
 }
 
 .csp-fullcalendar .fc-button-primary:not(:disabled).fc-button-active {
-  color: #060b24;
+  color: var(--color-brand-navy);
 }
 
 .csp-fullcalendar .fc-col-header-cell-cushion {
-  color: #6b7280;
+  color: var(--color-muted);
   text-transform: uppercase;
   font-size: 9px;
   font-weight: 900;
@@ -70,7 +82,7 @@
 }
 
 .csp-fullcalendar .fc-day-today .fc-daygrid-day-number {
-  color: #f5821f;
+  color: var(--color-brand-orange);
 }
 
 .csp-fullcalendar .fc-timegrid-slot-label-cushion {
@@ -93,6 +105,10 @@
 
 .csp-fullcalendar .fc-day-disabled {
   background: rgba(255, 255, 255, 0.015);
+}
+
+.light .csp-fullcalendar .fc-day-disabled {
+  background: rgba(6, 11, 36, 0.025);
 }
 
 .csp-fullcalendar a {

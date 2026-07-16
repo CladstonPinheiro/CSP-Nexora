@@ -23,12 +23,12 @@ import {
 import type { Lead } from '../../_components/types';
 
 const TEXTAREA =
-  'w-full bg-[#111] border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-700 focus:outline-none focus:border-white/20 transition-all resize-y min-h-[80px]';
+  'w-full bg-inset border border-border rounded-xl px-4 py-2.5 text-primary text-sm placeholder-gray-700 focus:outline-none focus:border-border-strong transition-all resize-y min-h-[80px]';
 const TEXTAREA_AI_FILLED =
-  'w-full bg-[#111] border border-cyan-400/40 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-700 focus:outline-none focus:border-cyan-400/60 transition-all resize-y min-h-[80px]';
+  'w-full bg-inset border border-cyan-400/40 rounded-xl px-4 py-2.5 text-primary text-sm placeholder-gray-700 focus:outline-none focus:border-cyan-400/60 transition-all resize-y min-h-[80px]';
 const INPUT =
-  'w-full bg-[#111] border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-700 focus:outline-none focus:border-white/20 transition-all';
-const LABEL = 'block text-[10px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5';
+  'w-full bg-inset border border-border rounded-xl px-4 py-2.5 text-primary text-sm placeholder-gray-700 focus:outline-none focus:border-border-strong transition-all';
+const LABEL = 'block text-[10px] font-black uppercase tracking-widest text-secondary mb-1.5';
 
 type FormState = Partial<Record<BriefingField, string>>;
 type SavingKey = BriefingField | 'numero_agendas' | 'numero_fluxos_automacao' | 'integracoes_desejadas';
@@ -188,17 +188,17 @@ export default function BriefingPage() {
       <div className="mb-6">
         <Link
           href="/admin/leads"
-          className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-gray-600 hover:text-white transition-colors mb-4"
+          className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-muted hover:text-primary transition-colors mb-4"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           Voltar para Leads
         </Link>
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="font-outfit text-3xl font-black tracking-tight text-white">
+            <h1 className="font-outfit text-3xl font-black tracking-tight text-primary">
               Briefing
             </h1>
-            <p className="text-gray-600 text-sm mt-1">
+            <p className="text-muted text-sm mt-1">
               {lead?.company_name || 'Lead não encontrado'}
             </p>
           </div>
@@ -215,8 +215,8 @@ export default function BriefingPage() {
       </div>
 
       {/* Preenchimento por IA */}
-      <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl p-6 mb-5">
-        <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-3">
+      <div className="bg-surface border border-border rounded-2xl p-6 mb-5">
+        <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">
           Colar transcrição da reunião (Tactiq)
         </p>
         <textarea
@@ -267,9 +267,9 @@ export default function BriefingPage() {
         {BRIEFING_SECTIONS.map((section) => (
           <div
             key={section.title}
-            className="bg-[#0A0A0A] border border-white/10 rounded-2xl p-6"
+            className="bg-surface border border-border rounded-2xl p-6"
           >
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-5">
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-5">
               {section.title}
             </p>
             <div className="space-y-4">
@@ -283,7 +283,7 @@ export default function BriefingPage() {
                       )}
                     </label>
                     {savingField === key && (
-                      <span className="text-[9px] font-black uppercase tracking-widest text-gray-700">
+                      <span className="text-[9px] font-black uppercase tracking-widest text-muted">
                         Salvando...
                       </span>
                     )}
@@ -302,8 +302,8 @@ export default function BriefingPage() {
         ))}
 
         {/* Dados para Precificação */}
-        <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl p-6">
-          <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-5">
+        <div className="bg-surface border border-border rounded-2xl p-6">
+          <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-5">
             Dados para Precificação
           </p>
           <div className="space-y-4">
@@ -312,7 +312,7 @@ export default function BriefingPage() {
                 <div className="flex items-center justify-between mb-1.5">
                   <label className={LABEL}>Número de agendas</label>
                   {savingField === 'numero_agendas' && (
-                    <span className="text-[9px] font-black uppercase tracking-widest text-gray-700">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-muted">
                       Salvando...
                     </span>
                   )}
@@ -329,7 +329,7 @@ export default function BriefingPage() {
                 <div className="flex items-center justify-between mb-1.5">
                   <label className={LABEL}>Número de fluxos de automação</label>
                   {savingField === 'numero_fluxos_automacao' && (
-                    <span className="text-[9px] font-black uppercase tracking-widest text-gray-700">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-muted">
                       Salvando...
                     </span>
                   )}
@@ -348,7 +348,7 @@ export default function BriefingPage() {
               <div className="flex items-center justify-between mb-2">
                 <label className={LABEL}>Integrações desejadas</label>
                 {savingField === 'integracoes_desejadas' && (
-                  <span className="text-[9px] font-black uppercase tracking-widest text-gray-700">
+                  <span className="text-[9px] font-black uppercase tracking-widest text-muted">
                     Salvando...
                   </span>
                 )}
@@ -357,13 +357,13 @@ export default function BriefingPage() {
                 {INTEGRACAO_OPTIONS.map(({ value, label }) => (
                   <label
                     key={value}
-                    className="flex items-center gap-2.5 text-sm text-gray-300 cursor-pointer select-none"
+                    className="flex items-center gap-2.5 text-sm text-secondary cursor-pointer select-none"
                   >
                     <input
                       type="checkbox"
                       checked={integracoesDesejadas.includes(value)}
                       onChange={() => handleToggleIntegracao(value)}
-                      className="w-4 h-4 rounded border-white/20 bg-[#111] accent-cyan-500"
+                      className="w-4 h-4 rounded border-border-strong bg-inset accent-cyan-500"
                     />
                     {label}
                   </label>

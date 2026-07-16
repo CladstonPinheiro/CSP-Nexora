@@ -35,12 +35,12 @@ const nichoLabel: Record<string, string> = {
   outros:      'Outros',
 };
 
-const SELECT_CLASS = 'bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2 text-[#F6F6F8] text-xs font-bold focus:outline-none focus:border-white/20 transition-all cursor-pointer min-w-[170px]';
-const INPUT_CLASS = 'w-full bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-[#384055] focus:outline-none focus:border-white/20 transition-all';
+const SELECT_CLASS = 'bg-inset border border-border rounded-xl px-3 py-2 text-secondary text-xs font-bold focus:outline-none focus:border-border-strong transition-all cursor-pointer min-w-[170px]';
+const INPUT_CLASS = 'w-full bg-inset border border-border rounded-xl px-3 py-2.5 text-sm text-primary placeholder-[#384055] focus:outline-none focus:border-border-strong transition-all';
 
 function StatusBadge({ value }: { value: string }) {
   const cfg = statusConfig[value];
-  if (!cfg) return <span className="text-sm text-gray-700">—</span>;
+  if (!cfg) return <span className="text-sm text-muted">—</span>;
   return <span className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap ${cfg.style}`}>{cfg.label}</span>;
 }
 
@@ -78,48 +78,48 @@ function ClienteModal({ isOpen, onClose, onSuccess, cliente }: { isOpen: boolean
 
   return (
     <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#0C0C0C] border border-white/10 rounded-2xl shadow-2xl">
-        <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
-          <h2 className="font-outfit text-base font-black text-white">{cliente ? 'Editar Cliente' : 'Novo Cliente'}</h2>
-          <button onClick={onClose} className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-[#F6F6F8] hover:text-white transition-all"><X className="w-4 h-4" /></button>
+      <div className="w-full max-w-md bg-surface border border-border rounded-2xl shadow-2xl">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-border">
+          <h2 className="font-outfit text-base font-black text-primary">{cliente ? 'Editar Cliente' : 'Novo Cliente'}</h2>
+          <button onClick={onClose} className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-border flex items-center justify-center text-secondary hover:text-primary transition-all"><X className="w-4 h-4" /></button>
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Empresa *</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Empresa *</label>
             <input className={INPUT_CLASS} placeholder="Nome da empresa" value={form.company_name} onChange={e => setForm(f => ({ ...f, company_name: e.target.value }))} />
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Contato</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Contato</label>
             <input className={INPUT_CLASS} placeholder="Nome do contato" value={form.contact_name} onChange={e => setForm(f => ({ ...f, contact_name: e.target.value }))} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Telefone</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Telefone</label>
               <input className={INPUT_CLASS} placeholder="(11) 99999-9999" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} />
             </div>
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Email</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Email</label>
               <input className={INPUT_CLASS} type="email" placeholder="email@empresa.com" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Nicho</label>
-              <select className={INPUT_CLASS} value={form.niche} onChange={e => setForm(f => ({ ...f, niche: e.target.value }))} style={{ backgroundColor: '#0D0D0D' }}>
+              <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Nicho</label>
+              <select className={INPUT_CLASS} value={form.niche} onChange={e => setForm(f => ({ ...f, niche: e.target.value }))} style={{ backgroundColor: 'var(--color-inset)' }}>
                 <option value="">Selecione</option>
                 {Object.entries(nichoLabel).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Status</label>
-              <select className={INPUT_CLASS} value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} style={{ backgroundColor: '#0D0D0D' }}>
+              <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Status</label>
+              <select className={INPUT_CLASS} value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} style={{ backgroundColor: 'var(--color-inset)' }}>
                 {Object.entries(statusConfig).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
               </select>
             </div>
           </div>
         </div>
         <div className="flex gap-3 px-6 pb-6">
-          <button onClick={onClose} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-[#F6F6F8] text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60">Cancelar</button>
+          <button onClick={onClose} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-border text-secondary text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-primary transition-all disabled:opacity-60">Cancelar</button>
           <button onClick={handleSubmit} disabled={saving || !form.company_name.trim()} className="flex-1 relative group disabled:opacity-60">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl blur opacity-40 group-hover:opacity-70 transition duration-300" />
             <div className="relative flex items-center justify-center bg-white text-black py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest">{saving ? 'Salvando...' : cliente ? 'Salvar' : 'Cadastrar'}</div>
@@ -179,8 +179,8 @@ export default function ClientesPage() {
     <div className="p-8 min-h-screen">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="font-outfit text-3xl font-black tracking-tight text-white">Clientes</h1>
-          <p className="text-[#F6F6F8] text-sm mt-1">{loading ? 'Carregando...' : `${filtered.length}${filterStatus ? ` de ${clientes.length}` : ''} cliente${clientes.length !== 1 ? 's' : ''} cadastrado${clientes.length !== 1 ? 's' : ''}`}</p>
+          <h1 className="font-outfit text-3xl font-black tracking-tight text-primary">Clientes</h1>
+          <p className="text-secondary text-sm mt-1">{loading ? 'Carregando...' : `${filtered.length}${filterStatus ? ` de ${clientes.length}` : ''} cliente${clientes.length !== 1 ? 's' : ''} cadastrado${clientes.length !== 1 ? 's' : ''}`}</p>
         </div>
         <button onClick={() => setModalOpen(true)} className="relative group">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl blur opacity-40 group-hover:opacity-70 transition duration-300" />
@@ -188,27 +188,27 @@ export default function ClientesPage() {
         </button>
       </div>
       <div className="flex items-center gap-3 mb-5 flex-wrap">
-        <SlidersHorizontal className="w-4 h-4 text-gray-700 shrink-0" />
-        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className={SELECT_CLASS} style={{ backgroundColor: '#0D0D0D' }}>
+        <SlidersHorizontal className="w-4 h-4 text-muted shrink-0" />
+        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className={SELECT_CLASS} style={{ backgroundColor: 'var(--color-inset)' }}>
           <option value="">Todos os status</option>
           {Object.entries(statusConfig).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
         </select>
-        {filterStatus && <button onClick={() => setFilterStatus('')} className="text-[11px] text-[#F6F6F8] hover:text-[#F6F6F8] transition-colors font-black uppercase tracking-widest">Limpar filtros</button>}
+        {filterStatus && <button onClick={() => setFilterStatus('')} className="text-[11px] text-secondary hover:text-secondary transition-colors font-black uppercase tracking-widest">Limpar filtros</button>}
       </div>
-      <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden">
+      <div className="bg-surface border border-border rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[800px]">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.015]">
+              <tr className="border-b border-border bg-white/[0.015]">
                 {['Empresa', 'Contato', 'Nicho', 'Telefone', 'Email', 'Status', 'Desde', 'Ações'].map(h => (
-                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-[#F6F6F8]">{h}</th>
+                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-secondary">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="border-b border-white/5">
+                  <tr key={i} className="border-b border-border">
                     {Array.from({ length: 8 }).map((_, j) => (
                       <td key={j} className="px-5 py-4"><div className="h-3 bg-white/5 rounded-lg animate-pulse" style={{ width: `${50 + (j * 17 + i * 11) % 40}%` }} /></td>
                     ))}
@@ -217,9 +217,9 @@ export default function ClientesPage() {
               ) : filtered.length === 0 ? (
                 <tr><td colSpan={8} className="py-20">
                   <div className="flex flex-col items-center justify-center text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4"><InboxIcon className="w-6 h-6 text-gray-700" /></div>
-                    <p className="text-sm font-bold text-[#F6F6F8]">Nenhum cliente encontrado</p>
-                    <p className="text-xs text-gray-700 mt-1">{filterStatus ? 'Tente ajustar os filtros' : 'Adicione o primeiro cliente pelo botão acima'}</p>
+                    <div className="w-14 h-14 rounded-2xl bg-white/5 border border-border flex items-center justify-center mb-4"><InboxIcon className="w-6 h-6 text-muted" /></div>
+                    <p className="text-sm font-bold text-secondary">Nenhum cliente encontrado</p>
+                    <p className="text-xs text-muted mt-1">{filterStatus ? 'Tente ajustar os filtros' : 'Adicione o primeiro cliente pelo botão acima'}</p>
                   </div>
                 </td></tr>
               ) : (
@@ -227,23 +227,23 @@ export default function ClientesPage() {
                   <tr
                     key={cliente.id}
                     onClick={() => setSelectedCliente(cliente)}
-                    className={`border-b border-white/5 last:border-0 cursor-pointer transition-colors ${
+                    className={`border-b border-border last:border-0 cursor-pointer transition-colors ${
                       selectedCliente?.id === cliente.id
                         ? 'bg-white/[0.04]'
                         : 'hover:bg-white/[0.025]'
                     }`}
                   >
-                    <td className="px-5 py-4"><span className="text-sm font-bold text-white">{cliente.company_name || '—'}</span></td>
-                    <td className="px-5 py-4 text-sm text-[#F6F6F8]">{cliente.contact_name || '—'}</td>
-                    <td className="px-5 py-4 text-sm text-[#F6F6F8]">{cliente.niche ? (nichoLabel[cliente.niche] ?? cliente.niche) : '—'}</td>
-                    <td className="px-5 py-4 text-sm text-[#F6F6F8]">{cliente.phone || '—'}</td>
-                    <td className="px-5 py-4 text-sm text-[#F6F6F8]">{cliente.email || '—'}</td>
-                    <td className="px-5 py-4">{cliente.status ? <StatusBadge value={cliente.status} /> : <span className="text-sm text-gray-700">—</span>}</td>
-                    <td className="px-5 py-4 text-xs text-[#F6F6F8] whitespace-nowrap">{cliente.started_at ? formatDate(cliente.started_at) : '—'}</td>
+                    <td className="px-5 py-4"><span className="text-sm font-bold text-primary">{cliente.company_name || '—'}</span></td>
+                    <td className="px-5 py-4 text-sm text-secondary">{cliente.contact_name || '—'}</td>
+                    <td className="px-5 py-4 text-sm text-secondary">{cliente.niche ? (nichoLabel[cliente.niche] ?? cliente.niche) : '—'}</td>
+                    <td className="px-5 py-4 text-sm text-secondary">{cliente.phone || '—'}</td>
+                    <td className="px-5 py-4 text-sm text-secondary">{cliente.email || '—'}</td>
+                    <td className="px-5 py-4">{cliente.status ? <StatusBadge value={cliente.status} /> : <span className="text-sm text-muted">—</span>}</td>
+                    <td className="px-5 py-4 text-xs text-secondary whitespace-nowrap">{cliente.started_at ? formatDate(cliente.started_at) : '—'}</td>
                     <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
                       <div className="flex items-center gap-1.5">
-                        <button onClick={() => setEditCliente(cliente)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 flex items-center justify-center text-[#F6F6F8] hover:text-white transition-all"><Pencil className="w-3 h-3" /></button>
-                        <button onClick={() => setDeleteTarget(cliente)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 flex items-center justify-center text-[#F6F6F8] hover:text-red-400 transition-all"><Trash2 className="w-3 h-3" /></button>
+                        <button onClick={() => setEditCliente(cliente)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 border border-border hover:border-border-strong flex items-center justify-center text-secondary hover:text-primary transition-all"><Pencil className="w-3 h-3" /></button>
+                        <button onClick={() => setDeleteTarget(cliente)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-border hover:border-red-500/20 flex items-center justify-center text-secondary hover:text-red-400 transition-all"><Trash2 className="w-3 h-3" /></button>
                       </div>
                     </td>
                   </tr>
@@ -257,17 +257,17 @@ export default function ClientesPage() {
       <ClienteModal isOpen={!!editCliente} onClose={() => setEditCliente(null)} onSuccess={c => { setClientes(prev => prev.map(x => x.id === c.id ? c : x)); setEditCliente(null); }} cliente={editCliente ?? undefined} />
       {deleteTarget && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-sm bg-[#0C0C0C] border border-white/10 rounded-2xl p-6 shadow-2xl">
+          <div className="w-full max-w-sm bg-surface border border-border rounded-2xl p-6 shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0"><AlertTriangle className="w-5 h-5 text-red-400" /></div>
               <div>
-                <h3 className="font-outfit text-base font-black text-white">Excluir Cliente</h3>
-                <p className="text-xs text-[#F6F6F8] mt-0.5">Esta ação não pode ser desfeita</p>
+                <h3 className="font-outfit text-base font-black text-primary">Excluir Cliente</h3>
+                <p className="text-xs text-secondary mt-0.5">Esta ação não pode ser desfeita</p>
               </div>
             </div>
-            <p className="text-sm text-[#F6F6F8] mb-6">Tem certeza que deseja excluir <span className="font-bold text-white">{deleteTarget.company_name}</span>?</p>
+            <p className="text-sm text-secondary mb-6">Tem certeza que deseja excluir <span className="font-bold text-primary">{deleteTarget.company_name}</span>?</p>
             <div className="flex gap-3">
-              <button onClick={() => setDeleteTarget(null)} disabled={deleting} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-[#F6F6F8] text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60">Cancelar</button>
+              <button onClick={() => setDeleteTarget(null)} disabled={deleting} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-border text-secondary text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-primary transition-all disabled:opacity-60">Cancelar</button>
               <button onClick={handleDelete} disabled={deleting} className="flex-1 px-4 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 text-[11px] font-black uppercase tracking-widest transition-all disabled:opacity-60">{deleting ? 'Excluindo...' : 'Excluir'}</button>
             </div>
           </div>

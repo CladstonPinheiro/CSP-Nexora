@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { X, ChevronRight, AlertTriangle, ExternalLink, MessageCircle, Bell, ClipboardList, Calculator } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
-import { cn } from '@/lib/utils';
+import { cn, formatRelativeTime } from '@/lib/utils';
 import {
   FUNIL_GMN,
   FUNIL_PADRAO,
@@ -34,7 +34,7 @@ function Detail({
 }) {
   return (
     <div>
-      <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1">{label}</p>
+      <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">{label}</p>
       {value ? (
         href ? (
           <a
@@ -47,10 +47,10 @@ function Detail({
             <ExternalLink className="w-3 h-3 shrink-0" />
           </a>
         ) : (
-          <p className="text-sm text-gray-300 truncate">{value}</p>
+          <p className="text-sm text-secondary truncate">{value}</p>
         )
       ) : (
-        <p className="text-sm text-gray-700">—</p>
+        <p className="text-sm text-muted">—</p>
       )}
     </div>
   );
@@ -175,19 +175,19 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 220 }}
-            className="fixed right-0 top-0 h-screen w-[440px] z-50 bg-[#0B0B0B] border-l border-white/10 flex flex-col shadow-2xl"
+            className="fixed right-0 top-0 h-screen w-[440px] z-50 bg-surface border-l border-border flex flex-col shadow-2xl"
           >
             {/* Header */}
-            <div className="flex items-start justify-between px-6 py-5 border-b border-white/5 shrink-0">
+            <div className="flex items-start justify-between px-6 py-5 border-b border-border shrink-0">
               <div className="flex-1 min-w-0 pr-3">
-                <p className="font-outfit text-lg font-black tracking-tight text-white truncate">
+                <p className="font-outfit text-lg font-black tracking-tight text-primary truncate">
                   {lead.company_name || 'Empresa não informada'}
                 </p>
-                <p className="text-sm text-gray-500 truncate mt-0.5">{lead.contact_name || '—'}</p>
+                <p className="text-sm text-muted truncate mt-0.5">{lead.contact_name || '—'}</p>
               </div>
               <button
                 onClick={onClose}
-                className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all shrink-0"
+                className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-border flex items-center justify-center text-muted hover:text-primary transition-all shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -209,8 +209,8 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
               )}
 
               {/* Funil */}
-              <div className="px-6 py-5 border-b border-white/5">
-                <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-3">
+              <div className="px-6 py-5 border-b border-border">
+                <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">
                   Funil de vendas
                 </p>
 
@@ -225,7 +225,7 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                         className={cn(
                           'flex items-center gap-3 px-3 py-2 rounded-xl border transition-all',
                           isCurrent
-                            ? 'bg-white/10 border-white/20'
+                            ? 'bg-white/10 border-border-strong'
                             : 'border-transparent'
                         )}
                       >
@@ -239,9 +239,9 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                           className={cn(
                             'text-[11px] font-black uppercase tracking-widest',
                             isCurrent
-                              ? 'text-white'
+                              ? 'text-primary'
                               : isPast
-                              ? 'text-gray-600'
+                              ? 'text-muted'
                               : 'text-gray-800'
                           )}
                         >
@@ -255,7 +255,7 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400" />
                               </span>
                             )}
-                            <span className="text-[9px] font-black uppercase tracking-widest text-white/50">
+                            <span className="text-[9px] font-black uppercase tracking-widest text-primary/50">
                               atual
                             </span>
                           </span>
@@ -302,14 +302,14 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                 <div className="mt-4 space-y-2">
                   <Link
                     href={`/admin/leads/${lead.id}/briefing`}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-300 hover:text-white text-[11px] font-black uppercase tracking-widest transition-all"
+                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-border hover:border-border-strong text-secondary hover:text-primary text-[11px] font-black uppercase tracking-widest transition-all"
                   >
                     <ClipboardList className="w-3.5 h-3.5" />
                     Ver Briefing
                   </Link>
                   <Link
                     href={`/admin/leads/${lead.id}/precificacao`}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-300 hover:text-white text-[11px] font-black uppercase tracking-widest transition-all"
+                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-border hover:border-border-strong text-secondary hover:text-primary text-[11px] font-black uppercase tracking-widest transition-all"
                   >
                     <Calculator className="w-3.5 h-3.5" />
                     Ver Precificação
@@ -362,9 +362,36 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                 </div>
               </div>
 
+              {/* Resumo da Conversa (IA) */}
+              {lead.resumo_conversa_ia && (
+                <div className="px-6 py-5 space-y-3 border-b border-border">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-muted">
+                      Resumo da Conversa (IA)
+                    </p>
+                    {lead.resumo_atualizado_em && (
+                      <span className="inline-flex px-2 py-0.5 rounded-lg bg-white/5 border border-border text-muted text-[9px] font-bold uppercase tracking-widest shrink-0">
+                        Atualizado {formatRelativeTime(lead.resumo_atualizado_em)}
+                      </span>
+                    )}
+                  </div>
+
+                  <p className="text-sm text-secondary leading-relaxed bg-white/[0.03] border border-border rounded-xl p-4 whitespace-pre-wrap">
+                    {lead.resumo_conversa_ia}
+                  </p>
+
+                  {lead.motivo_contato_ia && (
+                    <p className="text-xs text-muted">
+                      <span className="font-bold text-muted">Motivo do contato:</span>{' '}
+                      {lead.motivo_contato_ia}
+                    </p>
+                  )}
+                </div>
+              )}
+
               {/* Details */}
               <div className="px-6 py-5 space-y-5">
-                <p className="text-[9px] font-black uppercase tracking-widest text-gray-700">
+                <p className="text-[9px] font-black uppercase tracking-widest text-muted">
                   Informações do Lead
                 </p>
 
@@ -390,23 +417,23 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
                   )}
 
                   <div>
-                    <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">
                       Origem
                     </p>
                     {lead.source ? (
                       <span
-                        className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest ${origemConfig[lead.source]?.style ?? 'bg-gray-500/15 text-gray-400 border-gray-500/20'}`}
+                        className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest ${origemConfig[lead.source]?.style ?? 'bg-gray-500/15 text-secondary border-gray-500/20'}`}
                       >
                         {origemConfig[lead.source]?.label ?? lead.source}
                       </span>
                     ) : (
-                      <p className="text-sm text-gray-700">—</p>
+                      <p className="text-sm text-muted">—</p>
                     )}
                   </div>
 
                   {lead.score && (
                     <div>
-                      <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">
                         Score
                       </p>
                       <span
@@ -426,20 +453,20 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
 
                 {lead.notes && (
                   <div>
-                    <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">
                       Anotações
                     </p>
-                    <p className="text-sm text-gray-400 leading-relaxed bg-white/[0.03] border border-white/5 rounded-xl p-4 whitespace-pre-wrap">
+                    <p className="text-sm text-secondary leading-relaxed bg-white/[0.03] border border-border rounded-xl p-4 whitespace-pre-wrap">
                       {lead.notes}
                     </p>
                   </div>
                 )}
 
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">
                     Cadastrado em
                   </p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-muted">
                     {new Date(lead.created_at).toLocaleDateString('pt-BR', {
                       day: '2-digit',
                       month: 'long',
@@ -451,13 +478,13 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
 
               {/* Qualificação IA */}
               {lead.ai_score && (
-                <div className="px-6 py-5 border-t border-white/5 space-y-4">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700">
+                <div className="px-6 py-5 border-t border-border space-y-4">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-muted">
                     Qualificação IA
                   </p>
 
                   <div>
-                    <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">
                       Score
                     </p>
                     <span
@@ -469,10 +496,10 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
 
                   {lead.ai_reasoning && (
                     <div>
-                      <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">
                         Análise
                       </p>
-                      <p className="text-sm text-gray-400 leading-relaxed bg-white/[0.03] border border-white/5 rounded-xl p-4 whitespace-pre-wrap">
+                      <p className="text-sm text-secondary leading-relaxed bg-white/[0.03] border border-border rounded-xl p-4 whitespace-pre-wrap">
                         {lead.ai_reasoning}
                       </p>
                     </div>
@@ -480,10 +507,10 @@ export function LeadPanel({ lead, onClose, onUpdate }: LeadPanelProps) {
 
                   {lead.ai_qualified_at && (
                     <div>
-                      <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">
                         Qualificado em
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted">
                         {new Date(lead.ai_qualified_at).toLocaleDateString('pt-BR', {
                           day: '2-digit',
                           month: 'long',

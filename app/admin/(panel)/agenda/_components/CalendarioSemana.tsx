@@ -64,46 +64,46 @@ export function CalendarioSemana({
   }
 
   return (
-    <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden">
-      <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 flex-wrap gap-3">
+    <div className="bg-surface border border-border rounded-2xl overflow-hidden">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-border flex-wrap gap-3">
         <div className="flex items-center gap-2">
           <button
             onClick={onPrevWeek}
-            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all"
+            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-border flex items-center justify-center text-muted hover:text-primary transition-all"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={onNextWeek}
-            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all"
+            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-border flex items-center justify-center text-muted hover:text-primary transition-all"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
           <button
             onClick={onHoje}
-            className="ml-1 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-all"
+            className="ml-1 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-border text-[10px] font-black uppercase tracking-widest text-secondary hover:text-primary transition-all"
           >
             Hoje
           </button>
         </div>
-        <p className="text-xs font-bold text-gray-500">
+        <p className="text-xs font-bold text-muted">
           {formatarDiaCurto(weekStart)} — {formatarDiaCurto(fimSemana)}
         </p>
       </div>
 
       <div className="overflow-x-auto">
         <div className="min-w-[720px] grid grid-cols-[64px_repeat(5,1fr)]">
-          <div className="border-b border-white/5" />
+          <div className="border-b border-border" />
           {dias.map((d, i) => (
-            <div key={d} className="border-b border-l border-white/5 px-2 py-3 text-center">
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-600">{DIAS_LABEL[i]}</p>
-              <p className="text-xs font-bold text-gray-400 mt-0.5">{formatarDiaCurto(d)}</p>
+            <div key={d} className="border-b border-l border-border px-2 py-3 text-center">
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted">{DIAS_LABEL[i]}</p>
+              <p className="text-xs font-bold text-secondary mt-0.5">{formatarDiaCurto(d)}</p>
             </div>
           ))}
 
           {HORAS.map((hora) => (
             <Fragment key={hora}>
-              <div className="border-b border-white/5 px-2 py-3 text-[10px] font-bold text-gray-700 text-right">
+              <div className="border-b border-border px-2 py-3 text-[10px] font-bold text-muted text-right">
                 {hora}
               </div>
               {dias.map((d) => {
@@ -115,7 +115,7 @@ export function CalendarioSemana({
                       key={`${d}_${hora}`}
                       type="button"
                       onClick={() => onCreateSlot(d, hora)}
-                      className="border-b border-l border-dashed border-white/5 min-h-[56px] px-2 py-2 text-left hover:bg-white/[0.03] transition-colors"
+                      className="border-b border-l border-dashed border-border min-h-[56px] px-2 py-2 text-left hover:bg-white/[0.03] transition-colors"
                     >
                       <span className="text-[9px] font-bold uppercase tracking-widest text-gray-800">Livre</span>
                     </button>
@@ -128,7 +128,7 @@ export function CalendarioSemana({
                     key={`${d}_${hora}`}
                     type="button"
                     onClick={() => onSelect(ag)}
-                    className={`border-b border-l border-white/5 min-h-[56px] px-2 py-2 text-left transition-colors ${
+                    className={`border-b border-l border-border min-h-[56px] px-2 py-2 text-left transition-colors ${
                       cancelado ? 'bg-red-500/[0.04] hover:bg-red-500/[0.08]' : 'bg-cyan-500/[0.06] hover:bg-cyan-500/[0.1]'
                     }`}
                   >
@@ -137,7 +137,7 @@ export function CalendarioSemana({
                     >
                       {statusConfig[ag.status].label}
                     </span>
-                    <p className={`text-xs font-bold mt-1 truncate ${cancelado ? 'text-gray-600 line-through' : 'text-white'}`}>
+                    <p className={`text-xs font-bold mt-1 truncate ${cancelado ? 'text-muted line-through' : 'text-primary'}`}>
                       {ag.leads?.company_name || 'Lead'}
                     </p>
                   </button>

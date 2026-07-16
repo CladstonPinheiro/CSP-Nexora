@@ -20,7 +20,7 @@ const ALL_ORIGINS = Object.keys(origemConfig);
 
 function EstagioBadge({ value }: { value: string }) {
   const cfg = estagioConfig[value];
-  if (!cfg) return <span className="text-sm text-gray-700">—</span>;
+  if (!cfg) return <span className="text-sm text-muted">—</span>;
   return (
     <span className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap ${cfg.style}`}>
       {cfg.label}
@@ -30,7 +30,7 @@ function EstagioBadge({ value }: { value: string }) {
 
 function OrigemBadge({ value }: { value: string }) {
   const cfg = origemConfig[value];
-  if (!cfg) return <span className="text-sm text-gray-700">—</span>;
+  if (!cfg) return <span className="text-sm text-muted">—</span>;
   return (
     <span className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap ${cfg.style}`}>
       {cfg.label}
@@ -56,7 +56,7 @@ function getDemoStatus(lead: Lead): 'ok' | 'alerta' | 'expirado' {
 }
 
 const SELECT_CLASS =
-  'bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2 text-gray-400 text-xs font-bold focus:outline-none focus:border-white/20 transition-all cursor-pointer min-w-[170px]';
+  'bg-inset border border-border rounded-xl px-3 py-2 text-secondary text-xs font-bold focus:outline-none focus:border-border-strong transition-all cursor-pointer min-w-[170px]';
 
 export default function LeadsPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -150,8 +150,8 @@ export default function LeadsPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="font-outfit text-3xl font-black tracking-tight text-white">Leads</h1>
-          <p className="text-gray-600 text-sm mt-1">
+          <h1 className="font-outfit text-3xl font-black tracking-tight text-primary">Leads</h1>
+          <p className="text-muted text-sm mt-1">
             {loading
               ? 'Carregando...'
               : `${filteredLeads.length}${hasFilters ? ` de ${leads.length}` : ''} lead${leads.length !== 1 ? 's' : ''} cadastrado${leads.length !== 1 ? 's' : ''}`}
@@ -169,12 +169,12 @@ export default function LeadsPage() {
 
       {/* Filters */}
       <div className="flex items-center gap-3 mb-5 flex-wrap">
-        <SlidersHorizontal className="w-4 h-4 text-gray-700 shrink-0" />
+        <SlidersHorizontal className="w-4 h-4 text-muted shrink-0" />
         <select
           value={filterEstagio}
           onChange={(e) => setFilterEstagio(e.target.value)}
           className={SELECT_CLASS}
-          style={{ backgroundColor: '#0D0D0D' }}
+          style={{ backgroundColor: 'var(--color-inset)' }}
         >
           <option value="">Todos os estágios</option>
           {ALL_STAGES.map((s) => (
@@ -188,7 +188,7 @@ export default function LeadsPage() {
           value={filterOrigem}
           onChange={(e) => setFilterOrigem(e.target.value)}
           className={SELECT_CLASS}
-          style={{ backgroundColor: '#0D0D0D' }}
+          style={{ backgroundColor: 'var(--color-inset)' }}
         >
           <option value="">Todas as origens</option>
           {ALL_ORIGINS.map((o) => (
@@ -204,7 +204,7 @@ export default function LeadsPage() {
               setFilterOrigem('');
               setFilterLembrete(false);
             }}
-            className="text-[11px] text-gray-600 hover:text-gray-400 transition-colors font-black uppercase tracking-widest"
+            className="text-[11px] text-muted hover:text-secondary transition-colors font-black uppercase tracking-widest"
           >
             Limpar filtros
           </button>
@@ -247,16 +247,16 @@ export default function LeadsPage() {
       )}
 
       {/* Table */}
-      <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden">
+      <div className="bg-surface border border-border rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1060px]">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.015]">
+              <tr className="border-b border-border bg-white/[0.015]">
                 {['Empresa', 'Contato', 'Nicho', 'Cidade', 'Origem', 'Estágio', 'Data', 'Cliente', 'Ações'].map(
                   (h) => (
                     <th
                       key={h}
-                      className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-gray-600"
+                      className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-muted"
                     >
                       {h}
                     </th>
@@ -267,7 +267,7 @@ export default function LeadsPage() {
             <tbody>
               {loading ? (
                 Array.from({ length: 6 }).map((_, i) => (
-                  <tr key={i} className="border-b border-white/5">
+                  <tr key={i} className="border-b border-border">
                     {Array.from({ length: 9 }).map((_, j) => (
                       <td key={j} className="px-5 py-4">
                         <div
@@ -282,11 +282,11 @@ export default function LeadsPage() {
                 <tr>
                   <td colSpan={9} className="py-20">
                     <div className="flex flex-col items-center justify-center text-center">
-                      <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
-                        <InboxIcon className="w-6 h-6 text-gray-700" />
+                      <div className="w-14 h-14 rounded-2xl bg-white/5 border border-border flex items-center justify-center mb-4">
+                        <InboxIcon className="w-6 h-6 text-muted" />
                       </div>
-                      <p className="text-sm font-bold text-gray-600">Nenhum lead encontrado</p>
-                      <p className="text-xs text-gray-700 mt-1">
+                      <p className="text-sm font-bold text-muted">Nenhum lead encontrado</p>
+                      <p className="text-xs text-muted mt-1">
                         {hasFilters
                           ? 'Tente ajustar os filtros'
                           : 'Adicione o primeiro lead pelo botão acima'}
@@ -299,7 +299,7 @@ export default function LeadsPage() {
                   <tr
                     key={lead.id}
                     onClick={() => setSelectedLead(lead)}
-                    className={`border-b border-white/5 last:border-0 cursor-pointer transition-colors ${
+                    className={`border-b border-border last:border-0 cursor-pointer transition-colors ${
                       selectedLead?.id === lead.id
                         ? 'bg-cyan-500/[0.04]'
                         : 'hover:bg-white/[0.025]'
@@ -307,26 +307,26 @@ export default function LeadsPage() {
                   >
                     {/* Empresa */}
                     <td className="px-5 py-4">
-                      <span className="text-sm font-bold text-white">
+                      <span className="text-sm font-bold text-primary">
                         {lead.company_name || '—'}
                       </span>
                     </td>
 
                     {/* Contato */}
                     <td className="px-5 py-4">
-                      <p className="text-sm text-white">{lead.contact_name || '—'}</p>
+                      <p className="text-sm text-primary">{lead.contact_name || '—'}</p>
                       {lead.email && (
-                        <p className="text-xs text-gray-600 mt-0.5">{lead.email}</p>
+                        <p className="text-xs text-muted mt-0.5">{lead.email}</p>
                       )}
                     </td>
 
                     {/* Nicho */}
-                    <td className="px-5 py-4 text-sm text-gray-500">
+                    <td className="px-5 py-4 text-sm text-muted">
                       {lead.niche ? (nichoLabel[lead.niche] ?? lead.niche) : '—'}
                     </td>
 
                     {/* Cidade */}
-                    <td className="px-5 py-4 text-sm text-gray-500">
+                    <td className="px-5 py-4 text-sm text-muted">
                       {lead.city || '—'}
                     </td>
 
@@ -335,7 +335,7 @@ export default function LeadsPage() {
                       {lead.source ? (
                         <OrigemBadge value={lead.source} />
                       ) : (
-                        <span className="text-sm text-gray-700">—</span>
+                        <span className="text-sm text-muted">—</span>
                       )}
                     </td>
 
@@ -352,12 +352,12 @@ export default function LeadsPage() {
                       ) : lead.stage ? (
                         <EstagioBadge value={lead.stage} />
                       ) : (
-                        <span className="text-sm text-gray-700">—</span>
+                        <span className="text-sm text-muted">—</span>
                       )}
                     </td>
 
                     {/* Data */}
-                    <td className="px-5 py-4 text-xs text-gray-600 whitespace-nowrap">
+                    <td className="px-5 py-4 text-xs text-muted whitespace-nowrap">
                       {lead.created_at ? formatDate(lead.created_at) : '—'}
                     </td>
 
@@ -372,7 +372,7 @@ export default function LeadsPage() {
                           Cliente
                         </Link>
                       ) : (
-                        <span className="text-sm text-gray-700">—</span>
+                        <span className="text-sm text-muted">—</span>
                       )}
                     </td>
 
@@ -381,14 +381,14 @@ export default function LeadsPage() {
                       <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => setEditLead(lead)}
-                          className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 flex items-center justify-center text-gray-600 hover:text-white transition-all"
+                          className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 border border-border hover:border-border-strong flex items-center justify-center text-muted hover:text-primary transition-all"
                           title="Editar"
                         >
                           <Pencil className="w-3 h-3" />
                         </button>
                         <button
                           onClick={() => setDeleteTarget(lead)}
-                          className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 flex items-center justify-center text-gray-600 hover:text-red-400 transition-all"
+                          className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-border hover:border-red-500/20 flex items-center justify-center text-muted hover:text-red-400 transition-all"
                           title="Excluir"
                         >
                           <Trash2 className="w-3 h-3" />
@@ -419,25 +419,25 @@ export default function LeadsPage() {
       {/* Delete confirmation */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-sm bg-[#0C0C0C] border border-white/10 rounded-2xl p-6 shadow-2xl">
+          <div className="w-full max-w-sm bg-surface border border-border rounded-2xl p-6 shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-5 h-5 text-red-400" />
               </div>
               <div>
-                <h3 className="font-outfit text-base font-black text-white">Excluir Lead</h3>
-                <p className="text-xs text-gray-600 mt-0.5">Esta ação não pode ser desfeita</p>
+                <h3 className="font-outfit text-base font-black text-primary">Excluir Lead</h3>
+                <p className="text-xs text-muted mt-0.5">Esta ação não pode ser desfeita</p>
               </div>
             </div>
-            <p className="text-sm text-gray-400 mb-6">
+            <p className="text-sm text-secondary mb-6">
               Tem certeza que deseja excluir{' '}
-              <span className="font-bold text-white">{deleteTarget.company_name}</span>?
+              <span className="font-bold text-primary">{deleteTarget.company_name}</span>?
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteTarget(null)}
                 disabled={deleting}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-border text-secondary text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-primary transition-all disabled:opacity-60"
               >
                 Cancelar
               </button>

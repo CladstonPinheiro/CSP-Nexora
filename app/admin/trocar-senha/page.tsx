@@ -46,7 +46,7 @@ export default function TrocarSenhaPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-page flex items-center justify-center p-4 relative overflow-hidden">
       <div className="pointer-events-none fixed inset-0 z-0">
         <div className="absolute top-1/4 right-1/3 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-1/4 left-1/3 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[100px]" />
@@ -57,19 +57,19 @@ export default function TrocarSenhaPage() {
           <Image src="/logo.png" alt="CSP Nexora" width={207} height={113} className="w-[100px] h-auto object-contain" />
         </div>
 
-        <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-surface border border-border rounded-2xl p-8 shadow-2xl">
           <div className="mb-7">
-            <h1 className="font-outfit text-2xl font-black tracking-tight text-white">
+            <h1 className="font-outfit text-2xl font-black tracking-tight text-primary">
               Troca de Senha Obrigatória
             </h1>
-            <p className="text-gray-600 text-sm mt-1">
+            <p className="text-muted text-sm mt-1">
               Por segurança, defina uma nova senha antes de continuar.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-muted mb-2">
                 Nova senha
               </label>
               <div className="relative">
@@ -79,25 +79,25 @@ export default function TrocarSenhaPage() {
                   onChange={(e) => setSenha(e.target.value)}
                   required
                   autoComplete="new-password"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pr-11 text-white text-sm placeholder-gray-700 focus:outline-none focus:border-cyan-500/40 focus:bg-white/[0.07] transition-all"
+                  className="w-full bg-white/5 border border-border rounded-xl px-4 py-3 pr-11 text-primary text-sm placeholder-gray-700 focus:outline-none focus:border-cyan-500/40 focus:bg-white/[0.07] transition-all"
                   placeholder="••••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-300 transition-colors p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-secondary transition-colors p-1"
                   aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              <p className="text-[10px] text-gray-600 mt-1.5">
+              <p className="text-[10px] text-muted mt-1.5">
                 Mínimo 10 caracteres, com maiúscula, número e caractere especial.
               </p>
             </div>
 
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-muted mb-2">
                 Confirmar nova senha
               </label>
               <input
@@ -106,7 +106,7 @@ export default function TrocarSenhaPage() {
                 onChange={(e) => setConfirmar(e.target.value)}
                 required
                 autoComplete="new-password"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-700 focus:outline-none focus:border-cyan-500/40 focus:bg-white/[0.07] transition-all"
+                className="w-full bg-white/5 border border-border rounded-xl px-4 py-3 text-primary text-sm placeholder-gray-700 focus:outline-none focus:border-cyan-500/40 focus:bg-white/[0.07] transition-all"
                 placeholder="••••••••••"
               />
             </div>

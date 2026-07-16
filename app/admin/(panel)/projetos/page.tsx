@@ -31,12 +31,12 @@ const statusConfig: Record<string, { label: string; style: string }> = {
   cancelado: { label: 'Cancelado', style: 'bg-red-500/15 text-red-400 border-red-500/20' },
 };
 
-const SELECT_CLASS = 'bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2 text-[#F6F6F8] text-xs font-bold focus:outline-none focus:border-white/20 transition-all cursor-pointer min-w-[170px]';
-const INPUT_CLASS = 'w-full bg-[#0D0D0D] border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-[#384055] focus:outline-none focus:border-white/20 transition-all';
+const SELECT_CLASS = 'bg-inset border border-border rounded-xl px-3 py-2 text-secondary text-xs font-bold focus:outline-none focus:border-border-strong transition-all cursor-pointer min-w-[170px]';
+const INPUT_CLASS = 'w-full bg-inset border border-border rounded-xl px-3 py-2.5 text-sm text-primary placeholder-[#384055] focus:outline-none focus:border-border-strong transition-all';
 
 function StatusBadge({ value }: { value: string }) {
   const cfg = statusConfig[value];
-  if (!cfg) return <span className="text-sm text-gray-700">—</span>;
+  if (!cfg) return <span className="text-sm text-muted">—</span>;
   return <span className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap ${cfg.style}`}>{cfg.label}</span>;
 }
 
@@ -94,19 +94,19 @@ function ProjetoModal({ isOpen, onClose, onSuccess, projeto }: { isOpen: boolean
 
   return (
     <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-[#0C0C0C] border border-white/10 rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between px-6 py-5 border-b border-white/5 sticky top-0 bg-[#0C0C0C] z-10">
-          <h2 className="font-outfit text-base font-black text-white">{projeto ? 'Editar Projeto' : 'Novo Projeto'}</h2>
-          <button onClick={onClose} className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-[#F6F6F8] hover:text-white transition-all"><X className="w-4 h-4" /></button>
+      <div className="w-full max-w-lg bg-surface border border-border rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-border sticky top-0 bg-surface z-10">
+          <h2 className="font-outfit text-base font-black text-primary">{projeto ? 'Editar Projeto' : 'Novo Projeto'}</h2>
+          <button onClick={onClose} className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-border flex items-center justify-center text-secondary hover:text-primary transition-all"><X className="w-4 h-4" /></button>
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Título *</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Título *</label>
             <input className={INPUT_CLASS} placeholder="Nome do projeto" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Cliente</label>
-            <select className={INPUT_CLASS} value={form.client_id} onChange={e => setForm(f => ({ ...f, client_id: e.target.value }))} style={{ backgroundColor: '#0D0D0D' }}>
+            <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Cliente</label>
+            <select className={INPUT_CLASS} value={form.client_id} onChange={e => setForm(f => ({ ...f, client_id: e.target.value }))} style={{ backgroundColor: 'var(--color-inset)' }}>
               <option value="">Nenhum cliente</option>
               {clientes.map(c => (
                 <option key={c.id} value={c.id}>{c.company_name || 'Empresa sem nome'}</option>
@@ -114,42 +114,42 @@ function ProjetoModal({ isOpen, onClose, onSuccess, projeto }: { isOpen: boolean
             </select>
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Escopo</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Escopo</label>
             <input className={INPUT_CLASS} placeholder="Descrição do escopo" value={form.scope} onChange={e => setForm(f => ({ ...f, scope: e.target.value }))} />
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Status</label>
-            <select className={INPUT_CLASS} value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} style={{ backgroundColor: '#0D0D0D' }}>
+            <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Status</label>
+            <select className={INPUT_CLASS} value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} style={{ backgroundColor: 'var(--color-inset)' }}>
               {Object.entries(statusConfig).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
             </select>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Setup (R$)</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Setup (R$)</label>
               <input className={INPUT_CLASS} type="number" placeholder="0,00" value={form.setup_value} onChange={e => setForm(f => ({ ...f, setup_value: e.target.value }))} />
             </div>
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Mensalidade (R$)</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Mensalidade (R$)</label>
               <input className={INPUT_CLASS} type="number" placeholder="0,00" value={form.monthly_value} onChange={e => setForm(f => ({ ...f, monthly_value: e.target.value }))} />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Início</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Início</label>
               <input className={INPUT_CLASS} type="date" value={form.start_date} onChange={e => setForm(f => ({ ...f, start_date: e.target.value }))} />
             </div>
             <div>
-              <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Entrega</label>
+              <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Entrega</label>
               <input className={INPUT_CLASS} type="date" value={form.delivery_date} onChange={e => setForm(f => ({ ...f, delivery_date: e.target.value }))} />
             </div>
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5 block">Notas</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-secondary mb-1.5 block">Notas</label>
             <textarea className={`${INPUT_CLASS} resize-none`} rows={3} placeholder="Observações sobre o projeto" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} />
           </div>
         </div>
         <div className="flex gap-3 px-6 pb-6">
-          <button onClick={onClose} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-[#F6F6F8] text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60">Cancelar</button>
+          <button onClick={onClose} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-border text-secondary text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-primary transition-all disabled:opacity-60">Cancelar</button>
           <button onClick={handleSubmit} disabled={saving || !form.title.trim()} className="flex-1 relative group disabled:opacity-60">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl blur opacity-40 group-hover:opacity-70 transition duration-300" />
             <div className="relative flex items-center justify-center bg-white text-black py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest">{saving ? 'Salvando...' : projeto ? 'Salvar' : 'Cadastrar'}</div>
@@ -209,8 +209,8 @@ export default function ProjetosPage() {
     <div className="p-8 min-h-screen">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="font-outfit text-3xl font-black tracking-tight text-white">Projetos</h1>
-          <p className="text-[#F6F6F8] text-sm mt-1">{loading ? 'Carregando...' : `${filtered.length}${filterStatus ? ` de ${projetos.length}` : ''} projeto${projetos.length !== 1 ? 's' : ''} cadastrado${projetos.length !== 1 ? 's' : ''}`}</p>
+          <h1 className="font-outfit text-3xl font-black tracking-tight text-primary">Projetos</h1>
+          <p className="text-secondary text-sm mt-1">{loading ? 'Carregando...' : `${filtered.length}${filterStatus ? ` de ${projetos.length}` : ''} projeto${projetos.length !== 1 ? 's' : ''} cadastrado${projetos.length !== 1 ? 's' : ''}`}</p>
         </div>
         <button onClick={() => setModalOpen(true)} className="relative group">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl blur opacity-40 group-hover:opacity-70 transition duration-300" />
@@ -218,27 +218,27 @@ export default function ProjetosPage() {
         </button>
       </div>
       <div className="flex items-center gap-3 mb-5 flex-wrap">
-        <SlidersHorizontal className="w-4 h-4 text-gray-700 shrink-0" />
-        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className={SELECT_CLASS} style={{ backgroundColor: '#0D0D0D' }}>
+        <SlidersHorizontal className="w-4 h-4 text-muted shrink-0" />
+        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className={SELECT_CLASS} style={{ backgroundColor: 'var(--color-inset)' }}>
           <option value="">Todos os status</option>
           {Object.entries(statusConfig).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
         </select>
-        {filterStatus && <button onClick={() => setFilterStatus('')} className="text-[11px] text-[#F6F6F8] hover:text-[#F6F6F8] transition-colors font-black uppercase tracking-widest">Limpar filtros</button>}
+        {filterStatus && <button onClick={() => setFilterStatus('')} className="text-[11px] text-secondary hover:text-secondary transition-colors font-black uppercase tracking-widest">Limpar filtros</button>}
       </div>
-      <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden">
+      <div className="bg-surface border border-border rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[900px]">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.015]">
+              <tr className="border-b border-border bg-white/[0.015]">
                 {['Título', 'Escopo', 'Status', 'Setup', 'Mensalidade', 'Início', 'Entrega', 'Ações'].map(h => (
-                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-[#F6F6F8]">{h}</th>
+                  <th key={h} className="px-5 py-3.5 text-left text-[9px] font-black uppercase tracking-widest text-secondary">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="border-b border-white/5">
+                  <tr key={i} className="border-b border-border">
                     {Array.from({ length: 8 }).map((_, j) => (
                       <td key={j} className="px-5 py-4"><div className="h-3 bg-white/5 rounded-lg animate-pulse" style={{ width: `${50 + (j * 17 + i * 11) % 40}%` }} /></td>
                     ))}
@@ -247,9 +247,9 @@ export default function ProjetosPage() {
               ) : filtered.length === 0 ? (
                 <tr><td colSpan={8} className="py-20">
                   <div className="flex flex-col items-center justify-center text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4"><InboxIcon className="w-6 h-6 text-gray-700" /></div>
-                    <p className="text-sm font-bold text-[#F6F6F8]">Nenhum projeto encontrado</p>
-                    <p className="text-xs text-gray-700 mt-1">{filterStatus ? 'Tente ajustar os filtros' : 'Adicione o primeiro projeto pelo botão acima'}</p>
+                    <div className="w-14 h-14 rounded-2xl bg-white/5 border border-border flex items-center justify-center mb-4"><InboxIcon className="w-6 h-6 text-muted" /></div>
+                    <p className="text-sm font-bold text-secondary">Nenhum projeto encontrado</p>
+                    <p className="text-xs text-muted mt-1">{filterStatus ? 'Tente ajustar os filtros' : 'Adicione o primeiro projeto pelo botão acima'}</p>
                   </div>
                 </td></tr>
               ) : (
@@ -257,23 +257,23 @@ export default function ProjetosPage() {
                   <tr
                     key={projeto.id}
                     onClick={() => setSelectedProjeto(projeto)}
-                    className={`border-b border-white/5 last:border-0 cursor-pointer transition-colors ${
+                    className={`border-b border-border last:border-0 cursor-pointer transition-colors ${
                       selectedProjeto?.id === projeto.id
                         ? 'bg-white/[0.04]'
                         : 'hover:bg-white/[0.025]'
                     }`}
                   >
-                    <td className="px-5 py-4"><span className="text-sm font-bold text-white">{projeto.title || '—'}</span></td>
-                    <td className="px-5 py-4 text-sm text-[#F6F6F8] max-w-[200px] truncate">{projeto.scope || '—'}</td>
-                    <td className="px-5 py-4">{projeto.status ? <StatusBadge value={projeto.status} /> : <span className="text-sm text-gray-700">—</span>}</td>
-                    <td className="px-5 py-4 text-sm text-[#F6F6F8]">{formatCurrency(projeto.setup_value)}</td>
-                    <td className="px-5 py-4 text-sm text-[#F6F6F8]">{formatCurrency(projeto.monthly_value)}</td>
-                    <td className="px-5 py-4 text-xs text-[#F6F6F8] whitespace-nowrap">{projeto.start_date ? formatDate(projeto.start_date) : '—'}</td>
-                    <td className="px-5 py-4 text-xs text-[#F6F6F8] whitespace-nowrap">{projeto.delivery_date ? formatDate(projeto.delivery_date) : '—'}</td>
+                    <td className="px-5 py-4"><span className="text-sm font-bold text-primary">{projeto.title || '—'}</span></td>
+                    <td className="px-5 py-4 text-sm text-secondary max-w-[200px] truncate">{projeto.scope || '—'}</td>
+                    <td className="px-5 py-4">{projeto.status ? <StatusBadge value={projeto.status} /> : <span className="text-sm text-muted">—</span>}</td>
+                    <td className="px-5 py-4 text-sm text-secondary">{formatCurrency(projeto.setup_value)}</td>
+                    <td className="px-5 py-4 text-sm text-secondary">{formatCurrency(projeto.monthly_value)}</td>
+                    <td className="px-5 py-4 text-xs text-secondary whitespace-nowrap">{projeto.start_date ? formatDate(projeto.start_date) : '—'}</td>
+                    <td className="px-5 py-4 text-xs text-secondary whitespace-nowrap">{projeto.delivery_date ? formatDate(projeto.delivery_date) : '—'}</td>
                     <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
                       <div className="flex items-center gap-1.5">
-                        <button onClick={() => setEditProjeto(projeto)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 flex items-center justify-center text-[#F6F6F8] hover:text-white transition-all"><Pencil className="w-3 h-3" /></button>
-                        <button onClick={() => setDeleteTarget(projeto)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 flex items-center justify-center text-[#F6F6F8] hover:text-red-400 transition-all"><Trash2 className="w-3 h-3" /></button>
+                        <button onClick={() => setEditProjeto(projeto)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 border border-border hover:border-border-strong flex items-center justify-center text-secondary hover:text-primary transition-all"><Pencil className="w-3 h-3" /></button>
+                        <button onClick={() => setDeleteTarget(projeto)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-border hover:border-red-500/20 flex items-center justify-center text-secondary hover:text-red-400 transition-all"><Trash2 className="w-3 h-3" /></button>
                       </div>
                     </td>
                   </tr>
@@ -287,17 +287,17 @@ export default function ProjetosPage() {
       <ProjetoModal isOpen={!!editProjeto} onClose={() => setEditProjeto(null)} onSuccess={p => { setProjetos(prev => prev.map(x => x.id === p.id ? p : x)); setEditProjeto(null); }} projeto={editProjeto ?? undefined} />
       {deleteTarget && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-sm bg-[#0C0C0C] border border-white/10 rounded-2xl p-6 shadow-2xl">
+          <div className="w-full max-w-sm bg-surface border border-border rounded-2xl p-6 shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0"><AlertTriangle className="w-5 h-5 text-red-400" /></div>
               <div>
-                <h3 className="font-outfit text-base font-black text-white">Excluir Projeto</h3>
-                <p className="text-xs text-[#F6F6F8] mt-0.5">Esta ação não pode ser desfeita</p>
+                <h3 className="font-outfit text-base font-black text-primary">Excluir Projeto</h3>
+                <p className="text-xs text-secondary mt-0.5">Esta ação não pode ser desfeita</p>
               </div>
             </div>
-            <p className="text-sm text-[#F6F6F8] mb-6">Tem certeza que deseja excluir <span className="font-bold text-white">{deleteTarget.title}</span>?</p>
+            <p className="text-sm text-secondary mb-6">Tem certeza que deseja excluir <span className="font-bold text-primary">{deleteTarget.title}</span>?</p>
             <div className="flex gap-3">
-              <button onClick={() => setDeleteTarget(null)} disabled={deleting} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-[#F6F6F8] text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all disabled:opacity-60">Cancelar</button>
+              <button onClick={() => setDeleteTarget(null)} disabled={deleting} className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-border text-secondary text-[11px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-primary transition-all disabled:opacity-60">Cancelar</button>
               <button onClick={handleDelete} disabled={deleting} className="flex-1 px-4 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 text-[11px] font-black uppercase tracking-widest transition-all disabled:opacity-60">{deleting ? 'Excluindo...' : 'Excluir'}</button>
             </div>
           </div>

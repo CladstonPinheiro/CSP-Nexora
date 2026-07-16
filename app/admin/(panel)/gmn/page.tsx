@@ -41,12 +41,12 @@ function InfoRow({ icon: Icon, label, value }: { icon: React.ElementType; label:
   if (!value) return null;
   return (
     <div className="flex items-start gap-3">
-      <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
-        <Icon className="w-3.5 h-3.5 text-gray-500" />
+      <div className="w-7 h-7 rounded-lg bg-white/5 border border-border flex items-center justify-center shrink-0 mt-0.5">
+        <Icon className="w-3.5 h-3.5 text-muted" />
       </div>
       <div className="min-w-0">
-        <p className="text-[9px] font-black uppercase tracking-widest text-gray-700">{label}</p>
-        <p className="text-sm text-white mt-0.5 break-words">{value}</p>
+        <p className="text-[9px] font-black uppercase tracking-widest text-muted">{label}</p>
+        <p className="text-sm text-primary mt-0.5 break-words">{value}</p>
       </div>
     </div>
   );
@@ -59,18 +59,18 @@ function formatDate(iso: string) {
 function BSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 print:text-gray-500">{title}</p>
+      <p className="text-[9px] font-black uppercase tracking-widest text-muted print:text-muted">{title}</p>
       {children}
     </div>
   );
 }
 
 function BLabel({ children }: { children: React.ReactNode }) {
-  return <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mt-1 print:text-gray-500">{children}</p>;
+  return <p className="text-[9px] font-black uppercase tracking-widest text-muted mt-1 print:text-muted">{children}</p>;
 }
 
 function BValue({ children }: { children: React.ReactNode }) {
-  return <p className="text-sm text-white break-words print:text-black">{children}</p>;
+  return <p className="text-sm text-primary break-words print:text-black">{children}</p>;
 }
 
 function calcScores(e: GmnExtracted) {
@@ -151,17 +151,17 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
 
   return (
     <div className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto bg-black p-4 pt-8">
-      <div id="briefing-print-root" className="w-full max-w-3xl bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-8">
+      <div id="briefing-print-root" className="w-full max-w-3xl bg-surface border border-border rounded-2xl overflow-hidden shadow-2xl mb-8">
 
         {/* Cabeçalho */}
-        <div className="flex items-start justify-between px-6 py-5 border-b border-white/5">
+        <div className="flex items-start justify-between px-6 py-5 border-b border-border">
           <div className="flex items-start gap-4">
             {extracted.logo_url && (
-              <img src={extracted.logo_url} alt="Logo" className="w-16 h-16 rounded-xl object-contain border border-white/10" />
+              <img src={extracted.logo_url} alt="Logo" className="w-16 h-16 rounded-xl object-contain border border-border" />
             )}
             <div>
-              <h2 className="text-2xl font-black text-white">{extracted.company_name}</h2>
-              {extracted.gmn_category && <p className="text-sm text-gray-500 mt-0.5">{extracted.gmn_category}</p>}
+              <h2 className="text-2xl font-black text-primary">{extracted.company_name}</h2>
+              {extracted.gmn_category && <p className="text-sm text-muted mt-0.5">{extracted.gmn_category}</p>}
               {extracted.niche && (
                 <span className="inline-block mt-1 px-2 py-0.5 rounded-lg border bg-blue-500/10 border-blue-500/20 text-blue-400 text-[9px] font-black uppercase tracking-widest">
                   {nichoLabel[extracted.niche] ?? extracted.niche}
@@ -169,7 +169,7 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
               )}
             </div>
           </div>
-          <button onClick={onClose} className="no-print w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-500 hover:text-white transition-all">
+          <button onClick={onClose} className="no-print w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-border flex items-center justify-center text-muted hover:text-primary transition-all">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -179,12 +179,12 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           {/* Paleta */}
           {(extracted.color_palette?.length ?? 0) > 0 && (
             <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Paleta de Cores</p>
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Paleta de Cores</p>
               <div className="flex gap-2 flex-wrap">
                 {extracted.color_palette.map((cor) => (
                   <div key={cor} className="flex flex-col items-center gap-1">
-                    <div className="w-10 h-10 rounded-xl border border-white/10" style={{ backgroundColor: cor }} />
-                    <span className="text-[9px] text-gray-600 font-mono">{cor}</span>
+                    <div className="w-10 h-10 rounded-xl border border-border" style={{ backgroundColor: cor }} />
+                    <span className="text-[9px] text-muted font-mono">{cor}</span>
                   </div>
                 ))}
               </div>
@@ -193,7 +193,7 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
 
           {/* Scores */}
           <div>
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Score — Perfil do Cliente Ideal</p>
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Score — Perfil do Cliente Ideal</p>
             <div className="grid grid-cols-3 gap-3">
               {[
                 { label: 'Presença Online', score: scores.presenca, motivo: scores.presencaMotivo },
@@ -201,11 +201,11 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
                 { label: 'Estrutura Operacional', score: scores.estrutura, motivo: scores.estruturaMotivo },
               ].map((item) => (
                 <div key={item.label} className="flex flex-col gap-2 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-600">{item.label}</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-muted">{item.label}</p>
                   <span className={`self-start px-2 py-0.5 rounded-lg border text-[9px] font-black uppercase tracking-widest ${scoreBadge(item.score)}`}>
                     {scoreLabel(item.score)}
                   </span>
-                  <p className="text-xs text-gray-500">{item.motivo}</p>
+                  <p className="text-xs text-muted">{item.motivo}</p>
                 </div>
               ))}
             </div>
@@ -213,7 +213,7 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
 
           {/* Contatos */}
           <div>
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Contatos</p>
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Contatos</p>
             <div className="grid grid-cols-2 gap-3">
               {[
                 ['Telefone', extracted.phone],
@@ -228,14 +228,14 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
                 ['Email', extracted.email],
               ].filter(([, v]) => v).map(([label, value]) => (
                 <div key={label as string}>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700">{label}</p>
-                  <p className="text-sm text-white mt-0.5">{value}</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-muted">{label}</p>
+                  <p className="text-sm text-primary mt-0.5">{value}</p>
                 </div>
               ))}
               {(extracted.extra_phones?.length ?? 0) > 0 && (
                 <div className="col-span-2">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Telefones adicionais</p>
-                  <p className="text-sm text-white mt-0.5">{extracted.extra_phones.join(', ')}</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-muted">Telefones adicionais</p>
+                  <p className="text-sm text-primary mt-0.5">{extracted.extra_phones.join(', ')}</p>
                 </div>
               )}
             </div>
@@ -244,11 +244,11 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           {/* Localização */}
           {(extracted.address || extracted.city) && (
             <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Localização</p>
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Localização</p>
               <div className="grid grid-cols-2 gap-3">
-                {extracted.address && <div className="col-span-2"><p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Endereço</p><p className="text-sm text-white mt-0.5">{extracted.address}</p></div>}
-                {extracted.city && <div><p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Cidade</p><p className="text-sm text-white mt-0.5">{extracted.city}</p></div>}
-                {extracted.cep && <div><p className="text-[9px] font-black uppercase tracking-widest text-gray-700">CEP</p><p className="text-sm text-white mt-0.5">{extracted.cep}</p></div>}
+                {extracted.address && <div className="col-span-2"><p className="text-[9px] font-black uppercase tracking-widest text-muted">Endereço</p><p className="text-sm text-primary mt-0.5">{extracted.address}</p></div>}
+                {extracted.city && <div><p className="text-[9px] font-black uppercase tracking-widest text-muted">Cidade</p><p className="text-sm text-primary mt-0.5">{extracted.city}</p></div>}
+                {extracted.cep && <div><p className="text-[9px] font-black uppercase tracking-widest text-muted">CEP</p><p className="text-sm text-primary mt-0.5">{extracted.cep}</p></div>}
               </div>
             </div>
           )}
@@ -256,18 +256,18 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           {/* Descrição */}
           {extracted.description_full && (
             <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Descrição</p>
-              <p className="text-sm text-gray-400 leading-relaxed">{extracted.description_full}</p>
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Descrição</p>
+              <p className="text-sm text-secondary leading-relaxed">{extracted.description_full}</p>
             </div>
           )}
 
           {/* Serviços */}
           {(extracted.services?.length ?? 0) > 0 && (
             <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Serviços</p>
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Serviços</p>
               <div className="flex flex-wrap gap-1.5">
                 {extracted.services.map((s) => (
-                  <span key={s} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{s}</span>
+                  <span key={s} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-secondary">{s}</span>
                 ))}
               </div>
             </div>
@@ -276,7 +276,7 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           {/* Diferenciais */}
           {(extracted.differentials?.length ?? 0) > 0 && (
             <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Diferenciais</p>
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Diferenciais</p>
               <div className="flex flex-wrap gap-1.5">
                 {extracted.differentials.map((d) => (
                   <span key={d} className="px-2 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-400">{d}</span>
@@ -288,12 +288,12 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           {/* Horários */}
           {extracted.business_hours && Object.keys(extracted.business_hours).length > 0 && (
             <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Horários</p>
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Horários</p>
               <div className="grid grid-cols-2 gap-x-8 gap-y-1">
                 {Object.entries(extracted.business_hours).map(([dia, hora]) => (
                   <div key={dia} className="flex justify-between py-0.5 border-b border-white/[0.04]">
-                    <span className="text-xs text-gray-600">{dia}</span>
-                    <span className="text-xs text-white">{hora}</span>
+                    <span className="text-xs text-muted">{dia}</span>
+                    <span className="text-xs text-primary">{hora}</span>
                   </div>
                 ))}
               </div>
@@ -303,10 +303,10 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           {/* Avaliação */}
           {(extracted.rating != null || extracted.total_reviews != null) && (
             <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Avaliação no Google</p>
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Avaliação no Google</p>
               <div className="flex gap-6">
-                {extracted.rating != null && <div><p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Nota</p><p className="text-2xl font-black text-yellow-400 mt-1">⭐ {extracted.rating}</p></div>}
-                {extracted.total_reviews != null && <div><p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Avaliações</p><p className="text-2xl font-black text-white mt-1">{extracted.total_reviews}</p></div>}
+                {extracted.rating != null && <div><p className="text-[9px] font-black uppercase tracking-widest text-muted">Nota</p><p className="text-2xl font-black text-yellow-400 mt-1">⭐ {extracted.rating}</p></div>}
+                {extracted.total_reviews != null && <div><p className="text-[9px] font-black uppercase tracking-widest text-muted">Avaliações</p><p className="text-2xl font-black text-primary mt-1">{extracted.total_reviews}</p></div>}
               </div>
             </div>
           )}
@@ -314,10 +314,10 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           {/* Pagamentos */}
           {(extracted.payments?.length ?? 0) > 0 && (
             <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Formas de Pagamento</p>
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Formas de Pagamento</p>
               <div className="flex flex-wrap gap-1.5">
                 {extracted.payments.map((p) => (
-                  <span key={p} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{p}</span>
+                  <span key={p} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-secondary">{p}</span>
                 ))}
               </div>
             </div>
@@ -326,19 +326,19 @@ function BriefingModal({ extracted, onClose }: { extracted: GmnExtracted; onClos
           {/* Acessibilidade */}
           {(extracted.accessibility?.length ?? 0) > 0 && (
             <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Acessibilidade</p>
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Acessibilidade</p>
               <div className="flex flex-wrap gap-1.5">
                 {extracted.accessibility.map((a) => (
-                  <span key={a} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">{a}</span>
+                  <span key={a} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-secondary">{a}</span>
                 ))}
               </div>
             </div>
           )}
 
           {/* Rodapé */}
-          <div className="flex justify-between pt-2 border-t border-white/5">
-            <p className="text-xs text-gray-700">CSP Nexora — cspnexora.com.br</p>
-            <p className="text-xs text-gray-700">Extração: {today}</p>
+          <div className="flex justify-between pt-2 border-t border-border">
+            <p className="text-xs text-muted">CSP Nexora — cspnexora.com.br</p>
+            <p className="text-xs text-muted">Extração: {today}</p>
           </div>
 
           {/* Botão PDF */}
@@ -629,9 +629,9 @@ export default function GmnPage() {
           <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
             <Globe className="w-4 h-4 text-blue-400" />
           </div>
-          <h1 className="font-outfit text-3xl font-black tracking-tight text-white">Prospecção GMN</h1>
+          <h1 className="font-outfit text-3xl font-black tracking-tight text-primary">Prospecção GMN</h1>
         </div>
-        <p className="text-gray-600 text-sm ml-12">
+        <p className="text-muted text-sm ml-12">
           Extraia dados do Google Meu Negócio e cadastre leads automaticamente
         </p>
       </div>
@@ -640,8 +640,8 @@ export default function GmnPage() {
         {/* Coluna esquerda: input + histórico */}
         <div className="flex flex-col gap-4">
           {/* Textarea */}
-          <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl p-6">
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-600 mb-3">
+          <div className="bg-surface border border-border rounded-2xl p-6">
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">
               Dados do Google Meu Negócio
             </p>
             <textarea
@@ -649,10 +649,10 @@ export default function GmnPage() {
               onChange={(e) => setRawText(e.target.value)}
               placeholder="Cole aqui os dados copiados do Google Meu Negócio..."
               rows={14}
-              className="w-full bg-white/[0.03] border border-white/[0.07] rounded-xl px-4 py-3 text-sm text-white placeholder-gray-700 outline-none resize-none focus:border-blue-500/40 transition-colors font-mono leading-relaxed"
+              className="w-full bg-white/[0.03] border border-white/[0.07] rounded-xl px-4 py-3 text-sm text-primary placeholder-gray-700 outline-none resize-none focus:border-blue-500/40 transition-colors font-mono leading-relaxed"
             />
             <div className="mt-3 flex flex-col gap-1.5">
-              <label className="text-[9px] font-black uppercase tracking-widest text-gray-600">
+              <label className="text-[9px] font-black uppercase tracking-widest text-muted">
                 URL da Logo (opcional)
               </label>
               <input
@@ -660,13 +660,13 @@ export default function GmnPage() {
                 value={logoUrl}
                 onChange={(e) => setLogoUrl(e.target.value)}
                 placeholder="https://i.ibb.co/... (faça upload no ImgBB e cole aqui)"
-                className="w-full bg-white/[0.03] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-700 outline-none focus:border-blue-500/40 transition-colors"
+                className="w-full bg-white/[0.03] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-primary placeholder-gray-700 outline-none focus:border-blue-500/40 transition-colors"
               />
             </div>
             <button
               onClick={handleExtract}
               disabled={!!extracting || !rawText.trim()}
-              className="mt-4 w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-[11px] font-black uppercase tracking-widest px-6 py-3.5 rounded-xl transition-all hover:-translate-y-0.5 active:translate-y-0"
+              className="mt-4 w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-primary text-[11px] font-black uppercase tracking-widest px-6 py-3.5 rounded-xl transition-all hover:-translate-y-0.5 active:translate-y-0"
             >
               {extracting ? (
                 <><Loader2 className="w-4 h-4 animate-spin" />{extracting}</>
@@ -684,10 +684,10 @@ export default function GmnPage() {
           )}
 
           {/* Histórico */}
-          <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden">
-            <div className="flex items-center gap-2 px-5 py-3.5 border-b border-white/5">
-              <History className="w-3.5 h-3.5 text-gray-600" />
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-600">
+          <div className="bg-surface border border-border rounded-2xl overflow-hidden">
+            <div className="flex items-center gap-2 px-5 py-3.5 border-b border-border">
+              <History className="w-3.5 h-3.5 text-muted" />
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted">
                 Prospecções anteriores
               </p>
             </div>
@@ -699,7 +699,7 @@ export default function GmnPage() {
               </div>
             ) : prospects.length === 0 ? (
               <div className="py-8 text-center">
-                <p className="text-xs text-gray-700">Nenhuma prospecção ainda</p>
+                <p className="text-xs text-muted">Nenhuma prospecção ainda</p>
               </div>
             ) : (
               <div className="divide-y divide-white/[0.04]">
@@ -715,10 +715,10 @@ export default function GmnPage() {
                       className="flex-1 flex items-center justify-between text-left min-w-0"
                     >
                       <div className="min-w-0">
-                        <p className="text-sm font-semibold text-white truncate">
+                        <p className="text-sm font-semibold text-primary truncate">
                           {p.company_name || '—'}
                         </p>
-                        <p className="text-xs text-gray-600 mt-0.5">
+                        <p className="text-xs text-muted mt-0.5">
                           {[p.city, formatDate(p.created_at)].filter(Boolean).join(' · ')}
                         </p>
                       </div>
@@ -731,7 +731,7 @@ export default function GmnPage() {
                     </button>
                     <button
                       onClick={() => handleDeleteProspect(p.id)}
-                      className="shrink-0 w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 flex items-center justify-center text-gray-700 hover:text-red-400 transition-all"
+                      className="shrink-0 w-7 h-7 rounded-lg bg-white/5 hover:bg-red-500/10 border border-border hover:border-red-500/20 flex items-center justify-center text-muted hover:text-red-400 transition-all"
                       title="Remover"
                     >
                       <Trash2 className="w-3 h-3" />
@@ -746,27 +746,27 @@ export default function GmnPage() {
         {/* Coluna direita: resultado */}
         <div className="flex flex-col gap-4">
           {!extracted && !extracting && (
-            <div className="bg-[#0A0A0A] border border-white/[0.06] rounded-2xl p-10 flex flex-col items-center justify-center text-center min-h-[200px]">
-              <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
-                <Globe className="w-5 h-5 text-gray-700" />
+            <div className="bg-surface border border-white/[0.06] rounded-2xl p-10 flex flex-col items-center justify-center text-center min-h-[200px]">
+              <div className="w-12 h-12 rounded-2xl bg-white/5 border border-border flex items-center justify-center mb-4">
+                <Globe className="w-5 h-5 text-muted" />
               </div>
-              <p className="text-sm font-bold text-gray-600">Nenhum dado extraído ainda</p>
-              <p className="text-xs text-gray-700 mt-1">Cole os dados e clique em Extrair, ou selecione uma prospecção anterior</p>
+              <p className="text-sm font-bold text-muted">Nenhum dado extraído ainda</p>
+              <p className="text-xs text-muted mt-1">Cole os dados e clique em Extrair, ou selecione uma prospecção anterior</p>
             </div>
           )}
 
           {extracting && (
-            <div className="bg-[#0A0A0A] border border-white/[0.06] rounded-2xl p-10 flex flex-col items-center justify-center min-h-[200px]">
+            <div className="bg-surface border border-white/[0.06] rounded-2xl p-10 flex flex-col items-center justify-center min-h-[200px]">
               <Loader2 className="w-6 h-6 text-blue-400 animate-spin mb-3" />
-              <p className="text-sm text-gray-500">{extracting}</p>
+              <p className="text-sm text-muted">{extracting}</p>
             </div>
           )}
 
           {extracted && !showBriefing && (
-            <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl p-6 flex flex-col gap-5">
+            <div className="bg-surface border border-border rounded-2xl p-6 flex flex-col gap-5">
               {/* Nome + Nicho */}
               <div>
-                <h2 className="text-xl font-black text-white tracking-tight">
+                <h2 className="text-xl font-black text-primary tracking-tight">
                   {extracted.company_name || '—'}
                 </h2>
                 {extracted.niche && (
@@ -791,12 +791,12 @@ export default function GmnPage() {
               {extracted.services.length > 0 && (
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
-                    <Briefcase className="w-3.5 h-3.5 text-gray-700" />
-                    <p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Serviços</p>
+                    <Briefcase className="w-3.5 h-3.5 text-muted" />
+                    <p className="text-[9px] font-black uppercase tracking-widest text-muted">Serviços</p>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {extracted.services.map((s) => (
-                      <span key={s} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-gray-400">
+                      <span key={s} className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-xs text-secondary">
                         {s}
                       </span>
                     ))}
@@ -806,16 +806,16 @@ export default function GmnPage() {
 
               {extracted.color_palette && extracted.color_palette.length > 0 && (
                 <div className="flex flex-col gap-2">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700">Paleta de Cores</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-muted">Paleta de Cores</p>
                   <div className="flex gap-2 flex-wrap">
                     {extracted.color_palette.map((cor) => (
                       <div key={cor} className="flex flex-col items-center gap-1">
                         <div
-                          className="w-10 h-10 rounded-xl border border-white/10 shadow-inner"
+                          className="w-10 h-10 rounded-xl border border-border shadow-inner"
                           style={{ backgroundColor: cor }}
                           title={cor}
                         />
-                        <span className="text-[9px] text-gray-600 font-mono">{cor}</span>
+                        <span className="text-[9px] text-muted font-mono">{cor}</span>
                       </div>
                     ))}
                   </div>

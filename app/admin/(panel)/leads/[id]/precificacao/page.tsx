@@ -20,11 +20,11 @@ import {
 } from '@/lib/precificacao';
 
 const INPUT =
-  'w-full bg-[#111] border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-700 focus:outline-none focus:border-white/20 transition-all';
+  'w-full bg-inset border border-border rounded-xl px-4 py-2.5 text-primary text-sm placeholder-gray-700 focus:outline-none focus:border-border-strong transition-all';
 const TEXTAREA =
-  'w-full bg-[#111] border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-700 focus:outline-none focus:border-white/20 transition-all resize-y min-h-[80px]';
-const LABEL = 'block text-[10px] font-black uppercase tracking-widest text-[#F0F0F0] mb-1.5';
-const CARD = 'bg-[#0A0A0A] border border-white/10 rounded-2xl p-6';
+  'w-full bg-inset border border-border rounded-xl px-4 py-2.5 text-primary text-sm placeholder-gray-700 focus:outline-none focus:border-border-strong transition-all resize-y min-h-[80px]';
+const LABEL = 'block text-[10px] font-black uppercase tracking-widest text-secondary mb-1.5';
+const CARD = 'bg-surface border border-border rounded-2xl p-6';
 
 function formatCurrency(value: number | null) {
   if (value == null) return '—';
@@ -233,15 +233,15 @@ export default function PrecificacaoPage() {
       <div className="mb-6">
         <Link
           href="/admin/leads"
-          className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-gray-600 hover:text-white transition-colors mb-4"
+          className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-muted hover:text-primary transition-colors mb-4"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           Voltar para Leads
         </Link>
-        <h1 className="font-outfit text-3xl font-black tracking-tight text-white">
+        <h1 className="font-outfit text-3xl font-black tracking-tight text-primary">
           Precificação
         </h1>
-        <p className="text-gray-600 text-sm mt-1">
+        <p className="text-muted text-sm mt-1">
           {lead?.company_name || 'Lead não encontrado'}
         </p>
       </div>
@@ -266,29 +266,29 @@ export default function PrecificacaoPage() {
         <div className="space-y-5">
           {/* Setup */}
           <div className={CARD}>
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-5">
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-5">
               Setup
             </p>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1">Base calculada</p>
-                  <p className="text-white font-bold">{formatCurrency(setupBaseCalculado)}</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">Base calculada</p>
+                  <p className="text-primary font-bold">{formatCurrency(setupBaseCalculado)}</p>
                 </div>
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-1">Total de acréscimos</p>
-                  <p className="text-white font-bold">{formatCurrency(acrescimosTotal)}</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">Total de acréscimos</p>
+                  <p className="text-primary font-bold">{formatCurrency(acrescimosTotal)}</p>
                 </div>
               </div>
 
               {acrescimosDetalhados.length > 0 && (
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-2">Acréscimos por integração</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Acréscimos por integração</p>
                   <div className="space-y-1.5">
                     {acrescimosDetalhados.map((item) => (
-                      <div key={item.value} className="flex items-center justify-between text-xs text-gray-400">
+                      <div key={item.value} className="flex items-center justify-between text-xs text-secondary">
                         <span>{item.label}</span>
-                        <span className="text-gray-300 font-bold">{formatCurrency(item.amount)}</span>
+                        <span className="text-secondary font-bold">{formatCurrency(item.amount)}</span>
                       </div>
                     ))}
                   </div>
@@ -328,7 +328,7 @@ export default function PrecificacaoPage() {
 
           {/* Recorrência */}
           <div className={CARD}>
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-5">
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-5">
               Recorrência
             </p>
             <div className="space-y-4">
@@ -344,7 +344,7 @@ export default function PrecificacaoPage() {
                 </div>
                 <div>
                   <p className={LABEL}>Recorrência calculada</p>
-                  <p className="text-white font-bold text-sm pt-2.5">{formatCurrency(recorrenciaValorCalculado)}</p>
+                  <p className="text-primary font-bold text-sm pt-2.5">{formatCurrency(recorrenciaValorCalculado)}</p>
                 </div>
               </div>
 
@@ -369,7 +369,7 @@ export default function PrecificacaoPage() {
 
           {/* Estratégia de Cobrança */}
           <div className={CARD}>
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-5">
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-5">
               Estratégia de Cobrança
             </p>
             <select
@@ -387,7 +387,7 @@ export default function PrecificacaoPage() {
 
           {/* Observações */}
           <div className={CARD}>
-            <p className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-5">
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-5">
               Observações
             </p>
             <textarea
@@ -415,7 +415,7 @@ export default function PrecificacaoPage() {
             <button
               onClick={handleGeneratePdf}
               disabled={generatingPdf}
-              className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-300 hover:text-white text-[11px] font-black uppercase tracking-widest transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-border hover:border-border-strong text-secondary hover:text-primary text-[11px] font-black uppercase tracking-widest transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <FileDown className="w-3.5 h-3.5" />
               {generatingPdf ? 'Gerando...' : 'Gerar Proposta em PDF'}

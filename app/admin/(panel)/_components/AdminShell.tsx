@@ -15,7 +15,7 @@ export function AdminShell({ userEmail }: { userEmail: string }) {
   return (
     <>
       {/* Barra de topo — só no mobile */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-14 z-[60] bg-[#080808] border-b border-white/5 flex items-center justify-between px-4">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-14 z-[60] bg-surface border-b border-border flex items-center justify-between px-4">
         <Link href={logoHref} aria-label={logoHref === '/' ? 'Voltar ao site' : 'Dashboard'}>
           <Image
             src="/logo.png"
@@ -28,14 +28,14 @@ export function AdminShell({ userEmail }: { userEmail: string }) {
         <div className="flex items-center gap-2">
           <Link
             href="/"
-            className="text-[10px] font-black uppercase tracking-widest text-gray-600 hover:text-gray-400 transition-colors px-2 py-1"
+            className="text-[10px] font-black uppercase tracking-widest text-muted hover:text-secondary transition-colors px-2 py-1"
           >
             ← Site
           </Link>
           <button
             onClick={() => setIsOpen(true)}
             aria-label="Abrir menu"
-            className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all"
+            className="w-9 h-9 rounded-xl bg-white/5 border border-border flex items-center justify-center text-secondary hover:text-primary transition-all"
           >
             <Menu className="w-5 h-5" />
           </button>
