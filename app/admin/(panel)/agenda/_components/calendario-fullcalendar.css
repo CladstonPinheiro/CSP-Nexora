@@ -1,0 +1,162 @@
+.csp-fullcalendar {
+  --fc-border-color: rgba(255, 255, 255, 0.08);
+  --fc-page-bg-color: transparent;
+  --fc-neutral-bg-color: #0b1130;
+  --fc-neutral-text-color: #6b7280;
+  --fc-today-bg-color: rgba(245, 130, 31, 0.08);
+  --fc-now-indicator-color: #f5821f;
+  --fc-button-text-color: #d1d5db;
+  --fc-button-bg-color: #060b24;
+  --fc-button-border-color: rgba(255, 255, 255, 0.1);
+  --fc-button-hover-bg-color: #0a1030;
+  --fc-button-hover-border-color: rgba(255, 255, 255, 0.18);
+  --fc-button-active-bg-color: #f5821f;
+  --fc-button-active-border-color: #f5821f;
+  --fc-event-bg-color: #f5821f;
+  --fc-event-border-color: #f5821f;
+  --fc-event-text-color: #060b24;
+  --fc-list-event-hover-bg-color: rgba(245, 130, 31, 0.08);
+  --fc-highlight-color: rgba(245, 130, 31, 0.12);
+
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.csp-fullcalendar .fc {
+  font-family: inherit;
+}
+
+.csp-fullcalendar .fc-toolbar-title {
+  font-weight: 900;
+  font-size: 1.15rem;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.csp-fullcalendar .fc-button {
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  border-radius: 0.75rem !important;
+  padding: 0.5rem 0.85rem !important;
+  box-shadow: none !important;
+}
+
+.csp-fullcalendar .fc-button:focus {
+  box-shadow: none !important;
+}
+
+.csp-fullcalendar .fc-button-primary:not(:disabled).fc-button-active {
+  color: #060b24;
+}
+
+.csp-fullcalendar .fc-col-header-cell-cushion {
+  color: #6b7280;
+  text-transform: uppercase;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 0;
+}
+
+.csp-fullcalendar .fc-daygrid-day-number {
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px;
+}
+
+.csp-fullcalendar .fc-day-today .fc-daygrid-day-number {
+  color: #f5821f;
+}
+
+.csp-fullcalendar .fc-timegrid-slot-label-cushion {
+  color: #4b5563;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.csp-fullcalendar .fc-timegrid-axis-cushion {
+  color: #4b5563;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.csp-fullcalendar .fc-scrollgrid {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.csp-fullcalendar .fc-day-disabled {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.csp-fullcalendar a {
+  color: inherit;
+}
+
+.csp-fullcalendar .fc-event {
+  border-radius: 8px !important;
+  cursor: pointer;
+  border-width: 1px !important;
+}
+
+.csp-fullcalendar .fc-daygrid-event {
+  margin-top: 2px;
+}
+
+.csp-fullcalendar .fc-timegrid-event-harness .fc-event {
+  padding: 0;
+}
+
+.csp-fullcalendar .fc-daygrid-day-frame {
+  background: transparent;
+}
+
+/* Conteúdo customizado do evento (via eventContent) */
+.csp-fc-event {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 2px 4px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.csp-fc-event__status {
+  font-size: 8px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.csp-fc-event__title {
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.csp-fc-event--cancelado .csp-fc-event__title {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.csp-fullcalendar-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}

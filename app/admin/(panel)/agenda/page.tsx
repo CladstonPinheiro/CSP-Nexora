@@ -9,7 +9,7 @@ import { cancelarAgendamento } from './actions';
 import { AgendamentoModal } from './_components/AgendamentoModal';
 import { ReagendarModal } from './_components/ReagendarModal';
 import { AgendamentoPanel } from './_components/AgendamentoPanel';
-import { CalendarioSemana } from './_components/CalendarioSemana';
+import { CalendarioFullCalendar } from './_components/CalendarioFullCalendar';
 import {
   statusConfig,
   statusGrupoConfig,
@@ -64,7 +64,7 @@ export default function AgendaPage() {
   const [visao, setVisao] = useState<Visao>('lista');
   const [filtroStatus, setFiltroStatus] = useState<StatusFiltro>('todos');
   const [filtroPeriodo, setFiltroPeriodo] = useState<PeriodoFiltro>('todos');
-  const [weekStart, setWeekStart] = useState(() => segundaDaSemana(hojeSP()));
+  const [calendarRefresh, setCalendarRefresh] = useState(0);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [prefillData, setPrefillData] = useState<string | undefined>(undefined);
@@ -126,6 +126,7 @@ export default function AgendaPage() {
   const handleCriado = (novo: Agendamento) => {
     setAgendamentos((prev) => ordenar([...prev, novo]));
     setModalOpen(false);
+    setCalendarRefresh((c) => c + 1);
     setNotification({ type: 'success', message: 'Agendamento criado com sucesso.' });
   };
 
@@ -133,6 +134,7 @@ export default function AgendaPage() {
     setAgendamentos((prev) => ordenar(prev.map((a) => (a.id === atualizado.id ? atualizado : a))));
     setReagendarTarget(null);
     if (selecionado?.id === atualizado.id) setSelecionado(null);
+    setCalendarRefresh((c) => c + 1);
     setNotification({ type: 'success', message: 'Agendamento reagendado com sucesso.' });
   };
 
@@ -148,6 +150,7 @@ export default function AgendaPage() {
       );
       setNotification({ type: 'success', message: 'Agendamento cancelado.' });
       if (selecionado?.id === cancelarTarget.id) setSelecionado(null);
+      setCalendarRefresh((c) => c + 1);
     }
     setCancelarTarget(null);
     setCancelando(false);
@@ -165,7 +168,7 @@ export default function AgendaPage() {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.18 }}
             className={cn(
-              'fixed top-4 right-4 z-[70] px-4 py-3 rounded-xl border text-[12px] font-bold shadow-2xl max-w-sm',
+              'fixed top-24 right-4 z-[70] px-4 py-3 rounded-xl border text-[12px] font-bold shadow-2xl max-w-sm',
               notification.type === 'success' && 'bg-green-500/10 border-green-500/20 text-green-400',
               notification.type === 'error' && 'bg-red-500/10 border-red-500/20 text-red-400'
             )}
@@ -371,14 +374,12 @@ export default function AgendaPage() {
       )}
 
       {visao === 'calendario' && (
-        <CalendarioSemana
-          agendamentos={agendamentos}
-          weekStart={weekStart}
-          onPrevWeek={() => setWeekStart((w) => somarDias(w, -7))}
-          onNextWeek={() => setWeekStart((w) => somarDias(w, 7))}
-          onHoje={() => setWeekStart(segundaDaSemana(hojeSP()))}
+        <CalendarioFullCalendar
           onSelect={(ag) => setSelecionado(ag)}
           onCreateSlot={(data, hora) => abrirNovoAgendamento(data, hora)}
+          onReagendado={handleReagendado}
+          onErro={(mensagem) => setNotification({ type: 'error', message: mensagem })}
+          refreshTrigger={calendarRefresh}
         />
       )}
 
