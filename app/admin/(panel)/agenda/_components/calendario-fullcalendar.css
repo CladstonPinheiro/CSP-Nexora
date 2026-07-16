@@ -8,7 +8,11 @@
      fundo claro (branco não "absorve" a tinta como o quase-preto absorve). */
   --fc-today-bg-color: rgba(245, 130, 31, 0.08);
   --fc-now-indicator-color: var(--color-brand-orange);
-  --fc-button-text-color: var(--color-secondary);
+  /* Fixo (não usa --color-secondary): o fundo do botão é sempre navy nos
+     dois temas, então o texto precisa ser sempre claro — usar um token que
+     muda por tema aqui dava 2.59:1 no claro (falha WCAG), contra 13.18:1
+     com branco fixo. */
+  --fc-button-text-color: #FFFFFF;
   --fc-button-bg-color: var(--color-brand-navy);
   --fc-button-border-color: var(--color-border);
   --fc-button-hover-bg-color: #0a1030;
@@ -21,19 +25,38 @@
   --fc-list-event-hover-bg-color: rgba(245, 130, 31, 0.08);
   --fc-highlight-color: rgba(245, 130, 31, 0.12);
 
+  /* Status "cancelado": sobreposição translúcida quebra em fundos muito
+     diferentes (funciona sobre quase-preto, fica ilegível sobre branco) —
+     por isso é a única cor de status com valor sólido por tema, em vez de
+     um único rgba compartilhado. Os outros 4 status usam cor sólida fixa
+     (mesmo hex nos dois temas) porque já têm contraste alto em ambos. */
+  --status-cancelado-bg: #3D1F1F;
+  --status-cancelado-border: #F87171;
+  --status-cancelado-text: #F87171;
+
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 1rem;
   padding: 1.25rem;
 }
 
-/* Tema claro: mesmos realces, opacidade recalibrada para equivaler
-   visualmente ao sutil que já existe no tema escuro (branco puro deixa
-   qualquer tinta muito mais visível que o quase-preto do tema escuro). */
+/* Tema claro: realces recalibrados para equivaler visualmente ao sutil que
+   já existe no tema escuro (branco puro deixa qualquer tinta muito mais
+   visível que o quase-preto do tema escuro). */
 .light .csp-fullcalendar {
   --fc-today-bg-color: rgba(245, 130, 31, 0.035);
   --fc-list-event-hover-bg-color: rgba(245, 130, 31, 0.035);
   --fc-highlight-color: rgba(245, 130, 31, 0.05);
+
+  /* Override só aqui, não no --color-border global (usado em botões/cards
+     no resto do admin) — 0.1 de alfa (valor padrão do token) dá 1.24:1
+     contra branco, quase invisível. 0.25 dá ~1.78:1: bem mais perceptível
+     sem virar uma borda "pesada" que compita com os eventos. */
+  --fc-border-color: rgba(6, 11, 36, 0.25);
+
+  --status-cancelado-bg: #FEE2E2;
+  --status-cancelado-border: #B91C1C;
+  --status-cancelado-text: #B91C1C;
 }
 
 .csp-fullcalendar .fc {

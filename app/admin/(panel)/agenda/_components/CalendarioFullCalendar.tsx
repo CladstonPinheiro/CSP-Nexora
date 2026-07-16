@@ -25,12 +25,22 @@ interface CalendarioFullCalendarProps {
 // Serve só de guia visual — quem valida de verdade é a Edge Function.
 const HORAS_BRIEFING = ['09:00', '11:00', '15:00', '17:00'];
 
+// agendado/confirmado/realizado/faltou usam cor sólida fixa (mesmo hex nos
+// dois temas) — contraste alto com texto navy em ambos, confirmado por
+// cálculo (WCAG): 5.3–10.7:1. "cancelado" é o único que referencia variáveis
+// CSS (definidas em calendario-fullcalendar.css, com valor por tema), porque
+// sua versão original usava uma sobreposição translúcida que só funcionava
+// sobre fundo escuro — sobre branco o texto ficava ilegível.
 const STATUS_EVENT_COLORS: Record<AgendamentoStatus, { bg: string; border: string; text: string }> = {
   agendado: { bg: '#3B82F6', border: '#3B82F6', text: '#060B24' },
   confirmado: { bg: '#22D3EE', border: '#22D3EE', text: '#060B24' },
   realizado: { bg: '#22C55E', border: '#22C55E', text: '#060B24' },
   faltou: { bg: '#F5821F', border: '#F5821F', text: '#060B24' },
-  cancelado: { bg: 'rgba(239,68,68,0.25)', border: 'rgba(239,68,68,0.4)', text: '#FCA5A5' },
+  cancelado: {
+    bg: 'var(--status-cancelado-bg)',
+    border: 'var(--status-cancelado-border)',
+    text: 'var(--status-cancelado-text)',
+  },
 };
 
 function pad(n: number) {
@@ -183,6 +193,7 @@ export function CalendarioFullCalendar({
           eventAllow={handleEventAllow}
           selectable={false}
           dayMaxEvents={3}
+          eventDisplay="block"
           events={eventos}
           eventContent={renderEventContent}
           eventClick={handleEventClick}

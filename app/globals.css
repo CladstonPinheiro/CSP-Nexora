@@ -38,6 +38,16 @@ html {
   --admin-primary: #FFFFFF;
   --admin-secondary: #D1D5DB;
   --admin-muted: #6B7280;
+
+  /* Toasts de notificação — mesmo padrão do --status-cancelado-* do
+     calendário: cor sólida por tema, não overlay translúcido sobre fundo
+     variável (bg-green-500/10 + text-green-400 dava 1.6:1 no tema claro). */
+  --notify-success-bg: #1F3D29;
+  --notify-success-border: #4ADE80;
+  --notify-success-text: #4ADE80;
+  --notify-error-bg: #3D1F1F;
+  --notify-error-border: #F87171;
+  --notify-error-text: #F87171;
 }
 
 /* Tema claro do admin — reprojetado para contraste, não é o escuro invertido:
@@ -52,6 +62,13 @@ html {
   --admin-primary: #0B0F1A;
   --admin-secondary: #4B5568;
   --admin-muted: #6B7280;
+
+  --notify-success-bg: #DCFCE7;
+  --notify-success-border: #15803D;
+  --notify-success-text: #15803D;
+  --notify-error-bg: #FEE2E2;
+  --notify-error-border: #B91C1C;
+  --notify-error-text: #B91C1C;
 }
 
 body {

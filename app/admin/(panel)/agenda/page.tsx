@@ -169,8 +169,10 @@ export default function AgendaPage() {
             transition={{ duration: 0.18 }}
             className={cn(
               'fixed top-24 right-4 z-[70] px-4 py-3 rounded-xl border text-[12px] font-bold shadow-2xl max-w-sm',
-              notification.type === 'success' && 'bg-green-500/10 border-green-500/20 text-green-400',
-              notification.type === 'error' && 'bg-red-500/10 border-red-500/20 text-red-400'
+              notification.type === 'success' &&
+                'bg-[var(--notify-success-bg)] border-[var(--notify-success-border)] text-[var(--notify-success-text)]',
+              notification.type === 'error' &&
+                'bg-[var(--notify-error-bg)] border-[var(--notify-error-border)] text-[var(--notify-error-text)]'
             )}
           >
             {notification.message}
