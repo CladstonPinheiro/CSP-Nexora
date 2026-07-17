@@ -42,6 +42,9 @@ export type Lead = {
   ai_reasoning?: string | null;
   ai_qualified_at?: string | null;
   site_demo?: string | null;
+  resumo_conversa_ia?: string | null;
+  motivo_contato_ia?: string | null;
+  resumo_atualizado_em?: string | null;
 };
 
 export const FUNIL_PADRAO: Estagio[] = [
