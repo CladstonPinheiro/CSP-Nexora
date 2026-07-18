@@ -2,6 +2,50 @@
 
 Todas as mudanças relevantes do projeto CSP Nexora são documentadas aqui, em ordem cronológica reversa.
 
+## 18/07/2026
+
+### Pendência de 13/07 fechada — tools de agendamento confirmadas apontando para "6"
+- Verificado diretamente em `n8n-workflows/4-agente-ia-agendamento-template-base.json`: as 4 tools (`criar_reuniao`, `VerHorarios`, `reagendar_reuniao`, `cancelar_reuniao`) têm `workflowId.value = "HlsbghQRkVelOyLi"` (ID de "6- Eventos Agenda Própria | CSP Nexora"), confirmado tanto na seção `nodes` quanto em `activeVersion.nodes` (versão publicada). Nenhuma referencia `toRrh1FpDb8VRHUV` (ID de "5- Eventos Agenda", Google Calendar legado). A suspeita registrada em 13/07/2026 de que as tools pudessem ainda apontar para o workflow legado não se confirmou.
+- O workflow "5- Eventos Agenda | Template Base" está órfão — nenhuma tool ativa o chama. Segue com `"active": true` no export do n8n (nunca foi desativado/arquivado); decisão de desativá-lo formalmente ainda pendente.
+
+## 17/07/2026
+
+### Segurança — Rotação de credenciais
+- Rotacionado o access_token do Agent Bot "Template Base" no Chatwoot,
+  atualizado na credencial "chatwoot_access_token_body" do n8n. Validado
+  via teste direto no node "obter_informacoes" (workflow de integração
+  UaZapi/Chatwoot).
+- Rotacionada a Secret Key do Supabase (substituindo a antiga "default").
+  Nova chave propagada para: .env.local, Vercel (produção), Edge Functions
+  (via secret automático SUPABASE_SECRET_KEYS do Supabase), e credencial
+  "supabase_service_role_cspnexora" no n8n.
+- Corrigido bug de formato de header na credencial "supabase_service_role_cspnexora":
+  faltava o prefixo "Bearer " antes do token, causando erro
+  "Authorization failed" em todos os 4 branches do workflow "6- Eventos
+  Agenda Própria" (agendamento, VerHorarios, reagendamento, cancelamento).
+
+### Correção de bug de build (produção)
+- Corrigido erro de build na Vercel: a função formatRelativeTime em
+  lib/utils.ts existia apenas no diretório de trabalho local, nunca havia
+  sido commitada. Build validado localmente (cache limpo) antes do commit.
+
+### Versionamento (débito técnico resolvido)
+- Versionadas pela primeira vez as Edge Functions do Supabase
+  (agendamentos, agendamentos-id, agendamentos-horarios, e módulos
+  compartilhados _shared/auth.ts, errors.ts, slots.ts).
+- Versionadas 4 migrations SQL existentes (agenda_schema, leads_resumo_ia,
+  remove_colunas_duplicadas_leads, habilitar_sabado_agenda) e criada nova
+  migration documentando a tabela "feriados" (schema já aplicado em
+  produção, sem alteração remota).
+- Script de correção fix-verhorarios.js movido de solto na raiz para
+  n8n-workflows/scripts/, com log de debug removido.
+- tsconfig.json atualizado para excluir supabase/functions/** da checagem
+  de tipos do Next.js (código Deno, incompatível com o tsconfig principal).
+- 3 novos campos opcionais adicionados ao tipo Lead (types.ts):
+  resumo_conversa_ia, motivo_contato_ia, resumo_atualizado_em.
+
+Commit: e356397
+
 ## 16/07/2026
 
 Sessão de repositório: continuação do redesign da agenda (Etapas 1 e 2) e implementação completa do tema claro/escuro no painel admin, incluindo uma série de correções de contraste identificadas depois da migração.
