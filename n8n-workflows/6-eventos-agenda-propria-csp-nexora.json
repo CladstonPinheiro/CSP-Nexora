@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-15T13:54:50.089Z",
+  "updatedAt": "2026-07-18T17:46:45.707Z",
   "createdAt": "2026-07-12T19:01:29.399Z",
   "id": "HlsbghQRkVelOyLi",
   "name": "6- Eventos Agenda Própria | CSP Nexora",
@@ -665,13 +665,13 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "whatsapp_lead": "5561984202578",
-          "evento": "agendamento",
-          "inicio_reuniao": "2026-07-21 09:00",
-          "final_reuniao": "2026-07-21 10:00",
-          "assunto": "Reunião de Briefing com Cladston Pinheiro",
-          "id_agendamento": "",
-          "data_consulta": ""
+          "whatsapp_lead": "5561999990001",
+          "evento": "VerHorarios",
+          "data_consulta": "2026-07-24",
+          "inicio_reuniao": "",
+          "final_reuniao": "",
+          "assunto": "",
+          "id_agendamento": ""
         }
       }
     ]

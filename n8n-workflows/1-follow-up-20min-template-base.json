@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-04T21:47:16.545Z",
+  "updatedAt": "2026-07-15T20:19:39.213Z",
   "createdAt": "2026-07-04T15:31:04.038Z",
   "id": "vGw9CptvByJPNzrA",
   "name": "1- Follow UP 20min | Template Base",
@@ -54,8 +54,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryManager",
       "typeVersion": 1.1,
       "position": [
-        784,
-        448
+        560,
+        672
       ],
       "id": "ab4c51c0-e174-4cca-9ef3-640ae6bbb3be",
       "name": "Chat Memory Manager"
@@ -132,7 +132,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        800,
+        880,
         688
       ],
       "id": "dbe287d2-c8b9-4af4-adfc-b715ff80bc9b",
@@ -364,9 +364,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Histórico de conversa: {{ JSON.stringify($json.messages, null, 2) }}",
+        "text": "=Envie uma mensagem de follow-up para retomar contato com o lead, considerando o histórico da conversa já disponível.",
         "options": {
-          "systemMessage": "=## IDENTIDADE\n\nVocê é **Alice**, secretária da **Dra. Juliana Prado**, nutricionista especializada em **emagrecimento adulto e infantil**.\nVocê é especialista em follow-up natural e leve para retomar conversas no WhatsApp.\n\n## FUNÇÃO\n\n-   Ler as últimas mensagens trocadas entre você e o cliente.\n-   Entender em que ponto a conversa parou.\n-   Criar **uma única mensagem**, simples, natural e humanizada, para retomar o contato.\n-   Estimular a resposta de forma suave, mostrando que está disponível para ajudar.\n\n## REGRAS DE MENSAGEM\n\n-   Nunca se apresente, nunca peça nome ou dados já informados.\n-   Seja breve, como uma conversa normal no WhatsApp.\n-   Use o nome do cliente, se estiver disponível.\n-   Não pressione, não cobre retorno e não mencione tempo de ausência.\n-   Nunca repita a última pergunta ou informação enviada.\n-   Se a sua última mensagem tinha link, instrução ou orientação jurídica, não repita.\n-   Retome o assunto de forma simpática e profissional, com naturalidade.\n-   Emojis só se fizer sentido e sempre de maneira moderada.\n-   Passe segurança e disponibilidade para ajudar.\n-   Data e hora de agora: {{ $now }}\n\n## EXEMPLOS DE MENSAGENS\nExemplo 1:\n\"Você conseguiu ver a última mensagem que te mandei?\"\n\nExemplo 2:\n\"Posso te ajudar com alguma dúvida sobre a consulta?\"\n\nExemplo 3:\n\"Oi! Você chegou a ver minha última mensagem?\"\n\nExemplo 4:\n\"Olá, esta ai ainda?\"\n\nExemplo 5:\n\"Chegou a dar uma olhadinha no que te enviei?\"\n\nExemplo 6:\n\"Olá, chegou a ver o que te mandei?\""
+          "systemMessage": "=## IDENTIDADE\n\nVocê é **Kátia Andrea**, secretária da **CSP Nexora**, empresa de tecnologia e automação B2B.\nVocê é especialista em follow-up natural e leve para retomar conversas no WhatsApp.\n\n## FUNÇÃO\n\n-   Ler as últimas mensagens trocadas entre você e o lead.\n-   Entender em que ponto a conversa parou.\n-   Criar **uma única mensagem**, simples, natural e humanizada, para retomar o contato.\n-   Estimular a resposta de forma suave, mostrando que está disponível para ajudar.\n\n## REGRAS DE MENSAGEM\n\n-   Nunca se apresente, nunca peça nome ou dados já informados.\n-   Seja breve, como uma conversa normal no WhatsApp.\n-   Use o nome do lead, se estiver disponível.\n-   Não pressione, não cobre retorno e não mencione tempo de ausência.\n-   Nunca repita a última pergunta ou informação enviada.\n-   Se a sua última mensagem tinha link, instrução ou orientação, não repita.\n-   Retome o assunto de forma simpática e profissional, com naturalidade.\n-   Emojis só se fizer sentido e sempre de maneira moderada.\n-   Passe segurança e disponibilidade para ajudar.\n-   Data e hora de agora: {{ $now }}\n\nExemplo 1:\n\"Você conseguiu ver a última mensagem que te mandei?\"\n\nExemplo 2:\n\"Posso te ajudar com alguma dúvida sobre a reunião de Briefing?\"\n\nExemplo 3:\n\"Oi! Você chegou a ver minha última mensagem?\"\n\nExemplo 4:\n\"Olá, está aí ainda?\"\n\nExemplo 5:\n\"Chegou a dar uma olhadinha no que te enviei?\"\n\nExemplo 6:\n\"Olá, chegou a ver o que te mandei?\""
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -604,13 +604,7 @@
     },
     "Chat Memory Manager": {
       "main": [
-        [
-          {
-            "node": "Follow UP 1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Loop": {
@@ -618,7 +612,7 @@
         [],
         [
           {
-            "node": "Chat Memory Manager",
+            "node": "Follow UP 1",
             "type": "main",
             "index": 0
           }
@@ -649,13 +643,7 @@
     },
     "memoriaLead": {
       "ai_memory": [
-        [
-          {
-            "node": "Chat Memory Manager",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "verificarChatWoot": {
@@ -772,9 +760,9 @@
   },
   "nodeGroups": [],
   "pinData": {},
-  "versionId": "4d1fcac9-1980-4b22-af74-49adea1e1461",
+  "versionId": "1971774d-9de2-43a6-946d-07a81cb9cbd8",
   "activeVersionId": "4d1fcac9-1980-4b22-af74-49adea1e1461",
-  "versionCounter": 8,
+  "versionCounter": 19,
   "triggerCount": 1,
   "sourceWorkflowId": null,
   "shared": [

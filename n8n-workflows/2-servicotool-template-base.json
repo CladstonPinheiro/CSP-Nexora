@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-09T21:13:25.327Z",
+  "updatedAt": "2026-07-15T21:46:36.086Z",
   "createdAt": "2026-07-04T15:23:31.707Z",
   "id": "rzYJt8wYSQQxlmbD",
   "name": "2- servicoTool | Template Base",
@@ -296,7 +296,17 @@
     "templateCredsSetupCompleted": true
   },
   "nodeGroups": [],
-  "pinData": {},
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "NomeLead": "Cladston Pinheiro",
+          "Duvida": "quais serviços vocês oferecem?",
+          "whatsaapp_lead": "5561984202578"
+        }
+      }
+    ]
+  },
   "versionId": "8a2dce16-de6e-41de-8ecb-3196c5fe218c",
   "activeVersionId": "8a2dce16-de6e-41de-8ecb-3196c5fe218c",
   "versionCounter": 23,
