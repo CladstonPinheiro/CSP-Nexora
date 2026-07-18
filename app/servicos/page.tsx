@@ -30,7 +30,7 @@ const serviceDetails = [
     id: 'chatbots-avancados',
     title: 'Chatbots Avançados',
     subtitle: 'Atendimento automatizado que gera resultados reais.',
-    description: 'Ofereça atendimento rápido, inteligente e disponível 24 horas por dia. Os chatbots desenvolvidos pela CSP Nexora utilizam IA para create conversas naturais, melhorar a experiência do cliente e aumentar a geração de oportunidades para sua empresa.',
+    description: 'Ofereça atendimento rápido, inteligente e disponível 24 horas por dia. Os chatbots desenvolvidos pela CSP Nexora utilizam IA para criar conversas naturais, melhorar a experiência do cliente e aumentar a geração de oportunidades para sua empresa.',
     icon: <MessageSquare className="w-12 h-12" />,
     color: 'from-purple-600 to-pink-500'
   },
