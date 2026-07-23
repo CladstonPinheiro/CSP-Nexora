@@ -7,11 +7,12 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { WHATSAPP_SITE_LINK } from '@/lib/whatsapp';
+import { useWhatsappSiteLink } from '@/lib/whatsapp';
 
 
 const Navbar = () => {
   const router = useRouter();
+  const whatsappLink = useWhatsappSiteLink();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -120,7 +121,7 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-4">
           <a
-            href={WHATSAPP_SITE_LINK}
+            href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 bg-white/5 text-white border border-white/10 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all"
@@ -171,7 +172,7 @@ const Navbar = () => {
                   Solicitar Diagnóstico
                 </Link>
                 <a
-                  href={WHATSAPP_SITE_LINK}
+                  href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsMobileMenuOpen(false)}

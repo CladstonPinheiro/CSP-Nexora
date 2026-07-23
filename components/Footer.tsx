@@ -4,10 +4,11 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Facebook, Instagram, Mail, Globe, Youtube, Lock } from 'lucide-react';
-import { WHATSAPP_SITE_LINK } from '@/lib/whatsapp';
+import { useWhatsappSiteLink } from '@/lib/whatsapp';
 
 
 const Footer = () => {
+  const whatsappLink = useWhatsappSiteLink();
   return (
     <footer className="pt-32 pb-12 bg-black text-white border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6">
@@ -51,8 +52,8 @@ const Footer = () => {
                    >
                       <Facebook className="w-4 h-4" />
                    </a>
-                   <a 
-                      href={WHATSAPP_SITE_LINK}
+                   <a
+                      href={whatsappLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-cyan-500 hover:text-black transition-all cursor-pointer"

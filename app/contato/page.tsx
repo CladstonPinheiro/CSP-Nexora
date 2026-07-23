@@ -6,9 +6,10 @@ import { CheckCircle2, AlertCircle, Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { WHATSAPP_SITE_LINK } from '@/lib/whatsapp';
+import { useWhatsappSiteLink } from '@/lib/whatsapp';
 
 export default function ContatoPage() {
+  const whatsappLink = useWhatsappSiteLink();
   const [formData, setFormData] = useState({ nome: '', email: '', assunto: '', mensagem: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -212,7 +213,7 @@ export default function ContatoPage() {
           <p className="text-center text-gray-600 text-xs mt-8">
             Prefere falar agora?{' '}
             <a
-              href={WHATSAPP_SITE_LINK}
+              href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
               className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors"

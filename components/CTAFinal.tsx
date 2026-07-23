@@ -3,9 +3,10 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, MessageSquare } from 'lucide-react';
-import { WHATSAPP_SITE_LINK } from '@/lib/whatsapp';
+import { useWhatsappSiteLink } from '@/lib/whatsapp';
 
 const CTAFinal = () => {
+  const whatsappLink = useWhatsappSiteLink();
   return (
     <section className="py-32 bg-[#050505]">
       <div className="max-w-7xl mx-auto px-6">
@@ -37,7 +38,7 @@ const CTAFinal = () => {
               </a>
               
               <a
-                href={WHATSAPP_SITE_LINK}
+                href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group w-full sm:w-auto px-6 py-3.5 sm:px-10 sm:py-5 rounded-full font-black uppercase tracking-widest text-xs sm:text-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-all flex items-center justify-center gap-3"
