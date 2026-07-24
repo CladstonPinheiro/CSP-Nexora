@@ -2,6 +2,65 @@
 
 Todas as mudanças relevantes do projeto CSP Nexora são documentadas aqui, em ordem cronológica reversa.
 
+## 24/07/2026
+
+Sessão de trabalho integrando o site institucional com o pipeline de prospecção via Google Maps (projeto externo ProspecaoGoogleMaps), mais um novo dashboard administrativo para acompanhar esses leads.
+
+1. **[`lib/whatsapp.ts`, `katia-prompt-revisado.txt`]** Adicionado rastreio de origem específica para leads de prospecção via Google Maps: hook `useWhatsappSiteLink()` em `lib/whatsapp.ts` detecta o parâmetro `?origem=maps` na URL e troca a mensagem pré-preenchida do WhatsApp nos 7 pontos de botão do site; prompt da Kátia (`katia-prompt-revisado.txt`) reconhece esse texto e grava `source: prospeccao_maps`.
+2. **[`app/admin/(panel)/prospeccao/`]** Criado dashboard estratégico de prospecção em `/admin/prospeccao`: cards de resumo, gráfico de distribuição por status (Recharts), gráfico de captura por dia, tabela de retrabalho (leads parados em "contatado" há 7+ dias), tabela completa de leads com paginação, modal de ficha completa com troca de status, e botão de abrir WhatsApp direto por lead.
+3. **[`AdminSidebar.tsx`]** Adicionado item "Prospecção Maps" na navegação lateral do admin.
+
+## 21/07/2026
+
+Sessão com trabalho misto: bug de agendamento e fallback estrutural corrigidos diretamente no n8n (workflow "6- Eventos Agenda Própria", sem versionamento neste repo); revisão do prompt da Kátia Andrea preparada neste repo.
+
+1. **[n8n, sem versionamento neste repo]** Corrigido bug crítico de agendamento no workflow "6- Eventos Agenda Própria": nas branches **CRIAR AGENDAMENTO** e **REAGENDAR**, expressões `DateTime.fromFormat` (incompatíveis com o formato ISO já recebido) substituídas por `DateTime.fromISO`.
+2. **[`katia-prompt-revisado.txt`, neste repo]** Revisão completa do prompt da Kátia Andrea (n8n workflow "1- Secretaria IA"): 6 ajustes de comportamento aplicados — limite de mensagens curtas com pausa simulando digitação humana, apresentação inicial no primeiro contato, aviso de fora do horário/feriado, eliminação de perguntas duplicadas na qualificação, lembrete de reunião 1h antes do horário marcado, e regra de repetição do nome do lead revisada para apenas 2 momentos específicos da conversa. Corrigida também uma instrução vaga de fallback de erro de tool que permitia mascarar falhas como "problema técnico" genérico e pedir reconfirmação de dados já fornecidos pelo lead — agora a regra exige uma nova tentativa silenciosa e, se falhar de novo, aviso direto de que o time confirma manualmente, proibindo re-pedir dados como forma de mascarar o erro.
+3. **[n8n, sem versionamento neste repo]** Implementado fallback estrutural no workflow "6- Eventos Agenda Própria": quando o node **BuscarLeadId** não encontra nenhum registro, um lead mínimo é criado automaticamente antes de prosseguir, evitando que o agendamento trave silenciosamente quando a IA esquece de chamar a tool `registrarNovoLead`.
+4. Validação completa via teste real no WhatsApp: fluxo de agendamento fechando corretamente de ponta a ponta.
+
+**Pendência conhecida:** leads criados pelo fallback do item 3 ficam com dados mínimos até serem enriquecidos manualmente ou por uma futura melhoria que puxe dados já coletados na conversa (`crm_leads`).
+
+## 20/07/2026
+
+### Incidente resolvido — Lead Victor Hugo Cavalcanti
+- Identificado que a Kátia prometeu agendamento sem chamar a tool
+  criar_reuniao (confirmado via Executions do n8n). Agendamento real
+  criado manualmente, lead duplicado removido com segurança, link do
+  Meet gerado e enviado a tempo da reunião das 15h.
+
+### Nova funcionalidade: Link do Google Meet na Agenda Própria
+- Colunas link_reuniao e google_event_id adicionadas à tabela
+  agendamentos (migration 20260719000000).
+- Edge Functions agendamentos e agendamentos-id atualizadas para
+  aceitar/retornar esses campos.
+- Workflow "6- Eventos Agenda Própria": as 3 branches (Criar,
+  Reagendar, Cancelar) agora integram com Google Calendar para
+  gerar/mover/deletar o evento com Google Meet correspondente.
+
+### Expansão do sistema de Briefing (16 → 50 campos)
+- Tabela briefings expandida com 33 novas colunas (migrations
+  20260720000000 e 20260720010000/20260720020000), cobrindo as 42
+  perguntas do roteiro de Briefing.
+- Endpoint /api/briefing/extract-from-transcript expandido para
+  extrair os 50 campos via Gemini.
+- Formulário reorganizado em 10 seções temáticas (types.ts,
+  BRIEFING_SECTIONS).
+- Novo status "aguardando_revisao_ia" com badge visual, sinalizando
+  briefings preenchidos por IA ainda não revisados por humano.
+
+### Nova automação: Ingestão automática de Briefing via Tactiq
+- Integração Tactiq + Google Drive (nativa, sem custo) salva
+  transcrições automaticamente.
+- Integração Tactiq + Google Calendar usa o título do evento
+  (contendo o telefone do lead) para identificação automática.
+- Novo workflow n8n "7- Ingestão de Briefing (Tactiq)": Drive Trigger
+  → leitura do documento → extração do telefone → busca do lead →
+  extração via Gemini (50 campos) → criação ou atualização do
+  Briefing, sempre com revisão humana obrigatória antes de conclusão.
+- Nova credencial gemini_header_auth (Header Auth) para chamadas
+  diretas à API do Gemini fora dos nodes nativos de IA.
+
 ## 18/07/2026
 
 ### Pendência de 13/07 fechada — tools de agendamento confirmadas apontando para "6"
