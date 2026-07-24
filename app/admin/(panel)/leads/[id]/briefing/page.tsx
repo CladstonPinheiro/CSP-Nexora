@@ -206,10 +206,12 @@ export default function BriefingPage() {
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[9px] font-black uppercase tracking-widest whitespace-nowrap ${
               status === 'concluido'
                 ? 'bg-green-500/15 text-green-400 border-green-500/20'
+                : status === 'aguardando_revisao_ia'
+                ? 'bg-cyan-500/15 text-cyan-400 border-cyan-500/20'
                 : 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20'
             }`}
           >
-            {status === 'concluido' ? 'Concluído' : 'Em Andamento'}
+            {status === 'concluido' ? 'Concluído' : status === 'aguardando_revisao_ia' ? 'Revisão da IA Pendente' : 'Em Andamento'}
           </span>
         </div>
       </div>
