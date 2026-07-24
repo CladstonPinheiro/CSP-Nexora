@@ -17,6 +17,7 @@ import {
   CalendarClock,
   Sun,
   Moon,
+  MapPin,
 } from 'lucide-react';
 import { createSupabaseBrowserClient } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
@@ -29,6 +30,7 @@ const navItems = [
   { href: '/admin/projetos',label: 'Projetos',         icon: FolderKanban },
   { href: '/admin/tarefas', label: 'Tarefas',          icon: CheckSquare },
   { href: '/admin/gmn',     label: 'Prospecção GMN',   icon: Globe },
+  { href: '/admin/prospeccao', label: 'Prospecção Maps', icon: MapPin },
 ];
 
 interface AdminSidebarProps {
