@@ -4,6 +4,7 @@ import { Filters } from './_components/Filters';
 import { StatusChart } from './_components/StatusChart';
 import { TimelineChart } from './_components/TimelineChart';
 import { RetrabalhoTable } from './_components/RetrabalhoTable';
+import { LeadsTable } from './_components/LeadsTable';
 import { STATUS_ORDER, statusConfig, type LeadProspeccao, type LeadProspeccaoStatus } from './_components/types';
 
 const CARD = 'bg-surface border border-border rounded-2xl p-6';
@@ -142,55 +143,8 @@ export default async function ProspeccaoPage({
         </div>
       </div>
 
-      {/* Lista de leads com badge de Instagram */}
-      <div className={`${CARD} mb-6 overflow-hidden !p-0`}>
-        <div className="px-6 py-4 border-b border-border">
-          <p className="text-[9px] font-black uppercase tracking-widest text-muted">Leads ({total})</p>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[800px]">
-            <thead>
-              <tr className="border-b border-border bg-white/[0.015]">
-                {['Título', 'Telefone', 'Termo de Busca', 'Status', 'Avaliações'].map((h) => (
-                  <th key={h} className="px-5 py-3 text-left text-[9px] font-black uppercase tracking-widest text-muted">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {leads.map((lead) => (
-                <tr key={lead.id} className="border-b border-border last:border-0">
-                  <td className="px-5 py-3.5 text-sm font-bold text-primary">
-                    <div className="flex items-center gap-2">
-                      {lead.title}
-                      {lead.instagram_url && (
-                        <a
-                          href={lead.instagram_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          title="Tem Instagram"
-                          className="shrink-0 w-5 h-5 rounded-md bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400"
-                        >
-                          <Instagram className="w-3 h-3" />
-                        </a>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-5 py-3.5 text-sm text-secondary">{lead.phone || '—'}</td>
-                  <td className="px-5 py-3.5 text-sm text-muted">{lead.search_term || '—'}</td>
-                  <td className="px-5 py-3.5">
-                    <span className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest ${statusConfig[lead.status].style}`}>
-                      {statusConfig[lead.status].label}
-                    </span>
-                  </td>
-                  <td className="px-5 py-3.5 text-sm text-muted">{lead.reviews_count ?? '—'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {/* Lista completa de leads */}
+      <LeadsTable leads={leads} />
 
       {/* Retrabalho */}
       <RetrabalhoTable leads={leads} diasLimite={diasLimite} />
