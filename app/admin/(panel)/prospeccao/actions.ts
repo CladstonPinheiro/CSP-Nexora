@@ -41,3 +41,38 @@ export async function updateLeadStatus(
   revalidatePath('/admin/prospeccao');
   return {};
 }
+
+export async function updateLeadFields(
+  id: string,
+  fields: {
+    title: string;
+    phone: string | null;
+    address: string | null;
+    website: string | null;
+    category_name: string | null;
+  }
+): Promise<{ error?: string }> {
+  const user = await getAuthUser();
+  if (!user) redirect('/admin/login');
+
+  const supabase = createAdminClient();
+  const { error } = await supabase.from('leads_prospeccao').update(fields).eq('id', id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath('/admin/prospeccao');
+  return {};
+}
+
+export async function deleteLead(id: string): Promise<{ error?: string }> {
+  const user = await getAuthUser();
+  if (!user) redirect('/admin/login');
+
+  const supabase = createAdminClient();
+  const { error } = await supabase.from('leads_prospeccao').delete().eq('id', id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath('/admin/prospeccao');
+  return {};
+}

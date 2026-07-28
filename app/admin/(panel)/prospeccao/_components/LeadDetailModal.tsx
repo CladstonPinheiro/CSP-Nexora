@@ -16,8 +16,9 @@ import {
   Loader2,
   CheckCircle2,
   AlertTriangle,
+  Store,
 } from 'lucide-react';
-import { updateLeadStatus } from '../actions';
+import { updateLeadStatus, updateLeadFields } from '../actions';
 import { STATUS_ORDER, statusConfig, type LeadProspeccao, type LeadProspeccaoStatus } from './types';
 import { WhatsAppButton } from './WhatsAppButton';
 
@@ -67,6 +68,36 @@ function InfoRow({
   );
 }
 
+function EditableField({
+  icon: Icon,
+  label,
+  value,
+  onChange,
+}: {
+  icon: React.ElementType;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <div className="w-7 h-7 rounded-lg bg-white/5 border border-border flex items-center justify-center shrink-0 mt-0.5">
+        <Icon className="w-3.5 h-3.5 text-muted" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">{label}</p>
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full bg-inset border border-border rounded-xl px-3 py-2 text-sm text-primary focus:outline-none focus:border-border-strong transition-all"
+          style={{ backgroundColor: 'var(--color-inset)' }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export function LeadDetailModal({
   lead,
   onClose,
@@ -78,6 +109,15 @@ export function LeadDetailModal({
   const [status, setStatus] = useState<LeadProspeccaoStatus>(lead.status);
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
+  const [formFields, setFormFields] = useState({
+    title: lead.title,
+    phone: lead.phone ?? '',
+    address: lead.address ?? '',
+    website: lead.website ?? '',
+    category_name: lead.category_name ?? '',
+  });
+  const [fieldsSaveState, setFieldsSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+
   async function handleStatusChange(newStatus: LeadProspeccaoStatus) {
     setStatus(newStatus);
     setSaveState('saving');
@@ -87,6 +127,27 @@ export function LeadDetailModal({
       return;
     }
     setSaveState('saved');
+    router.refresh();
+  }
+
+  function updateField(field: keyof typeof formFields, value: string) {
+    setFormFields((prev) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleSaveFields() {
+    setFieldsSaveState('saving');
+    const { error } = await updateLeadFields(lead.id, {
+      title: formFields.title.trim(),
+      phone: formFields.phone.trim() || null,
+      address: formFields.address.trim() || null,
+      website: formFields.website.trim() || null,
+      category_name: formFields.category_name.trim() || null,
+    });
+    if (error) {
+      setFieldsSaveState('error');
+      return;
+    }
+    setFieldsSaveState('saved');
     router.refresh();
   }
 
@@ -146,12 +207,42 @@ export function LeadDetailModal({
 
           <div className="h-px bg-white/5" />
 
-          {/* Campos */}
+          {/* Campos editáveis */}
+          <div>
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">Editar Informações</p>
+            <div className="flex flex-col gap-4">
+              <EditableField icon={Store} label="Nome / Título" value={formFields.title} onChange={(v) => updateField('title', v)} />
+              <EditableField icon={Phone} label="Telefone" value={formFields.phone} onChange={(v) => updateField('phone', v)} />
+              <EditableField icon={MapPin} label="Endereço" value={formFields.address} onChange={(v) => updateField('address', v)} />
+              <EditableField icon={Globe} label="Website" value={formFields.website} onChange={(v) => updateField('website', v)} />
+              <EditableField icon={Briefcase} label="Categoria" value={formFields.category_name} onChange={(v) => updateField('category_name', v)} />
+            </div>
+            <div className="flex items-center gap-3 mt-4">
+              <button
+                onClick={handleSaveFields}
+                disabled={fieldsSaveState === 'saving'}
+                className="px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[11px] font-black uppercase tracking-widest hover:bg-cyan-500/20 transition-all disabled:opacity-50"
+              >
+                Salvar
+              </button>
+              {fieldsSaveState === 'saving' && <Loader2 className="w-4 h-4 text-muted animate-spin" />}
+              {fieldsSaveState === 'saved' && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-emerald-400">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Salvo
+                </span>
+              )}
+              {fieldsSaveState === 'error' && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-red-400">
+                  <AlertTriangle className="w-3.5 h-3.5" /> Erro ao salvar
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="h-px bg-white/5" />
+
+          {/* Campos somente leitura */}
           <div className="flex flex-col gap-4">
-            <InfoRow icon={Phone} label="Telefone" value={lead.phone ?? ''} />
-            <InfoRow icon={MapPin} label="Endereço" value={lead.address ?? ''} />
-            <InfoRow icon={Globe} label="Website" value={lead.website ?? ''} href={lead.website ?? undefined} />
-            <InfoRow icon={Briefcase} label="Categoria" value={lead.category_name ?? ''} />
             <InfoRow icon={Star} label="Nota / Avaliações" value={lead.total_score != null ? `${lead.total_score} ⭐ (${lead.reviews_count ?? 0} avaliações)` : ''} />
             <InfoRow icon={Search} label="Termo de Busca" value={lead.search_term ?? ''} />
             <InfoRow icon={MapPin} label="Google Maps" value={lead.maps_url ?? ''} href={lead.maps_url ?? undefined} />

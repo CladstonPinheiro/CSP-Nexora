@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Instagram, InboxIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Instagram, InboxIcon, Pencil, Trash2 } from 'lucide-react';
 import { statusConfig, type LeadProspeccao } from './types';
 import { WhatsAppButton } from './WhatsAppButton';
 import { LeadDetailModal } from './LeadDetailModal';
+import { deleteLead } from '../actions';
 
 const PAGE_SIZE = 50;
 
@@ -20,6 +21,12 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
     setPage(Math.min(Math.max(1, p), totalPages));
   }
 
+  async function handleDelete(id: string) {
+    if (!window.confirm('Excluir este lead? Essa ação não pode ser desfeita.')) return;
+    const { error } = await deleteLead(id);
+    if (error) alert(`Erro ao excluir: ${error}`);
+  }
+
   return (
     <div className="bg-surface border border-border rounded-2xl overflow-hidden mb-6">
       <div className="px-6 py-4 border-b border-border flex items-center justify-between">
@@ -31,10 +38,10 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
         )}
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[900px]">
+        <table className="w-full min-w-[820px]">
           <thead>
             <tr className="border-b border-border bg-white/[0.015]">
-              {['Título', 'Telefone', 'Categoria', 'Status', 'Avaliações', 'Nota', ''].map((h) => (
+              {['Título', 'Telefone', 'Categoria', 'Status', 'Avaliações', 'Nota', 'Ações'].map((h) => (
                 <th key={h} className="px-5 py-3 text-left text-[9px] font-black uppercase tracking-widest text-muted">
                   {h}
                 </th>
@@ -60,9 +67,9 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
                   onClick={() => setSelectedLead(lead)}
                   className="border-b border-border last:border-0 cursor-pointer hover:bg-white/[0.025] transition-colors"
                 >
-                  <td className="px-5 py-3.5 text-sm font-bold text-primary">
+                  <td className="px-5 py-3.5 text-sm font-bold text-primary max-w-[220px]">
                     <div className="flex items-center gap-2">
-                      {lead.title}
+                      <span className="truncate" title={lead.title}>{lead.title}</span>
                       {lead.instagram_url && (
                         <a
                           href={lead.instagram_url}
@@ -78,7 +85,9 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
                     </div>
                   </td>
                   <td className="px-5 py-3.5 text-sm text-secondary">{lead.phone || '—'}</td>
-                  <td className="px-5 py-3.5 text-sm text-muted">{lead.category_name || '—'}</td>
+                  <td className="px-5 py-3.5 text-sm text-muted max-w-[110px]">
+                    <span className="block truncate" title={lead.category_name ?? undefined}>{lead.category_name || '—'}</span>
+                  </td>
                   <td className="px-5 py-3.5">
                     <span className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest ${statusConfig[lead.status].style}`}>
                       {statusConfig[lead.status].label}
@@ -87,7 +96,23 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
                   <td className="px-5 py-3.5 text-sm text-muted">{lead.reviews_count ?? '—'}</td>
                   <td className="px-5 py-3.5 text-sm text-muted">{lead.total_score ?? '—'}</td>
                   <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
-                    <WhatsAppButton phone={lead.phone} />
+                    <div className="flex items-center gap-1.5">
+                      <WhatsAppButton phone={lead.phone} />
+                      <button
+                        onClick={() => setSelectedLead(lead)}
+                        title="Editar"
+                        className="shrink-0 w-7 h-7 rounded-lg bg-white/5 border border-border flex items-center justify-center text-secondary hover:bg-white/10 hover:text-primary transition-all"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(lead.id)}
+                        title="Excluir"
+                        className="shrink-0 w-7 h-7 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 hover:bg-red-500/20 transition-all"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
