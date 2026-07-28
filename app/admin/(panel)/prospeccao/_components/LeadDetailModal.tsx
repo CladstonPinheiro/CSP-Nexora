@@ -19,6 +19,7 @@ import {
   User,
   UserCog,
   IdCard,
+  Store,
 } from 'lucide-react';
 import { updateLeadStatus, updateLeadFields } from '../actions';
 import { STATUS_ORDER, statusConfig, type LeadProspeccao, type LeadProspeccaoStatus } from './types';
@@ -115,9 +116,11 @@ function EditableField({
 
 export function LeadDetailModal({
   lead,
+  mode,
   onClose,
 }: {
   lead: LeadProspeccao;
+  mode: 'view' | 'edit';
   onClose: () => void;
 }) {
   const router = useRouter();
@@ -125,6 +128,11 @@ export function LeadDetailModal({
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
   const [formFields, setFormFields] = useState({
+    title: lead.title,
+    phone: lead.phone ?? '',
+    address: lead.address ?? '',
+    website: lead.website ?? '',
+    category_name: lead.category_name ?? '',
     nome_contato: lead.nome_contato ?? '',
     cargo_contato: lead.cargo_contato ?? '',
     nome_responsavel: lead.nome_responsavel ?? '',
@@ -152,12 +160,26 @@ export function LeadDetailModal({
   async function handleSaveFields() {
     setFieldsSaveState('saving');
     try {
-      const { error } = await updateLeadFields(lead.id, {
-        nome_contato: formFields.nome_contato.trim() || null,
-        cargo_contato: formFields.cargo_contato.trim() || null,
-        nome_responsavel: formFields.nome_responsavel.trim() || null,
-        cargo_responsavel: formFields.cargo_responsavel.trim() || null,
-      });
+      const payload =
+        mode === 'edit'
+          ? {
+              title: formFields.title.trim(),
+              phone: formFields.phone.trim() || null,
+              address: formFields.address.trim() || null,
+              website: formFields.website.trim() || null,
+              category_name: formFields.category_name.trim() || null,
+              nome_contato: formFields.nome_contato.trim() || null,
+              cargo_contato: formFields.cargo_contato.trim() || null,
+              nome_responsavel: formFields.nome_responsavel.trim() || null,
+              cargo_responsavel: formFields.cargo_responsavel.trim() || null,
+            }
+          : {
+              nome_contato: formFields.nome_contato.trim() || null,
+              cargo_contato: formFields.cargo_contato.trim() || null,
+              nome_responsavel: formFields.nome_responsavel.trim() || null,
+              cargo_responsavel: formFields.cargo_responsavel.trim() || null,
+            };
+      const { error } = await updateLeadFields(lead.id, payload);
       if (error) {
         setFieldsErrorMessage(error);
         setFieldsSaveState('error');
@@ -234,49 +256,98 @@ export function LeadDetailModal({
 
           <div className="h-px bg-white/5" />
 
-          {/* Informações (somente leitura) */}
-          <div className="flex flex-col gap-4">
-            <InfoRow icon={Phone} label="Telefone" value={lead.phone ?? ''} href={buildTelUrl(lead.phone) ?? undefined} />
-            <InfoRow icon={MapPin} label="Endereço" value={lead.address ?? ''} />
-            <InfoRow icon={Globe} label="Website" value={lead.website ?? ''} href={buildWebsiteUrl(lead.website) ?? undefined} />
-            <InfoRow icon={Briefcase} label="Categoria" value={lead.category_name ?? ''} />
-          </div>
+          {mode === 'edit' ? (
+            <>
+              {/* Editar Informações (9 campos + Salvar único) */}
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">Editar Informações</p>
+                <div className="flex flex-col gap-4">
+                  <EditableField icon={Store} label="Nome / Título" value={formFields.title} onChange={(v) => updateField('title', v)} />
+                  <EditableField icon={Phone} label="Telefone" value={formFields.phone} onChange={(v) => updateField('phone', v)} />
+                  <EditableField icon={MapPin} label="Endereço" value={formFields.address} onChange={(v) => updateField('address', v)} />
+                  <EditableField icon={Globe} label="Website" value={formFields.website} onChange={(v) => updateField('website', v)} />
+                  <EditableField icon={Briefcase} label="Categoria" value={formFields.category_name} onChange={(v) => updateField('category_name', v)} />
+                </div>
 
-          <div className="h-px bg-white/5" />
+                <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3 mt-6">Contato na Prospecção</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <EditableField icon={User} label="Nome do Contato" value={formFields.nome_contato} onChange={(v) => updateField('nome_contato', v)} />
+                  <EditableField icon={IdCard} label="Cargo do Contato" value={formFields.cargo_contato} onChange={(v) => updateField('cargo_contato', v)} />
+                  <EditableField icon={UserCog} label="Nome do Responsável" value={formFields.nome_responsavel} onChange={(v) => updateField('nome_responsavel', v)} />
+                  <EditableField icon={IdCard} label="Cargo do Responsável" value={formFields.cargo_responsavel} onChange={(v) => updateField('cargo_responsavel', v)} />
+                </div>
 
-          {/* Contato na Prospecção (editável) */}
-          <div>
-            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">Contato na Prospecção</p>
-            <div className="grid grid-cols-2 gap-4">
-              <EditableField icon={User} label="Nome do Contato" value={formFields.nome_contato} onChange={(v) => updateField('nome_contato', v)} />
-              <EditableField icon={IdCard} label="Cargo do Contato" value={formFields.cargo_contato} onChange={(v) => updateField('cargo_contato', v)} />
-              <EditableField icon={UserCog} label="Nome do Responsável" value={formFields.nome_responsavel} onChange={(v) => updateField('nome_responsavel', v)} />
-              <EditableField icon={IdCard} label="Cargo do Responsável" value={formFields.cargo_responsavel} onChange={(v) => updateField('cargo_responsavel', v)} />
-            </div>
+                <div className="flex items-center gap-3 mt-4">
+                  <button
+                    onClick={handleSaveFields}
+                    disabled={fieldsSaveState === 'saving'}
+                    className="px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[11px] font-black uppercase tracking-widest hover:bg-cyan-500/20 transition-all disabled:opacity-50"
+                  >
+                    Salvar
+                  </button>
+                  {fieldsSaveState === 'saving' && <Loader2 className="w-4 h-4 text-muted animate-spin" />}
+                  {fieldsSaveState === 'saved' && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-emerald-400">
+                      <CheckCircle2 className="w-3.5 h-3.5" /> Salvo
+                    </span>
+                  )}
+                  {fieldsSaveState === 'error' && (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-400">
+                      <AlertTriangle className="w-3.5 h-3.5 shrink-0" /> {fieldsErrorMessage || 'Erro ao salvar'}
+                    </span>
+                  )}
+                </div>
+              </div>
 
-            <div className="flex items-center gap-3 mt-4">
-              <button
-                onClick={handleSaveFields}
-                disabled={fieldsSaveState === 'saving'}
-                className="px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[11px] font-black uppercase tracking-widest hover:bg-cyan-500/20 transition-all disabled:opacity-50"
-              >
-                Salvar
-              </button>
-              {fieldsSaveState === 'saving' && <Loader2 className="w-4 h-4 text-muted animate-spin" />}
-              {fieldsSaveState === 'saved' && (
-                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-emerald-400">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Salvo
-                </span>
-              )}
-              {fieldsSaveState === 'error' && (
-                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-400">
-                  <AlertTriangle className="w-3.5 h-3.5 shrink-0" /> {fieldsErrorMessage || 'Erro ao salvar'}
-                </span>
-              )}
-            </div>
-          </div>
+              <div className="h-px bg-white/5" />
+            </>
+          ) : (
+            <>
+              {/* Informações (somente leitura) */}
+              <div className="flex flex-col gap-4">
+                <InfoRow icon={Phone} label="Telefone" value={lead.phone ?? ''} href={buildTelUrl(lead.phone) ?? undefined} />
+                <InfoRow icon={MapPin} label="Endereço" value={lead.address ?? ''} />
+                <InfoRow icon={Globe} label="Website" value={lead.website ?? ''} href={buildWebsiteUrl(lead.website) ?? undefined} />
+                <InfoRow icon={Briefcase} label="Categoria" value={lead.category_name ?? ''} />
+              </div>
 
-          <div className="h-px bg-white/5" />
+              <div className="h-px bg-white/5" />
+
+              {/* Contato na Prospecção (editável) */}
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">Contato na Prospecção</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <EditableField icon={User} label="Nome do Contato" value={formFields.nome_contato} onChange={(v) => updateField('nome_contato', v)} />
+                  <EditableField icon={IdCard} label="Cargo do Contato" value={formFields.cargo_contato} onChange={(v) => updateField('cargo_contato', v)} />
+                  <EditableField icon={UserCog} label="Nome do Responsável" value={formFields.nome_responsavel} onChange={(v) => updateField('nome_responsavel', v)} />
+                  <EditableField icon={IdCard} label="Cargo do Responsável" value={formFields.cargo_responsavel} onChange={(v) => updateField('cargo_responsavel', v)} />
+                </div>
+
+                <div className="flex items-center gap-3 mt-4">
+                  <button
+                    onClick={handleSaveFields}
+                    disabled={fieldsSaveState === 'saving'}
+                    className="px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[11px] font-black uppercase tracking-widest hover:bg-cyan-500/20 transition-all disabled:opacity-50"
+                  >
+                    Salvar
+                  </button>
+                  {fieldsSaveState === 'saving' && <Loader2 className="w-4 h-4 text-muted animate-spin" />}
+                  {fieldsSaveState === 'saved' && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-emerald-400">
+                      <CheckCircle2 className="w-3.5 h-3.5" /> Salvo
+                    </span>
+                  )}
+                  {fieldsSaveState === 'error' && (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-400">
+                      <AlertTriangle className="w-3.5 h-3.5 shrink-0" /> {fieldsErrorMessage || 'Erro ao salvar'}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="h-px bg-white/5" />
+            </>
+          )}
 
           {/* Campos somente leitura */}
           <div className="flex flex-col gap-4">

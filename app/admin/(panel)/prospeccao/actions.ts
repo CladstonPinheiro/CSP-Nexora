@@ -44,12 +44,17 @@ export async function updateLeadStatus(
 
 export async function updateLeadFields(
   id: string,
-  fields: {
+  fields: Partial<{
+    title: string;
+    phone: string | null;
+    address: string | null;
+    website: string | null;
+    category_name: string | null;
     nome_contato: string | null;
     cargo_contato: string | null;
     nome_responsavel: string | null;
     cargo_responsavel: string | null;
-  }
+  }>
 ): Promise<{ error?: string }> {
   const user = await getAuthUser();
   if (!user) redirect('/admin/login');
