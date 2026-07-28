@@ -14,6 +14,10 @@ export type LeadProspeccao = {
   status: LeadProspeccaoStatus;
   instagram_url: string | null;
   created_at: string;
+  nome_contato: string | null;
+  cargo_contato: string | null;
+  nome_responsavel: string | null;
+  cargo_responsavel: string | null;
 };
 
 export const STATUS_ORDER: LeadProspeccaoStatus[] = [

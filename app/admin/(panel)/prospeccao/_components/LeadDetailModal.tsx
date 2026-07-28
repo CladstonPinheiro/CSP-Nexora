@@ -17,6 +17,9 @@ import {
   CheckCircle2,
   AlertTriangle,
   Store,
+  User,
+  UserCog,
+  IdCard,
 } from 'lucide-react';
 import { updateLeadStatus, updateLeadFields } from '../actions';
 import { STATUS_ORDER, statusConfig, type LeadProspeccao, type LeadProspeccaoStatus } from './types';
@@ -115,6 +118,10 @@ export function LeadDetailModal({
     address: lead.address ?? '',
     website: lead.website ?? '',
     category_name: lead.category_name ?? '',
+    nome_contato: lead.nome_contato ?? '',
+    cargo_contato: lead.cargo_contato ?? '',
+    nome_responsavel: lead.nome_responsavel ?? '',
+    cargo_responsavel: lead.cargo_responsavel ?? '',
   });
   const [fieldsSaveState, setFieldsSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
@@ -142,6 +149,10 @@ export function LeadDetailModal({
       address: formFields.address.trim() || null,
       website: formFields.website.trim() || null,
       category_name: formFields.category_name.trim() || null,
+      nome_contato: formFields.nome_contato.trim() || null,
+      cargo_contato: formFields.cargo_contato.trim() || null,
+      nome_responsavel: formFields.nome_responsavel.trim() || null,
+      cargo_responsavel: formFields.cargo_responsavel.trim() || null,
     });
     if (error) {
       setFieldsSaveState('error');
@@ -217,6 +228,15 @@ export function LeadDetailModal({
               <EditableField icon={Globe} label="Website" value={formFields.website} onChange={(v) => updateField('website', v)} />
               <EditableField icon={Briefcase} label="Categoria" value={formFields.category_name} onChange={(v) => updateField('category_name', v)} />
             </div>
+
+            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3 mt-6">Contato na Prospecção</p>
+            <div className="grid grid-cols-2 gap-4">
+              <EditableField icon={User} label="Nome do Contato" value={formFields.nome_contato} onChange={(v) => updateField('nome_contato', v)} />
+              <EditableField icon={IdCard} label="Cargo do Contato" value={formFields.cargo_contato} onChange={(v) => updateField('cargo_contato', v)} />
+              <EditableField icon={UserCog} label="Nome do Responsável" value={formFields.nome_responsavel} onChange={(v) => updateField('nome_responsavel', v)} />
+              <EditableField icon={IdCard} label="Cargo do Responsável" value={formFields.cargo_responsavel} onChange={(v) => updateField('cargo_responsavel', v)} />
+            </div>
+
             <div className="flex items-center gap-3 mt-4">
               <button
                 onClick={handleSaveFields}

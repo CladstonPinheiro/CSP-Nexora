@@ -24,7 +24,7 @@ async function getLeads(filters: { status?: string; search_term?: string }): Pro
   const supabase = createAdminClient();
   let query = supabase
     .from('leads_prospeccao')
-    .select('id, title, phone, address, website, category_name, total_score, reviews_count, maps_url, search_term, status, instagram_url, created_at')
+    .select('id, title, phone, address, website, category_name, total_score, reviews_count, maps_url, search_term, status, instagram_url, created_at, nome_contato, cargo_contato, nome_responsavel, cargo_responsavel')
     .order('created_at', { ascending: false });
 
   if (filters.status) query = query.eq('status', filters.status);
