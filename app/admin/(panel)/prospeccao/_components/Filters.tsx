@@ -14,7 +14,8 @@ export function Filters({ searchTerms }: { searchTerms: string[] }) {
 
   const status = searchParams.get('status') ?? '';
   const searchTerm = searchParams.get('search_term') ?? '';
-  const hasFilters = status || searchTerm;
+  const sort = searchParams.get('ordenar') ?? '';
+  const hasFilters = status || searchTerm || sort;
 
   function updateParam(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
@@ -54,6 +55,17 @@ export function Filters({ searchTerms }: { searchTerms: string[] }) {
             {term}
           </option>
         ))}
+      </select>
+      <select
+        value={sort}
+        onChange={(e) => updateParam('ordenar', e.target.value)}
+        className={SELECT_CLASS}
+        style={{ backgroundColor: 'var(--color-inset)' }}
+      >
+        <option value="">Mais recentes primeiro</option>
+        <option value="antigos">Mais antigos primeiro</option>
+        <option value="nome">Nome (A-Z)</option>
+        <option value="avaliacoes">Avaliações (maior primeiro)</option>
       </select>
       {hasFilters && (
         <button

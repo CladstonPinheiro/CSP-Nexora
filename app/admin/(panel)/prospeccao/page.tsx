@@ -20,15 +20,29 @@ async function getSearchTerms(): Promise<string[]> {
   return [...unique].sort();
 }
 
-async function getLeads(filters: { status?: string; search_term?: string }): Promise<LeadProspeccao[]> {
+async function getLeads(filters: { status?: string; search_term?: string; sort?: string }): Promise<LeadProspeccao[]> {
   const supabase = createAdminClient();
   let query = supabase
     .from('leads_prospeccao')
-    .select('id, title, phone, address, website, category_name, total_score, reviews_count, maps_url, search_term, status, instagram_url, created_at, nome_contato, cargo_contato, nome_responsavel, cargo_responsavel')
-    .order('created_at', { ascending: false });
+    .select('id, title, phone, address, website, category_name, total_score, reviews_count, maps_url, search_term, status, instagram_url, created_at, nome_contato, cargo_contato, nome_responsavel, cargo_responsavel');
 
   if (filters.status) query = query.eq('status', filters.status);
   if (filters.search_term) query = query.eq('search_term', filters.search_term);
+
+  switch (filters.sort) {
+    case 'antigos':
+      query = query.order('created_at', { ascending: true });
+      break;
+    case 'nome':
+      query = query.order('title', { ascending: true });
+      break;
+    case 'avaliacoes':
+      query = query.order('reviews_count', { ascending: false, nullsFirst: false });
+      break;
+    default:
+      query = query.order('created_at', { ascending: false });
+  }
+  query = query.order('id', { ascending: true });
 
   const { data } = await query;
   return (data ?? []) as LeadProspeccao[];
@@ -51,13 +65,13 @@ function buildTimeline(leads: LeadProspeccao[]) {
 export default async function ProspeccaoPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; search_term?: string; diasParado?: string }>;
+  searchParams: Promise<{ status?: string; search_term?: string; diasParado?: string; ordenar?: string }>;
 }) {
   const params = await searchParams;
   const diasLimite = Number(params.diasParado) > 0 ? Number(params.diasParado) : DEFAULT_DIAS_PARADO;
 
   const [leads, searchTerms] = await Promise.all([
-    getLeads({ status: params.status, search_term: params.search_term }),
+    getLeads({ status: params.status, search_term: params.search_term, sort: params.ordenar }),
     getSearchTerms(),
   ]);
 
