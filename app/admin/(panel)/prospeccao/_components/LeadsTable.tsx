@@ -11,7 +11,7 @@ const PAGE_SIZE = 50;
 
 export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
   const [page, setPage] = useState(1);
-  const [modalState, setModalState] = useState<{ lead: LeadProspeccao; mode: 'view' | 'edit' } | null>(null);
+  const [selectedLead, setSelectedLead] = useState<LeadProspeccao | null>(null);
 
   const totalPages = Math.max(1, Math.ceil(leads.length / PAGE_SIZE));
   const start = (page - 1) * PAGE_SIZE;
@@ -64,7 +64,7 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
               pageItems.map((lead) => (
                 <tr
                   key={lead.id}
-                  onClick={() => setModalState({ lead, mode: 'view' })}
+                  onClick={() => setSelectedLead(lead)}
                   className="border-b border-border last:border-0 cursor-pointer hover:bg-white/[0.025] transition-colors"
                 >
                   <td className="px-5 py-3.5 text-sm font-bold text-primary max-w-[220px]">
@@ -99,7 +99,7 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
                     <div className="flex items-center gap-1.5">
                       <WhatsAppButton phone={lead.phone} />
                       <button
-                        onClick={() => setModalState({ lead, mode: 'edit' })}
+                        onClick={() => setSelectedLead(lead)}
                         title="Editar"
                         className="shrink-0 w-7 h-7 rounded-lg bg-white/5 border border-border flex items-center justify-center text-secondary hover:bg-white/10 hover:text-primary transition-all"
                       >
@@ -143,12 +143,8 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
         </div>
       )}
 
-      {modalState && (
-        <LeadDetailModal
-          lead={modalState.lead}
-          initialMode={modalState.mode}
-          onClose={() => setModalState(null)}
-        />
+      {selectedLead && (
+        <LeadDetailModal lead={selectedLead} onClose={() => setSelectedLead(null)} />
       )}
     </div>
   );

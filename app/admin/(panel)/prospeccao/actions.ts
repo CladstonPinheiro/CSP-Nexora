@@ -45,11 +45,6 @@ export async function updateLeadStatus(
 export async function updateLeadFields(
   id: string,
   fields: {
-    title: string;
-    phone: string | null;
-    address: string | null;
-    website: string | null;
-    category_name: string | null;
     nome_contato: string | null;
     cargo_contato: string | null;
     nome_responsavel: string | null;
