@@ -20,6 +20,7 @@ import {
   User,
   UserCog,
   IdCard,
+  Pencil,
 } from 'lucide-react';
 import { updateLeadStatus, updateLeadFields } from '../actions';
 import { STATUS_ORDER, statusConfig, type LeadProspeccao, type LeadProspeccaoStatus } from './types';
@@ -116,12 +117,15 @@ function EditableField({
 
 export function LeadDetailModal({
   lead,
+  initialMode,
   onClose,
 }: {
   lead: LeadProspeccao;
+  initialMode: 'view' | 'edit';
   onClose: () => void;
 }) {
   const router = useRouter();
+  const [mode, setMode] = useState<'view' | 'edit'>(initialMode);
   const [status, setStatus] = useState<LeadProspeccaoStatus>(lead.status);
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
@@ -190,97 +194,133 @@ export function LeadDetailModal({
             <h2 className="text-xl font-black text-primary tracking-tight">{lead.title}</h2>
             {lead.category_name && <p className="text-sm text-muted mt-0.5">{lead.category_name}</p>}
           </div>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-border flex items-center justify-center text-muted hover:text-primary transition-all shrink-0"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            {mode === 'view' && (
+              <button
+                onClick={() => setMode('edit')}
+                title="Editar"
+                className="w-8 h-8 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/20 flex items-center justify-center text-cyan-400 transition-all"
+              >
+                <Pencil className="w-4 h-4" />
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-border flex items-center justify-center text-muted hover:text-primary transition-all"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         <div className="px-6 py-5 flex flex-col gap-6">
           {/* Status */}
           <div>
             <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">Status</p>
-            <div className="flex items-center gap-3">
-              <select
-                value={status}
-                onChange={(e) => handleStatusChange(e.target.value as LeadProspeccaoStatus)}
-                className="bg-inset border border-border rounded-xl px-3 py-2 text-secondary text-xs font-bold focus:outline-none focus:border-border-strong transition-all cursor-pointer min-w-[170px]"
-                style={{ backgroundColor: 'var(--color-inset)' }}
-              >
-                {STATUS_ORDER.map((s) => (
-                  <option key={s} value={s}>
-                    {statusConfig[s].label}
-                  </option>
-                ))}
-              </select>
-              {saveState === 'saving' && <Loader2 className="w-4 h-4 text-muted animate-spin" />}
-              {saveState === 'saved' && (
-                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-emerald-400">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Salvo
-                </span>
-              )}
-              {saveState === 'error' && (
-                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-red-400">
-                  <AlertTriangle className="w-3.5 h-3.5" /> Erro ao salvar
-                </span>
-              )}
-            </div>
+            {mode === 'edit' ? (
+              <div className="flex items-center gap-3">
+                <select
+                  value={status}
+                  onChange={(e) => handleStatusChange(e.target.value as LeadProspeccaoStatus)}
+                  className="bg-inset border border-border rounded-xl px-3 py-2 text-secondary text-xs font-bold focus:outline-none focus:border-border-strong transition-all cursor-pointer min-w-[170px]"
+                  style={{ backgroundColor: 'var(--color-inset)' }}
+                >
+                  {STATUS_ORDER.map((s) => (
+                    <option key={s} value={s}>
+                      {statusConfig[s].label}
+                    </option>
+                  ))}
+                </select>
+                {saveState === 'saving' && <Loader2 className="w-4 h-4 text-muted animate-spin" />}
+                {saveState === 'saved' && (
+                  <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-emerald-400">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Salvo
+                  </span>
+                )}
+                {saveState === 'error' && (
+                  <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-red-400">
+                    <AlertTriangle className="w-3.5 h-3.5" /> Erro ao salvar
+                  </span>
+                )}
+              </div>
+            ) : (
+              <span className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest ${statusConfig[lead.status].style}`}>
+                {statusConfig[lead.status].label}
+              </span>
+            )}
           </div>
 
           <div className="h-px bg-white/5" />
 
-          {/* Campos editáveis */}
-          <div>
-            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">Editar Informações</p>
-            <div className="flex flex-col gap-4">
-              <EditableField icon={Store} label="Nome / Título" value={formFields.title} onChange={(v) => updateField('title', v)} />
-              <EditableField icon={Phone} label="Telefone" value={formFields.phone} onChange={(v) => updateField('phone', v)} />
-              <EditableField icon={MapPin} label="Endereço" value={formFields.address} onChange={(v) => updateField('address', v)} />
-              <EditableField icon={Globe} label="Website" value={formFields.website} onChange={(v) => updateField('website', v)} />
-              <EditableField icon={Briefcase} label="Categoria" value={formFields.category_name} onChange={(v) => updateField('category_name', v)} />
-            </div>
+          {mode === 'edit' ? (
+            <>
+              {/* Campos editáveis */}
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">Editar Informações</p>
+                <div className="flex flex-col gap-4">
+                  <EditableField icon={Store} label="Nome / Título" value={formFields.title} onChange={(v) => updateField('title', v)} />
+                  <EditableField icon={Phone} label="Telefone" value={formFields.phone} onChange={(v) => updateField('phone', v)} />
+                  <EditableField icon={MapPin} label="Endereço" value={formFields.address} onChange={(v) => updateField('address', v)} />
+                  <EditableField icon={Globe} label="Website" value={formFields.website} onChange={(v) => updateField('website', v)} />
+                  <EditableField icon={Briefcase} label="Categoria" value={formFields.category_name} onChange={(v) => updateField('category_name', v)} />
+                </div>
 
-            <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3 mt-6">Contato na Prospecção</p>
-            <div className="grid grid-cols-2 gap-4">
-              <EditableField icon={User} label="Nome do Contato" value={formFields.nome_contato} onChange={(v) => updateField('nome_contato', v)} />
-              <EditableField icon={IdCard} label="Cargo do Contato" value={formFields.cargo_contato} onChange={(v) => updateField('cargo_contato', v)} />
-              <EditableField icon={UserCog} label="Nome do Responsável" value={formFields.nome_responsavel} onChange={(v) => updateField('nome_responsavel', v)} />
-              <EditableField icon={IdCard} label="Cargo do Responsável" value={formFields.cargo_responsavel} onChange={(v) => updateField('cargo_responsavel', v)} />
-            </div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3 mt-6">Contato na Prospecção</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <EditableField icon={User} label="Nome do Contato" value={formFields.nome_contato} onChange={(v) => updateField('nome_contato', v)} />
+                  <EditableField icon={IdCard} label="Cargo do Contato" value={formFields.cargo_contato} onChange={(v) => updateField('cargo_contato', v)} />
+                  <EditableField icon={UserCog} label="Nome do Responsável" value={formFields.nome_responsavel} onChange={(v) => updateField('nome_responsavel', v)} />
+                  <EditableField icon={IdCard} label="Cargo do Responsável" value={formFields.cargo_responsavel} onChange={(v) => updateField('cargo_responsavel', v)} />
+                </div>
 
-            <div className="flex items-center gap-3 mt-4">
-              <button
-                onClick={handleSaveFields}
-                disabled={fieldsSaveState === 'saving'}
-                className="px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[11px] font-black uppercase tracking-widest hover:bg-cyan-500/20 transition-all disabled:opacity-50"
-              >
-                Salvar
-              </button>
-              {fieldsSaveState === 'saving' && <Loader2 className="w-4 h-4 text-muted animate-spin" />}
-              {fieldsSaveState === 'saved' && (
-                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-emerald-400">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Salvo
-                </span>
-              )}
-              {fieldsSaveState === 'error' && (
-                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-red-400">
-                  <AlertTriangle className="w-3.5 h-3.5" /> Erro ao salvar
-                </span>
-              )}
-            </div>
-          </div>
+                <div className="flex items-center gap-3 mt-4">
+                  <button
+                    onClick={handleSaveFields}
+                    disabled={fieldsSaveState === 'saving'}
+                    className="px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[11px] font-black uppercase tracking-widest hover:bg-cyan-500/20 transition-all disabled:opacity-50"
+                  >
+                    Salvar
+                  </button>
+                  {fieldsSaveState === 'saving' && <Loader2 className="w-4 h-4 text-muted animate-spin" />}
+                  {fieldsSaveState === 'saved' && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-emerald-400">
+                      <CheckCircle2 className="w-3.5 h-3.5" /> Salvo
+                    </span>
+                  )}
+                  {fieldsSaveState === 'error' && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-red-400">
+                      <AlertTriangle className="w-3.5 h-3.5" /> Erro ao salvar
+                    </span>
+                  )}
+                </div>
+              </div>
 
-          <div className="h-px bg-white/5" />
+              <div className="h-px bg-white/5" />
+            </>
+          ) : (
+            <>
+              {/* Links Rápidos + campos somente leitura de contato */}
+              <div className="flex flex-col gap-4">
+                <InfoRow icon={MapPin} label="Endereço" value={lead.address ?? ''} />
+                <InfoRow icon={Phone} label="Telefone" value={lead.phone ?? ''} href={buildTelUrl(lead.phone) ?? undefined} />
+                <InfoRow icon={Globe} label="Website" value={lead.website ?? ''} href={buildWebsiteUrl(lead.website) ?? undefined} />
+              </div>
 
-          {/* Links Rápidos */}
-          <div className="flex flex-col gap-4">
-            <InfoRow icon={Phone} label="Telefone" value={lead.phone ?? ''} href={buildTelUrl(lead.phone) ?? undefined} />
-            <InfoRow icon={Globe} label="Website" value={lead.website ?? ''} href={buildWebsiteUrl(lead.website) ?? undefined} />
-          </div>
+              <div className="h-px bg-white/5" />
 
-          <div className="h-px bg-white/5" />
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">Contato na Prospecção</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <InfoRow icon={User} label="Nome do Contato" value={lead.nome_contato ?? ''} />
+                  <InfoRow icon={IdCard} label="Cargo do Contato" value={lead.cargo_contato ?? ''} />
+                  <InfoRow icon={UserCog} label="Nome do Responsável" value={lead.nome_responsavel ?? ''} />
+                  <InfoRow icon={IdCard} label="Cargo do Responsável" value={lead.cargo_responsavel ?? ''} />
+                </div>
+              </div>
+
+              <div className="h-px bg-white/5" />
+            </>
+          )}
 
           {/* Campos somente leitura */}
           <div className="flex flex-col gap-4">
