@@ -131,6 +131,7 @@ export function LeadDetailModal({
     cargo_responsavel: lead.cargo_responsavel ?? '',
   });
   const [fieldsSaveState, setFieldsSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [fieldsErrorMessage, setFieldsErrorMessage] = useState('');
 
   async function handleStatusChange(newStatus: LeadProspeccaoStatus) {
     setStatus(newStatus);
@@ -150,18 +151,31 @@ export function LeadDetailModal({
 
   async function handleSaveFields() {
     setFieldsSaveState('saving');
-    const { error } = await updateLeadFields(lead.id, {
-      nome_contato: formFields.nome_contato.trim() || null,
-      cargo_contato: formFields.cargo_contato.trim() || null,
-      nome_responsavel: formFields.nome_responsavel.trim() || null,
-      cargo_responsavel: formFields.cargo_responsavel.trim() || null,
-    });
-    if (error) {
+    try {
+      const { error } = await updateLeadFields(lead.id, {
+        nome_contato: formFields.nome_contato.trim() || null,
+        cargo_contato: formFields.cargo_contato.trim() || null,
+        nome_responsavel: formFields.nome_responsavel.trim() || null,
+        cargo_responsavel: formFields.cargo_responsavel.trim() || null,
+      });
+      if (error) {
+        setFieldsErrorMessage(error);
+        setFieldsSaveState('error');
+        return;
+      }
+      setFieldsSaveState('saved');
+      router.refresh();
+    } catch (err) {
+      const isStaleActionError =
+        err instanceof SyntaxError ||
+        (err instanceof Error && /unexpected token|is not valid json/i.test(err.message));
+      setFieldsErrorMessage(
+        isStaleActionError
+          ? 'Erro ao salvar — recarregue a página e tente novamente.'
+          : 'Erro ao salvar.'
+      );
       setFieldsSaveState('error');
-      return;
     }
-    setFieldsSaveState('saved');
-    router.refresh();
   }
 
   return (
@@ -255,8 +269,8 @@ export function LeadDetailModal({
                 </span>
               )}
               {fieldsSaveState === 'error' && (
-                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-red-400">
-                  <AlertTriangle className="w-3.5 h-3.5" /> Erro ao salvar
+                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-400">
+                  <AlertTriangle className="w-3.5 h-3.5 shrink-0" /> {fieldsErrorMessage || 'Erro ao salvar'}
                 </span>
               )}
             </div>
