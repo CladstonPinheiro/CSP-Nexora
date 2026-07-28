@@ -35,6 +35,19 @@ function formatDate(iso: string) {
   });
 }
 
+function buildTelUrl(phone: string | null): string | null {
+  if (!phone) return null;
+  let digits = phone.replace(/\D/g, '');
+  if (!digits) return null;
+  if (digits.length <= 11) digits = `55${digits}`;
+  return `tel:+${digits}`;
+}
+
+function buildWebsiteUrl(website: string | null): string | null {
+  if (!website) return null;
+  return /^https?:\/\//i.test(website) ? website : `https://${website}`;
+}
+
 function InfoRow({
   icon: Icon,
   label,
@@ -257,6 +270,14 @@ export function LeadDetailModal({
                 </span>
               )}
             </div>
+          </div>
+
+          <div className="h-px bg-white/5" />
+
+          {/* Links Rápidos */}
+          <div className="flex flex-col gap-4">
+            <InfoRow icon={Phone} label="Telefone" value={lead.phone ?? ''} href={buildTelUrl(lead.phone) ?? undefined} />
+            <InfoRow icon={Globe} label="Website" value={lead.website ?? ''} href={buildWebsiteUrl(lead.website) ?? undefined} />
           </div>
 
           <div className="h-px bg-white/5" />
