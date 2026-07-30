@@ -137,6 +137,7 @@ export function LeadDetailModal({
     cargo_contato: lead.cargo_contato ?? '',
     nome_responsavel: lead.nome_responsavel ?? '',
     cargo_responsavel: lead.cargo_responsavel ?? '',
+    instagram_url: lead.instagram_url ?? '',
   });
   const [fieldsSaveState, setFieldsSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [fieldsErrorMessage, setFieldsErrorMessage] = useState('');
@@ -172,12 +173,14 @@ export function LeadDetailModal({
               cargo_contato: formFields.cargo_contato.trim() || null,
               nome_responsavel: formFields.nome_responsavel.trim() || null,
               cargo_responsavel: formFields.cargo_responsavel.trim() || null,
+              instagram_url: formFields.instagram_url.trim() || null,
             }
           : {
               nome_contato: formFields.nome_contato.trim() || null,
               cargo_contato: formFields.cargo_contato.trim() || null,
               nome_responsavel: formFields.nome_responsavel.trim() || null,
               cargo_responsavel: formFields.cargo_responsavel.trim() || null,
+              instagram_url: formFields.instagram_url.trim() || null,
             };
       const { error } = await updateLeadFields(lead.id, payload);
       if (error) {
@@ -275,6 +278,9 @@ export function LeadDetailModal({
                   <EditableField icon={IdCard} label="Cargo do Contato" value={formFields.cargo_contato} onChange={(v) => updateField('cargo_contato', v)} />
                   <EditableField icon={UserCog} label="Nome do Responsável" value={formFields.nome_responsavel} onChange={(v) => updateField('nome_responsavel', v)} />
                   <EditableField icon={IdCard} label="Cargo do Responsável" value={formFields.cargo_responsavel} onChange={(v) => updateField('cargo_responsavel', v)} />
+                  <div className="col-span-2">
+                    <EditableField icon={Instagram} label="Instagram" value={formFields.instagram_url} onChange={(v) => updateField('instagram_url', v)} />
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-3 mt-4">
@@ -321,6 +327,9 @@ export function LeadDetailModal({
                   <EditableField icon={IdCard} label="Cargo do Contato" value={formFields.cargo_contato} onChange={(v) => updateField('cargo_contato', v)} />
                   <EditableField icon={UserCog} label="Nome do Responsável" value={formFields.nome_responsavel} onChange={(v) => updateField('nome_responsavel', v)} />
                   <EditableField icon={IdCard} label="Cargo do Responsável" value={formFields.cargo_responsavel} onChange={(v) => updateField('cargo_responsavel', v)} />
+                  <div className="col-span-2">
+                    <EditableField icon={Instagram} label="Instagram" value={formFields.instagram_url} onChange={(v) => updateField('instagram_url', v)} />
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-3 mt-4">
@@ -354,7 +363,6 @@ export function LeadDetailModal({
             <InfoRow icon={Star} label="Nota / Avaliações" value={lead.total_score != null ? `${lead.total_score} ⭐ (${lead.reviews_count ?? 0} avaliações)` : ''} />
             <InfoRow icon={Search} label="Termo de Busca" value={lead.search_term ?? ''} />
             <InfoRow icon={MapPin} label="Google Maps" value={lead.maps_url ?? ''} href={lead.maps_url ?? undefined} />
-            <InfoRow icon={Instagram} label="Instagram" value={lead.instagram_url ?? ''} href={lead.instagram_url ?? undefined} />
             <InfoRow icon={Calendar} label="Capturado em" value={formatDate(lead.created_at)} />
           </div>
 

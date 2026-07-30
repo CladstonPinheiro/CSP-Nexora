@@ -54,6 +54,7 @@ export async function updateLeadFields(
     cargo_contato: string | null;
     nome_responsavel: string | null;
     cargo_responsavel: string | null;
+    instagram_url: string | null;
   }>
 ): Promise<{ error?: string }> {
   const user = await getAuthUser();
