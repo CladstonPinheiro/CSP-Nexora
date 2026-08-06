@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Instagram, InboxIcon, Pencil, Trash2 } from 'lucide-react';
-import { statusConfig, type LeadProspeccao } from './types';
+import { statusConfig, getCadenciaConfig, type LeadProspeccao } from './types';
 import { WhatsAppButton } from './WhatsAppButton';
 import { LeadDetailModal } from './LeadDetailModal';
 import { deleteLead } from '../actions';
@@ -41,7 +41,7 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
         <table className="w-full min-w-[820px]">
           <thead>
             <tr className="border-b border-border bg-white/[0.015]">
-              {['Título', 'Telefone', 'Categoria', 'Status', 'Avaliações', 'Nota', 'Ações'].map((h) => (
+              {['Título', 'Telefone', 'Categoria', 'Status', 'Cadência', 'Avaliações', 'Nota', 'Ações'].map((h) => (
                 <th key={h} className="px-5 py-3 text-left text-[9px] font-black uppercase tracking-widest text-muted">
                   {h}
                 </th>
@@ -51,7 +51,7 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
           <tbody>
             {pageItems.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-16">
+                <td colSpan={8} className="py-16">
                   <div className="flex flex-col items-center justify-center text-center">
                     <div className="w-12 h-12 rounded-2xl bg-white/5 border border-border flex items-center justify-center mb-3">
                       <InboxIcon className="w-5 h-5 text-muted" />
@@ -91,6 +91,11 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
                   <td className="px-5 py-3.5">
                     <span className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest ${statusConfig[lead.status].style}`}>
                       {statusConfig[lead.status].label}
+                    </span>
+                  </td>
+                  <td className="px-5 py-3.5">
+                    <span className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest ${getCadenciaConfig(lead.status_cadencia).style}`}>
+                      {getCadenciaConfig(lead.status_cadencia).label}
                     </span>
                   </td>
                   <td className="px-5 py-3.5 text-sm text-muted">{lead.reviews_count ?? '—'}</td>

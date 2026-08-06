@@ -1,5 +1,6 @@
+import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase';
-import { MapPin, Users, PhoneCall, TrendingUp, Instagram, ArrowUpRight } from 'lucide-react';
+import { MapPin, Users, PhoneCall, TrendingUp, Instagram, ArrowUpRight, BookOpen } from 'lucide-react';
 import { Filters } from './_components/Filters';
 import { StatusChart } from './_components/StatusChart';
 import { TimelineChart } from './_components/TimelineChart';
@@ -24,7 +25,7 @@ async function getLeads(filters: { status?: string; search_term?: string; sort?:
   const supabase = createAdminClient();
   let query = supabase
     .from('leads_prospeccao')
-    .select('id, title, phone, address, website, category_name, total_score, reviews_count, maps_url, search_term, status, instagram_url, created_at, nome_contato, cargo_contato, nome_responsavel, cargo_responsavel');
+    .select('id, title, phone, address, website, category_name, total_score, reviews_count, maps_url, search_term, status, instagram_url, created_at, nome_contato, cargo_contato, nome_responsavel, cargo_responsavel, status_cadencia, data_msg_1, data_msg_2, data_msg_3, data_msg_4, data_msg_5, motivo_descarte');
 
   if (filters.status) query = query.eq('status', filters.status);
   if (filters.search_term) query = query.eq('search_term', filters.search_term);
@@ -113,7 +114,16 @@ export default async function ProspeccaoPage({
       </div>
       <p className="text-muted text-sm mt-1 ml-12 mb-6">Leads capturados via Google Maps Scraper</p>
 
-      <Filters searchTerms={searchTerms} />
+      <div className="flex items-center justify-between gap-3 flex-wrap mb-0">
+        <Filters searchTerms={searchTerms} />
+        <Link
+          href="/admin/prospeccao/playbook"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[11px] font-black uppercase tracking-widest hover:bg-cyan-500/20 transition-all mb-5 shrink-0"
+        >
+          <BookOpen className="w-3.5 h-3.5" />
+          Ver Playbook de Mensagens
+        </Link>
+      </div>
 
       {/* Cards de resumo */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">

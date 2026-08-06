@@ -20,9 +20,10 @@ import {
   UserCog,
   IdCard,
   Store,
+  Send,
 } from 'lucide-react';
 import { updateLeadStatus, updateLeadFields } from '../actions';
-import { STATUS_ORDER, statusConfig, type LeadProspeccao, type LeadProspeccaoStatus } from './types';
+import { STATUS_ORDER, statusConfig, getCadenciaConfig, type LeadProspeccao, type LeadProspeccaoStatus } from './types';
 import { WhatsAppButton } from './WhatsAppButton';
 
 function formatDate(iso: string) {
@@ -30,6 +31,15 @@ function formatDate(iso: string) {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+function formatShortDate(iso: string) {
+  return new Date(iso).toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
   });
@@ -141,6 +151,15 @@ export function LeadDetailModal({
   });
   const [fieldsSaveState, setFieldsSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [fieldsErrorMessage, setFieldsErrorMessage] = useState('');
+
+  const cadencia = getCadenciaConfig(lead.status_cadencia);
+  const mensagensCadencia = [
+    { n: 1, date: lead.data_msg_1 },
+    { n: 2, date: lead.data_msg_2 },
+    { n: 3, date: lead.data_msg_3 },
+    { n: 4, date: lead.data_msg_4 },
+    { n: 5, date: lead.data_msg_5 },
+  ].filter((m): m is { n: number; date: string } => !!m.date);
 
   async function handleStatusChange(newStatus: LeadProspeccaoStatus) {
     setStatus(newStatus);
@@ -350,6 +369,38 @@ export function LeadDetailModal({
                     <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-400">
                       <AlertTriangle className="w-3.5 h-3.5 shrink-0" /> {fieldsErrorMessage || 'Erro ao salvar'}
                     </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="h-px bg-white/5" />
+
+              {/* Cadência de Prospecção */}
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-3">Cadência de Prospecção</p>
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-white/5 border border-border flex items-center justify-center shrink-0">
+                      <Send className="w-3.5 h-3.5 text-muted" />
+                    </div>
+                    <span className={`inline-flex px-2 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest ${cadencia.style}`}>
+                      {cadencia.label}
+                    </span>
+                  </div>
+                  {mensagensCadencia.length > 0 && (
+                    <ul className="flex flex-col gap-1 pl-10">
+                      {mensagensCadencia.map(({ n, date }) => (
+                        <li key={n} className="text-sm text-secondary">
+                          Msg {n}: {formatShortDate(date)}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {lead.motivo_descarte && (
+                    <div className="pl-10">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">Motivo do Descarte</p>
+                      <p className="text-sm text-red-400">{lead.motivo_descarte}</p>
+                    </div>
                   )}
                 </div>
               </div>
