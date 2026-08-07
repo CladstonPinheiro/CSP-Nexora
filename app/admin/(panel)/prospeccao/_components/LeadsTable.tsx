@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Instagram, InboxIcon, Pencil, Trash2 } from 'lucide-react';
+import { useState, type MouseEvent } from 'react';
+import { ChevronLeft, ChevronRight, Instagram, InboxIcon, Pencil, Trash2, Copy, Check } from 'lucide-react';
 import { statusConfig, getCadenciaConfig, type LeadProspeccao } from './types';
 import { WhatsAppButton } from './WhatsAppButton';
 import { LeadDetailModal } from './LeadDetailModal';
@@ -12,6 +12,7 @@ const PAGE_SIZE = 50;
 export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
   const [page, setPage] = useState(1);
   const [modalState, setModalState] = useState<{ lead: LeadProspeccao; mode: 'view' | 'edit' } | null>(null);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const totalPages = Math.max(1, Math.ceil(leads.length / PAGE_SIZE));
   const start = (page - 1) * PAGE_SIZE;
@@ -19,6 +20,13 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
 
   function goToPage(p: number) {
     setPage(Math.min(Math.max(1, p), totalPages));
+  }
+
+  function handleCopy(e: MouseEvent, key: string, value: string) {
+    e.stopPropagation();
+    navigator.clipboard.writeText(value);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey((current) => (current === key ? null : current)), 1500);
   }
 
   async function handleDelete(id: string) {
@@ -70,6 +78,19 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
                   <td className="px-5 py-3.5 text-sm font-bold text-primary max-w-[220px]">
                     <div className="flex items-center gap-2">
                       <span className="truncate" title={lead.title}>{lead.title}</span>
+                      {lead.title && (
+                        <button
+                          onClick={(e) => handleCopy(e, `${lead.id}-title`, lead.title)}
+                          title="Copiar nome"
+                          className="shrink-0 w-5 h-5 rounded-md bg-white/5 border border-border flex items-center justify-center text-muted hover:text-primary hover:bg-white/10 transition-all"
+                        >
+                          {copiedKey === `${lead.id}-title` ? (
+                            <Check className="w-3 h-3 text-green-400" />
+                          ) : (
+                            <Copy className="w-3 h-3" />
+                          )}
+                        </button>
+                      )}
                       {lead.instagram_url && (
                         <a
                           href={lead.instagram_url}
@@ -84,7 +105,24 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
                       )}
                     </div>
                   </td>
-                  <td className="px-5 py-3.5 text-sm text-secondary">{lead.phone || '—'}</td>
+                  <td className="px-5 py-3.5 text-sm text-secondary">
+                    <div className="flex items-center gap-2">
+                      <span>{lead.phone || '—'}</span>
+                      {lead.phone && (
+                        <button
+                          onClick={(e) => handleCopy(e, `${lead.id}-phone`, lead.phone as string)}
+                          title="Copiar telefone"
+                          className="shrink-0 w-5 h-5 rounded-md bg-white/5 border border-border flex items-center justify-center text-muted hover:text-primary hover:bg-white/10 transition-all"
+                        >
+                          {copiedKey === `${lead.id}-phone` ? (
+                            <Check className="w-3 h-3 text-green-400" />
+                          ) : (
+                            <Copy className="w-3 h-3" />
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </td>
                   <td className="px-5 py-3.5 text-sm text-muted max-w-[110px]">
                     <span className="block truncate" title={lead.category_name ?? undefined}>{lead.category_name || '—'}</span>
                   </td>
