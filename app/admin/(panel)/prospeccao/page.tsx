@@ -5,6 +5,7 @@ import { Filters } from './_components/Filters';
 import { StatusChart } from './_components/StatusChart';
 import { TimelineChart } from './_components/TimelineChart';
 import { RetrabalhoTable } from './_components/RetrabalhoTable';
+import { FollowUpTable } from './_components/FollowUpTable';
 import { LeadsTable } from './_components/LeadsTable';
 import { STATUS_ORDER, statusConfig, type LeadProspeccao, type LeadProspeccaoStatus } from './_components/types';
 
@@ -169,6 +170,9 @@ export default async function ProspeccaoPage({
 
       {/* Lista completa de leads */}
       <LeadsTable leads={leads} />
+
+      {/* Follow-ups pendentes */}
+      <FollowUpTable leads={leads} />
 
       {/* Retrabalho */}
       <RetrabalhoTable leads={leads} diasLimite={diasLimite} />
