@@ -25,7 +25,7 @@ async function getLeads(filters: { status?: string; search_term?: string; sort?:
   const supabase = createAdminClient();
   let query = supabase
     .from('leads_prospeccao')
-    .select('id, title, phone, address, website, category_name, total_score, reviews_count, maps_url, search_term, status, instagram_url, created_at, nome_contato, cargo_contato, nome_responsavel, cargo_responsavel, status_cadencia, data_msg_1, data_msg_2, data_msg_3, data_msg_4, data_msg_5, motivo_descarte');
+    .select('id, title, phone, whatsapp, address, website, category_name, total_score, reviews_count, maps_url, search_term, status, instagram_url, created_at, nome_contato, cargo_contato, nome_responsavel, cargo_responsavel, status_cadencia, data_msg_1, data_msg_2, data_msg_3, data_msg_4, data_msg_5, motivo_descarte');
 
   if (filters.status) query = query.eq('status', filters.status);
   if (filters.search_term) query = query.eq('search_term', filters.search_term);

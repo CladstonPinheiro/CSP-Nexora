@@ -47,6 +47,7 @@ export async function updateLeadFields(
   fields: Partial<{
     title: string;
     phone: string | null;
+    whatsapp: string | null;
     address: string | null;
     website: string | null;
     category_name: string | null;

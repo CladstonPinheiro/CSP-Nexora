@@ -140,7 +140,7 @@ export function LeadsTable({ leads }: { leads: LeadProspeccao[] }) {
                   <td className="px-5 py-3.5 text-sm text-muted">{lead.total_score ?? '—'}</td>
                   <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center gap-1.5">
-                      <WhatsAppButton phone={lead.phone} />
+                      <WhatsAppButton phone={lead.whatsapp || lead.phone} />
                       <button
                         onClick={() => setModalState({ lead, mode: 'edit' })}
                         title="Editar"

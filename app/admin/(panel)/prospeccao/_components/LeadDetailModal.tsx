@@ -140,6 +140,7 @@ export function LeadDetailModal({
   const [formFields, setFormFields] = useState({
     title: lead.title,
     phone: lead.phone ?? '',
+    whatsapp: lead.whatsapp ?? '',
     address: lead.address ?? '',
     website: lead.website ?? '',
     category_name: lead.category_name ?? '',
@@ -185,6 +186,7 @@ export function LeadDetailModal({
           ? {
               title: formFields.title.trim(),
               phone: formFields.phone.trim() || null,
+              whatsapp: formFields.whatsapp.trim() || null,
               address: formFields.address.trim() || null,
               website: formFields.website.trim() || null,
               category_name: formFields.category_name.trim() || null,
@@ -195,6 +197,7 @@ export function LeadDetailModal({
               instagram_url: formFields.instagram_url.trim() || null,
             }
           : {
+              whatsapp: formFields.whatsapp.trim() || null,
               nome_contato: formFields.nome_contato.trim() || null,
               cargo_contato: formFields.cargo_contato.trim() || null,
               nome_responsavel: formFields.nome_responsavel.trim() || null,
@@ -297,6 +300,7 @@ export function LeadDetailModal({
                   <EditableField icon={IdCard} label="Cargo do Contato" value={formFields.cargo_contato} onChange={(v) => updateField('cargo_contato', v)} />
                   <EditableField icon={UserCog} label="Nome do Responsável" value={formFields.nome_responsavel} onChange={(v) => updateField('nome_responsavel', v)} />
                   <EditableField icon={IdCard} label="Cargo do Responsável" value={formFields.cargo_responsavel} onChange={(v) => updateField('cargo_responsavel', v)} />
+                  <EditableField icon={MessageSquare} label="WhatsApp (se diferente do telefone)" value={formFields.whatsapp} onChange={(v) => updateField('whatsapp', v)} />
                   <div className="col-span-2">
                     <EditableField icon={Instagram} label="Instagram" value={formFields.instagram_url} onChange={(v) => updateField('instagram_url', v)} />
                   </div>
@@ -346,6 +350,7 @@ export function LeadDetailModal({
                   <EditableField icon={IdCard} label="Cargo do Contato" value={formFields.cargo_contato} onChange={(v) => updateField('cargo_contato', v)} />
                   <EditableField icon={UserCog} label="Nome do Responsável" value={formFields.nome_responsavel} onChange={(v) => updateField('nome_responsavel', v)} />
                   <EditableField icon={IdCard} label="Cargo do Responsável" value={formFields.cargo_responsavel} onChange={(v) => updateField('cargo_responsavel', v)} />
+                  <EditableField icon={MessageSquare} label="WhatsApp (se diferente do telefone)" value={formFields.whatsapp} onChange={(v) => updateField('whatsapp', v)} />
                   <div className="col-span-2">
                     <EditableField icon={Instagram} label="Instagram" value={formFields.instagram_url} onChange={(v) => updateField('instagram_url', v)} />
                   </div>
@@ -420,11 +425,11 @@ export function LeadDetailModal({
           <div className="h-px bg-white/5" />
 
           <WhatsAppButton
-            phone={lead.phone}
+            phone={lead.whatsapp || lead.phone}
             label="Chamar no WhatsApp"
             className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all bg-green-500/10 border border-green-500/20 text-green-400 hover:bg-green-500/20"
           />
-          {!lead.phone && (
+          {!lead.whatsapp && !lead.phone && (
             <p className="text-xs text-muted text-center -mt-3">Sem telefone cadastrado</p>
           )}
         </div>
